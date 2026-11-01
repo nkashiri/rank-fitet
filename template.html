@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FITET Liguria Progress</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+  :root {
+    --bg: #f7f7f5; --panel: #ffffff; --text: #1d1d1b; --muted: #6b6b66;
+    --border: #e2e1dc; --accent: #2563eb; --up: #15803d; --down: #b91c1c; --hover: #f0efe9;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #161614; --panel: #1f1f1d; --text: #ecebe6; --muted: #9a9993;
+      --border: #34332f; --accent: #60a5fa; --up: #4ade80; --down: #f87171; --hover: #2a2926;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #161614; --panel: #1f1f1d; --text: #ecebe6; --muted: #9a9993;
+    --border: #34332f; --accent: #60a5fa; --up: #4ade80; --down: #f87171; --hover: #2a2926;
+  }
+  * { box-sizing: border-box; }
+  .files { margin-top: 20px; font-size: 13px; color: var(--muted); }
+  .files a { color: var(--accent); margin-right: 14px; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 1200px; margin: 0 auto; padding: 20px 16px 40px; }
+  h1 { font-size: 20px; margin: 0 0 2px; }
+  .sub { color: var(--muted); font-size: 12px; margin-bottom: 16px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  select, input, button { font: inherit; color: var(--text); background: var(--panel);
+    border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; }
+  input[type=search] { flex: 1 1 180px; min-width: 0; }
+  button { cursor: pointer; }
+  .seg { display: inline-flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .seg button { border: 0; border-radius: 0; }
+  .seg button.on { background: var(--accent); color: #fff; }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
+  .chart { height: 460px; margin-bottom: 16px; }
+  .tablewrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th { color: var(--muted); font-weight: 600; cursor: pointer; user-select: none; position: sticky; top: 0; background: var(--panel); }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  tbody tr { cursor: pointer; }
+  tbody tr:hover { background: var(--hover); }
+  .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: middle; border: 1px solid var(--border); }
+  .up { color: var(--up); } .down { color: var(--down); }
+  .club { color: var(--muted); max-width: 260px; overflow: hidden; text-overflow: ellipsis; }
+  .hint { color: var(--muted); font-size: 12px; margin: 6px 0 10px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>FITET Liguria: andamento classifica atleti</h1>
+  <div class="sub" id="sub"></div>
+
+  <div class="controls">
+    <select id="champ"></select>
+    <select id="club"></select>
+    <input type="search" id="q" placeholder="Cerca atleta...">
+  </div>
+  <div class="controls">
+    <div class="seg" id="metric">
+      <button data-v="pts" class="on">Punti</button>
+      <button data-v="pos">Posizione</button>
+    </div>
+    <div class="seg" id="range">
+      <button data-v="2026-07-01" class="on">Stagione 26/27</button>
+      <button data-v="2025-07-01">Da 25/26</button>
+      <button data-v="2023-07-01">Da 23/24</button>
+      <button data-v="">Tutto</button>
+    </div>
+    <button id="top">Top 8</button>
+    <button id="clear">Deseleziona</button>
+  </div>
+
+  <div class="card chart"><canvas id="cv"></canvas></div>
+
+  <div class="hint">Clicca su una riga per aggiungere/rimuovere l'atleta dal grafico. Δ = variazione nel periodo selezionato.</div>
+  <div class="card tablewrap">
+    <table>
+      <thead><tr>
+        <th data-k="name">Atleta</th><th data-k="club">Società</th><th data-k="champ">Camp.</th>
+        <th data-k="pts" class="num">Punti</th><th data-k="pos" class="num">Pos.</th>
+        <th data-k="dPts" class="num">Δ Punti</th><th data-k="dPos" class="num">Δ Pos.</th>
+        <th data-k="rec" class="num">V-P</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+  <div class="files" id="files" hidden>
+    <button id="dl">Scarica lo script (.zip)</button>
+    <span id="dlmsg"></span><br>
+    Per aggiornare i dati: estrai lo zip ed esegui <code>node fitet_liguria.js</code> (Node 18+).
+  </div>
+</main>
+
+<script>
+const DATA = /*__DATA__*/null;
+const PALETTE = ['#2563eb','#dc2626','#16a34a','#d97706','#7c3aed','#0891b2','#db2777','#65a30d',
+                 '#ea580c','#4f46e5','#0d9488','#be123c','#a16207','#9333ea','#0284c7','#c2410c'];
+const $ = id => document.getElementById(id);
+const state = { metric: 'pts', since: '2026-07-01', sort: 'pts', dir: -1, selected: new Set() };
+const colorOf = new Map();
+
+const players = DATA.players.map((p, i) => ({ ...p, key: i,
+  champLabel: p.champs.map(c => c.title.replace(/^(MASCHILE|FEMMINILE)\s*-\s*/, '')).join(', ') }));
+
+$('sub').textContent = `Dati aggiornati al ${new Date(DATA.generated).toLocaleString('it-IT')} · ` +
+  `${players.length} atleti · fonte portale.fitet.org`;
+
+$('champ').innerHTML = '<option value="">Tutti i campionati</option>' +
+  DATA.championships.map(c => `<option value="${c.cam}">${c.title}</option>`).join('');
+const clubs = [...new Set(players.map(p => p.club))].sort();
+$('club').innerHTML = '<option value="">Tutte le società</option>' +
+  clubs.map(c => `<option>${c.replace(/</g, '&lt;')}</option>`).join('');
+
+function stats(p) {
+  const h = p.history.filter(x => !state.since || x.d >= state.since);
+  const last = p.history[p.history.length - 1];
+  const first = h[0];
+  const rec = p.champs.reduce((a, c) => [a[0] + c.won, a[1] + c.lost], [0, 0]);
+  return {
+    pts: last ? last.pts : null, pos: last ? last.pos : null,
+    dPts: first && last ? last.pts - first.pts : null,
+    dPos: first && last ? first.pos - last.pos : null,  // positive = climbed
+    rec: rec[0] - rec[1], recText: `${rec[0]}-${rec[1]}`,
+  };
+}
+
+function visible() {
+  const cam = $('champ').value, club = $('club').value, q = $('q').value.trim().toUpperCase();
+  return players.filter(p => (!cam || p.champs.some(c => String(c.cam) === cam)) &&
+    (!club || p.club === club) && (!q || p.name.includes(q)));
+}
+
+function pickColor(p) {
+  if (!colorOf.has(p.key)) {
+    const used = new Set(colorOf.values());
+    colorOf.set(p.key, PALETTE.find(c => !used.has(c)) || PALETTE[colorOf.size % PALETTE.length]);
+  }
+  return colorOf.get(p.key);
+}
+
+function toggle(p) {
+  if (state.selected.has(p.key)) { state.selected.delete(p.key); colorOf.delete(p.key); }
+  else { state.selected.add(p.key); pickColor(p); }
+  render();
+}
+
+function topN(n = 8) {
+  state.selected.clear(); colorOf.clear();
+  visible().filter(p => p.history.length).sort((a, b) => (stats(b).pts || 0) - (stats(a).pts || 0))
+    .slice(0, n).forEach(p => { state.selected.add(p.key); pickColor(p); });
+  render();
+}
+
+function renderTable() {
+  const rows = visible().map(p => ({ p, s: stats(p) }));
+  const k = state.sort;
+  rows.sort((a, b) => {
+    const va = k === 'name' || k === 'club' ? a.p[k] : k === 'champ' ? a.p.champLabel : a.s[k];
+    const vb = k === 'name' || k === 'club' ? b.p[k] : k === 'champ' ? b.p.champLabel : b.s[k];
+    if (va == null) return 1; if (vb == null) return -1;
+    return (va < vb ? -1 : va > vb ? 1 : 0) * state.dir;
+  });
+  const delta = v => v == null ? '–' : `<span class="${v > 0 ? 'up' : v < 0 ? 'down' : ''}">${v > 0 ? '+' : ''}${v}</span>`;
+  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  $('rows').innerHTML = rows.map(({ p, s }) => `<tr data-k="${p.key}">
+    <td><span class="swatch" style="background:${state.selected.has(p.key) ? colorOf.get(p.key) : 'transparent'}"></span>${esc(p.name)}</td>
+    <td class="club" title="${esc(p.club)}">${esc(p.club)}</td><td>${esc(p.champLabel)}</td>
+    <td class="num">${s.pts ?? '–'}</td><td class="num">${s.pos ?? '–'}</td>
+    <td class="num">${delta(s.dPts)}</td><td class="num">${delta(s.dPos)}</td>
+    <td class="num">${s.recText}</td></tr>`).join('');
+}
+
+let chart;
+function renderChart() {
+  const css = getComputedStyle(document.documentElement);
+  const muted = css.getPropertyValue('--muted').trim(), grid = css.getPropertyValue('--border').trim();
+  const datasets = [...state.selected].map(k => players[k]).map(p => ({
+    label: p.name,
+    data: p.history.filter(x => !state.since || x.d >= state.since)
+      .map(x => ({ x: Date.parse(x.d), y: x[state.metric] })),
+    borderColor: colorOf.get(p.key), backgroundColor: colorOf.get(p.key),
+    borderWidth: 2, pointRadius: 3, tension: 0.15,
+  }));
+  if (chart) chart.destroy();
+  chart = new Chart($('cv'), {
+    type: 'line', data: { datasets },
+    options: {
+      maintainAspectRatio: false, animation: false,
+      interaction: { mode: 'nearest', intersect: false },
+      plugins: {
+        legend: { labels: { color: muted, boxWidth: 12 } },
+        tooltip: { callbacks: {
+          title: items => new Date(items[0].parsed.x).toLocaleDateString('it-IT'),
+          label: i => `${i.dataset.label}: ${i.parsed.y} ${state.metric === 'pts' ? 'pt' : '°'}`,
+        } },
+      },
+      scales: {
+        x: { type: 'linear', ticks: { color: muted, maxTicksLimit: 8,
+               callback: v => new Date(v).toLocaleDateString('it-IT', { month: 'short', year: '2-digit' }) },
+             grid: { color: grid } },
+        y: { reverse: state.metric === 'pos', ticks: { color: muted }, grid: { color: grid },
+             title: { display: true, color: muted, text: state.metric === 'pts' ? 'Punti' : 'Posizione (nazionale)' } },
+      },
+    },
+  });
+}
+
+function render() { renderTable(); renderChart(); }
+
+$('rows').addEventListener('click', e => {
+  const tr = e.target.closest('tr'); if (tr) toggle(players[+tr.dataset.k]);
+});
+document.querySelectorAll('th[data-k]').forEach(th => th.addEventListener('click', () => {
+  const k = th.dataset.k;
+  state.dir = state.sort === k ? -state.dir : (k === 'name' || k === 'club' || k === 'champ' || k === 'pos' ? 1 : -1);
+  state.sort = k; renderTable();
+}));
+for (const [id, field] of [['metric', 'metric'], ['range', 'since']]) {
+  $(id).addEventListener('click', e => {
+    const b = e.target.closest('button'); if (!b) return;
+    $(id).querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    state[field] = b.dataset.v; render();
+  });
+}
+$('champ').addEventListener('change', () => topN());
+$('club').addEventListener('change', () => topN());
+$('q').addEventListener('input', renderTable);
+$('top').addEventListener('click', () => topN());
+$('clear').addEventListener('click', () => { state.selected.clear(); colorOf.clear(); render(); });
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', renderChart);
+
+topN();
+
+// Download button, only when hosted on claude.ai (the zip is published next to the page).
+(async () => {
+  const downloads = window.claude?.use ? await window.claude.use('downloads') : null;
+  if (!downloads) return;
+  $('files').hidden = false;
+  $('dl').addEventListener('click', async () => {
+    $('dlmsg').textContent = '';
+    try {
+      const zip = new JSZip();
+      for (const f of ['fitet_liguria.js', 'template.html']) {
+        const res = await fetch(f);
+        if (!res.ok) throw new Error(f + ': HTTP ' + res.status);
+        zip.file(f, await res.text());
+      }
+      const data = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+      await downloads.save({ filename: 'fitet-liguria.zip', data });
+    } catch (err) {
+      if (err.code !== 'declined') $('dlmsg').textContent = 'Download non disponibile (' + (err.code || err.message) + ')';
+    }
+  });
+})();
+</script>
+</body>
+</html>
