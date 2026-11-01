@@ -154,6 +154,7 @@ async function history(id, card, rankId) {
   };
   const json = JSON.stringify(data).replace(/</g, '\\u003c');
   const template = fs.readFileSync(path.join(__dirname, 'template.html'), 'utf8');
+  fs.mkdirSync(path.dirname(path.resolve(OUT)), { recursive: true });
   fs.writeFileSync(OUT, template.replace('/*__DATA__*/null', json));
   console.log(`Wrote ${OUT}`);
 })().catch(err => { console.error(err); process.exit(1); });
