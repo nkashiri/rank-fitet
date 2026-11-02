@@ -1,96 +1,98 @@
-# FITET Liguria: andamento classifica atleti
+**English** | [Italiano](README.it.md)
 
-Grafico dell'andamento in classifica (punti e posizione) degli atleti dei campionati
-regionali liguri (C/2, D/1, D/2), con dati da [portale.fitet.org](https://portale.fitet.org).
+# FITET Liguria: athletes' ranking progress
 
-**Pagina:** https://nkashiri.github.io/rank-fitet-liguria/
+A chart of the ranking progress (points and position) of the athletes in the Liguria regional
+table tennis championships (C/2, D/1, D/2), with data from [portale.fitet.org](https://portale.fitet.org).
 
-## Uso della pagina
+**Page:** https://nkashiri.github.io/rank-fitet-liguria/ (the page itself is in Italian)
 
-- Il grafico parte vuoto: clicca sulle righe della tabella per aggiungere o togliere atleti,
-  oppure usa **Top 8** per i primi 8 per punti tra quelli filtrati.
-- **Punti / Posizione**: metrica del grafico (la posizione è quella nella classifica nazionale).
-- **Stagione 26/27 / Da 25/26 / Da 23/24 / Tutto**: periodo mostrato; le colonne Δ indicano
-  la variazione in quel periodo.
-- Filtri per campionato, società e nome; le colonne della tabella sono ordinabili.
+## Using the page
 
-## Aggiornamento dei dati
+- The chart starts empty: click rows in the table to add or remove athletes,
+  or use **Top 8** for the 8 athletes with the most points among those filtered.
+- **Punti / Posizione**: the chart metric, points or position (the position is in the national ranking).
+- **Stagione 26/27 / Da 25/26 / Da 23/24 / Tutto**: the period shown (this season, since
+  2025/26, since 2023/24, everything); the Δ columns show the change over that period.
+- Filters by championship, club and name; table columns are sortable.
 
-- **Automatico:** ogni lunedì alle 06:00 UTC (07:00 o 08:00 in Italia).
-- **Manuale:** scheda [Actions](https://github.com/nkashiri/rank-fitet-liguria/actions) →
-  **Aggiorna classifica** → **Run workflow**. La pagina è aggiornata in circa 2 minuti.
-- Ogni aggiornamento salva anche `index.html` nel repository: la cronologia dei commit
-  "Aggiorna dati ..." conserva le versioni precedenti.
+## Data updates
 
-## Atleti extra (non presenti nei campionati liguri)
+- **Automatic:** every Monday at 06:00 UTC (07:00 or 08:00 in Italy).
+- **Manual:** [Actions](https://github.com/nkashiri/rank-fitet-liguria/actions) tab →
+  **Aggiorna classifica** → **Run workflow**. The page is updated in about 2 minutes.
+- Each update also saves `index.html` in the repository: the "Aggiorna dati ..." commit
+  history keeps the previous versions.
 
-Sono elencati in `atleti_extra.txt`, uno per riga: `COGNOME NOME (gg/mm/aaaa)`.
+## Extra athletes (not in the Liguria championships)
 
-- **Aggiungere:** nella pagina, scrivi il nome in "Aggiungi un atleta" e clicca
-  **Aggiungi atleta**; si apre GitHub con la richiesta già compilata: clicca **Create**.
-  Dopo circa 3 minuti l'atleta compare in tabella con l'etichetta "Extra".
-- **Rimuovere:** link **rimuovi** accanto a "Extra" nella riga dell'atleta, poi **Create**.
-- La risposta nella issue dice se l'operazione è riuscita. In caso di omonimi elenca le date
-  di nascita: riprova con `COGNOME NOME gg/mm/aaaa`.
-- Si può anche modificare `atleti_extra.txt` direttamente su GitHub (matita → Commit):
-  vale dal prossimo aggiornamento.
-- Solo il proprietario e i collaboratori del repository possono aggiungere o rimuovere
-  atleti; le richieste di altri utenti vengono ignorate.
+They are listed in `atleti_extra.txt`, one per line: `SURNAME NAME (dd/mm/yyyy)`.
 
-## File
+- **Add:** on the page, type the name in "Aggiungi un atleta" and click **Aggiungi atleta**;
+  GitHub opens with the request already filled in: click **Create**.
+  After about 3 minutes the athlete appears in the table with the "Extra" label.
+- **Remove:** click the **rimuovi** link next to "Extra" in the athlete's row, then **Create**.
+- The reply in the issue says whether it worked. If several athletes share the name, it
+  lists their birth dates: try again with `SURNAME NAME dd/mm/yyyy`.
+- You can also edit `atleti_extra.txt` directly on GitHub (pencil icon → Commit):
+  it takes effect at the next update.
+- Only the repository owner and collaborators can add or remove athletes;
+  requests from other users are ignored.
 
-- `fitet_liguria.js`: scarica i dati e genera la pagina.
-- `template.html`: la pagina (grafico e tabella) in cui vengono inseriti i dati.
-- `atleti_extra.txt`: atleti aggiuntivi.
-- `.github/workflows/update.yml`: aggiornamento settimanale e pubblicazione su GitHub Pages.
-- `.github/workflows/extra.yml`: gestisce le richieste "Aggiungi:" / "Rimuovi:" aperte dalla pagina.
-- `index.html`: l'ultima pagina generata (scritta dal workflow, non modificarla a mano).
+## Files
 
-## Uso locale (Node 18+, nessuna dipendenza)
+- `fitet_liguria.js`: downloads the data and generates the page.
+- `template.html`: the page (chart and table) the data is inserted into.
+- `atleti_extra.txt`: extra athletes.
+- `.github/workflows/update.yml`: weekly update and publishing to GitHub Pages.
+- `.github/workflows/extra.yml`: handles the "Aggiungi:" / "Rimuovi:" requests opened from the page.
+- `index.html`: the latest generated page (written by the workflow, don't edit it by hand).
+
+## Running locally (Node 18+, no dependencies)
 
 ```
-node fitet_liguria.js                         # scrive fitet_liguria.html
-node fitet_liguria.js out.html                # oppure un altro file
-node fitet_liguria.js --add "ROSSI MARIO"     # aggiunge un atleta ad atleti_extra.txt
-node fitet_liguria.js --remove "ROSSI MARIO"  # lo rimuove
+node fitet_liguria.js                         # writes fitet_liguria.html
+node fitet_liguria.js out.html                # or another file
+node fitet_liguria.js --add "ROSSI MARIO"     # adds an athlete to atleti_extra.txt
+node fitet_liguria.js --remove "ROSSI MARIO"  # removes them
 ```
 
-Nella copia locale il pulsante "Aggiungi atleta" non compare (serve GitHub).
+In a local copy the "Aggiungi atleta" button doesn't appear (it needs GitHub).
 
-## Cambio di stagione
+## Season change
 
-All'inizio di ogni stagione (luglio) controllare:
+At the start of each season (July), check:
 
-1. **Numeri dei campionati** (`CAMS` in cima a `fitet_liguria.js`, oggi 301–307): sono il
-   parametro `CAM=` dei link dei campionati liguri su portale.fitet.org
-   (es. `risultati/campionati/campionati.php?CAM=301`). Possono cambiare da una stagione
-   all'altra; qui si possono anche aggiungere altri campionati (femminili, altre serie).
-2. **Pulsanti del periodo** in `template.html` (`id="range"`): etichette e date di inizio
-   stagione, es. `data-v="2026-07-01"` → `2027-07-01` e "Stagione 27/28".
+1. **Championship numbers** (`CAMS` at the top of `fitet_liguria.js`, currently 301–307): they are
+   the `CAM=` parameter of the Liguria championship links on portale.fitet.org
+   (e.g. `risultati/campionati/campionati.php?CAM=301`). They may change from one season
+   to the next; you can also add other championships here (women's, other series).
+2. **Period buttons** in `template.html` (`id="range"`): labels and season start dates,
+   e.g. `data-v="2026-07-01"` → `2027-07-01` and "Stagione 27/28".
 
-## Come vengono raccolti i dati
+## How the data is collected
 
-1. `risultati/campionati/statistiche_atleti.php?CAM=<n>`: atleti di ogni campionato
-   (nome, società, incontri vinti/persi). Il titolo viene da `testa_campionati.php`.
-2. `ajax.php?term=<nome>`: la ricerca di "Ricerca e verifica attività atleta", per trovare
-   l'ID dell'atleta (con le intestazioni `X-Requested-With: XMLHttpRequest` e `Referer`).
-   Per gli omonimi si sceglie quello che gioca nel campionato; se lo stesso atleta ha due
-   tessere, quella presente nella classifica attuale.
-3. `scheda_unica_i.php?ATLETA=<id>`: scheda dell'atleta (tessera, società, ID della classifica).
-4. `risultati/new_rank/dettaglioatleta_unica.php?ATLETA=<id>&ID_CLASS=<c>`: scheda
-   "Storico Classifica" (data, posizione, punti, categoria). Per gli atleti non classificati
-   ("FQ") si usa l'ultima classifica elencata in `menu.php`.
+1. `risultati/campionati/statistiche_atleti.php?CAM=<n>`: the athletes of each championship
+   (name, club, matches won/lost). The title comes from `testa_campionati.php`.
+2. `ajax.php?term=<name>`: the search box of "Ricerca e verifica attività atleta", used to find
+   the athlete's ID (with the `X-Requested-With: XMLHttpRequest` and `Referer` headers).
+   For athletes with the same name, the one playing in the championship is chosen; if the
+   same athlete has two cards, the one in the current ranking.
+3. `scheda_unica_i.php?ATLETA=<id>`: the athlete's card (card number, club, ranking ID).
+4. `risultati/new_rank/dettaglioatleta_unica.php?ATLETA=<id>&ID_CLASS=<c>`: the
+   "Storico Classifica" tab (date, position, points, category). For unranked athletes ("FQ")
+   the latest ranking listed in `menu.php` is used.
 
-Il browser non può leggere direttamente portale.fitet.org (il sito non lo consente), per
-questo i dati vengono raccolti dallo script e inseriti nella pagina.
+A browser can't read portale.fitet.org directly (the site doesn't allow it), which is why
+the data is collected by the script and embedded in the page.
 
-## Problemi
+## Troubleshooting
 
-- **Il workflow fallisce:** apri la run nella scheda Actions e guarda il passo in rosso.
-  Se fallisce "Scarica i dati", il portale FITET potrebbe essere irraggiungibile o aver
-  cambiato struttura (vedi "Come vengono raccolti i dati"); riprova più tardi con Run workflow.
-- **Un atleta del campionato manca o non ha storico:** lo script stampa i nomi non trovati
-  nel log del passo "Scarica i dati" (`Not resolved`).
-- **Gli aggiornamenti settimanali si fermano:** GitHub sospende i workflow programmati dopo
-  60 giorni senza attività nel repository. I commit settimanali lo evitano, ma se succede
-  basta riattivarlo dalla scheda Actions.
+- **The workflow fails:** open the run in the Actions tab and look at the step in red.
+  If "Scarica i dati" fails, the FITET portal may be unreachable or may have changed its
+  structure (see "How the data is collected"); try again later with Run workflow.
+- **A championship athlete is missing or has no history:** the script prints the names it
+  couldn't find in the log of the "Scarica i dati" step (`Not resolved`).
+- **Weekly updates stop:** GitHub pauses scheduled workflows after 60 days without activity
+  in the repository. The weekly commits prevent this, but if it happens you can re-enable
+  it from the Actions tab.
