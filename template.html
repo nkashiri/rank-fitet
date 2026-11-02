@@ -67,7 +67,7 @@
   .empty[hidden] { display: none; }
   .tablewrap { overflow-x: auto; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th, td { text-align: left; padding: 6px; border-bottom: 1px solid var(--border); white-space: nowrap; }
   th { color: var(--muted); font-weight: 600; cursor: pointer; user-select: none; position: sticky; top: 0; background: var(--panel); }
   td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
   tbody tr { cursor: pointer; }
@@ -75,7 +75,9 @@
   .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: middle; border: 1px solid var(--border); }
   .up { color: var(--up); } .down { color: var(--down); }
   .muted { color: var(--muted); }
-  .club { color: var(--muted); max-width: 260px; overflow: hidden; text-overflow: ellipsis; }
+  .club { color: var(--muted); max-width: 200px; }
+  .athlete { max-width: 210px; } .region { max-width: 110px; }
+  .club, .athlete, .region { overflow: hidden; text-overflow: ellipsis; }
   .hint { color: var(--muted); font-size: 12px; margin: 6px 0 10px; }
   .tablefoot { display: flex; align-items: center; gap: 12px; margin-top: 10px; color: var(--muted); font-size: 12px; }
   .tablefoot button[hidden] { display: none; }
@@ -123,7 +125,7 @@
   <div class="card tablewrap">
     <table>
       <thead><tr>
-        <th data-k="name">Atleta</th><th data-k="year" class="num">Anno</th><th data-k="sex">Sesso</th><th data-k="sett">Settore</th>
+        <th data-k="name">Atleta</th><th data-k="year" class="num">Anno</th><th data-k="sex" title="Sesso">M/F</th><th data-k="sett">Settore</th>
         <th data-k="club">Società</th><th data-k="reg">Regione</th><th data-k="cat" class="num">Cat.</th>
         <th data-k="pts" class="num">Punti</th><th data-k="pos" class="num">Pos.</th>
         <th data-k="dPts" class="num">Δ Punti</th><th data-k="dPos" class="num">Δ Pos.</th>
@@ -260,6 +262,9 @@ function stats(p) {
   return { pts: p.pts, pos: p.pos, dPts: d[0], dPos: d[1] };
 }
 
+// Shorter sector labels for the table (the filter and the tooltip keep the full ones).
+const shortSett = s => (s || '').replace(/^Giovanile /, '').replace(/ - Paralimpico$/, ' (para)');
+
 function renderTable() {
   const rows = visible().map(p => ({ p, s: stats(p) }));
   const k = state.sort, text = ['name', 'sex', 'sett', 'club', 'reg'].includes(k);
@@ -271,9 +276,9 @@ function renderTable() {
   });
   const delta = v => v == null ? '–' : `<span class="${v > 0 ? 'up' : v < 0 ? 'down' : ''}">${v > 0 ? '+' : ''}${v}</span>`;
   $('rows').innerHTML = rows.slice(0, state.shown).map(({ p, s }) => `<tr data-k="${p.id}">
-    <td><span class="swatch" style="background:${state.selected.has(p.id) ? colorOf.get(p.id) : 'transparent'}"></span>${esc(p.name)}</td>
-    <td class="num">${p.year ?? '–'}</td><td>${p.sex}</td><td>${esc(p.sett)}</td>
-    <td class="club" title="${esc(p.club)}">${esc(p.club)}</td><td>${esc(p.reg)}</td><td class="num">${esc(p.cat)}</td>
+    <td class="athlete" title="${esc(p.name)}"><span class="swatch" style="background:${state.selected.has(p.id) ? colorOf.get(p.id) : 'transparent'}"></span>${esc(p.name)}</td>
+    <td class="num">${p.year ?? '–'}</td><td>${p.sex}</td><td title="${esc(p.sett)}">${esc(shortSett(p.sett))}</td>
+    <td class="club" title="${esc(p.club)}">${esc(p.club)}</td><td class="region" title="${esc(p.reg)}">${esc(p.reg)}</td><td class="num">${esc(p.cat)}</td>
     <td class="num">${s.pts ?? '–'}</td><td class="num">${s.pos ?? '–'}</td>
     <td class="num">${delta(s.dPts)}</td><td class="num">${delta(s.dPos)}</td>
     <td class="num" title="${p.won} vinte, ${p.lost} perse">${p.pct ?? '–'}</td>
