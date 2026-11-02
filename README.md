@@ -3,13 +3,13 @@
 # FITET: athletes' ranking progress
 
 A chart of the ranking progress (points and position) of all the athletes in the Italian men's
-table tennis ranking (about 8,900), with data from [portale.fitet.org](https://portale.fitet.org).
+and women's table tennis rankings (about 8,900 men and 900 women), with data from [portale.fitet.org](https://portale.fitet.org).
 
 **Page:** https://nkashiri.github.io/rank-fitet/ (the page itself is in Italian)
 
 ## Using the page
 
-- **Filters:** Settore (sector: Seniores, Master, Giovanili, ...), Società (club), Regione (region)
+- **Filters:** Sesso (gender: both by default, or only Maschile / Femminile), Settore (sector: Seniores, Master, Giovanili, ...), Società (club), Regione (region)
   and Categoria (category). Each one can take several values; the number next to each value is how
   many athletes it would add given the other filters. The Società list has a search box.
   With no filter chosen the table lists everyone (300 rows at a time: **Mostra altri** for more).
@@ -18,7 +18,7 @@ table tennis ranking (about 8,900), with data from [portale.fitet.org](https://p
   bookmark or share it to come back to the same view.
 - The chart starts empty: click rows in the table to add or remove athletes,
   or use **Top 8** for the 8 athletes with the most points among those filtered.
-- **Punti / Posizione**: the chart metric, points or position in the national ranking.
+- **Punti / Posizione**: the chart metric, points or position in the national ranking (the men's or the women's one).
 - **Period** (this season, since last season, since three seasons ago, everything): the Δ columns
   show the change over that period. The buttons follow the season (from July 1) automatically.
 
@@ -43,7 +43,7 @@ table tennis ranking (about 8,900), with data from [portale.fitet.org](https://p
 ```
 node fitet_liguria.js                        # writes site/index.html and site/storico/
 node fitet_liguria.js out/index.html         # or another folder
-node fitet_liguria.js --limit 200            # only the top 200 athletes (quick test)
+node fitet_liguria.js --limit 200            # only the top 200 men and 200 women (quick test)
 ```
 
 The page loads the histories from `storico/`, which a browser doesn't allow from a file opened
@@ -52,8 +52,8 @@ directly: serve the folder, e.g. `cd site && python3 -m http.server`, then open 
 ## How the data is collected
 
 1. `menu.php`: the latest ranking ID (`ID_CLASS`, the highest in the "Classifiche" links).
-2. `risultati/new_rank/ranking_unica.php?SESSO=M&ID_CLASS=<id>&TIPO=1&page=<n>`: the general men's
-   ranking, 100 athletes per page (the same list as `fpdf2/excel_classifica.php`, plus the athlete ID).
+2. `risultati/new_rank/ranking_unica.php?SESSO=<M|F>&ID_CLASS=<id>&TIPO=1&page=<n>`: the general men's
+   and women's rankings, 100 athletes per page (the same list as `fpdf2/excel_classifica.php`, plus the athlete ID).
    It needs the `X-Requested-With: XMLHttpRequest` and `Referer` headers.
 3. `risultati/new_rank/dettaglioatleta_unica.php?ATLETA=<id>&ID_CLASS=<id>&ZU=1&AVVERSARIO=0`, one
    per athlete: "Riepilogo Dati" (Settore Agonistico, Societa' appartenenza) and the "Storico

@@ -2,14 +2,14 @@
 
 # FITET: andamento classifica atleti
 
-Grafico dell'andamento in classifica (punti e posizione) di tutti gli atleti della classifica
-nazionale maschile di tennistavolo (circa 8.900), con dati da [portale.fitet.org](https://portale.fitet.org).
+Grafico dell'andamento in classifica (punti e posizione) di tutti gli atleti delle classifiche
+nazionali maschile e femminile di tennistavolo (circa 8.900 uomini e 900 donne), con dati da [portale.fitet.org](https://portale.fitet.org).
 
 **Pagina:** https://nkashiri.github.io/rank-fitet/
 
 ## Uso della pagina
 
-- **Filtri:** Settore (Seniores, Master, Giovanili, ...), Società, Regione e Categoria. Ognuno
+- **Filtri:** Sesso (di default entrambi, oppure solo Maschile / Femminile), Settore (Seniores, Master, Giovanili, ...), Società, Regione e Categoria. Ognuno
   accetta più valori; il numero accanto a ogni valore indica quanti atleti aggiungerebbe con gli
   altri filtri. L'elenco delle società ha una casella di ricerca.
   Senza filtri la tabella elenca tutti (300 righe alla volta: **Mostra altri** per le successive).
@@ -18,7 +18,7 @@ nazionale maschile di tennistavolo (circa 8.900), con dati da [portale.fitet.org
   salvalo tra i preferiti o condividilo per ritrovare la stessa vista.
 - Il grafico parte vuoto: clicca sulle righe della tabella per aggiungere o togliere atleti,
   oppure usa **Top 8** per i primi 8 per punti tra quelli filtrati.
-- **Punti / Posizione**: metrica del grafico (la posizione è quella nella classifica nazionale).
+- **Punti / Posizione**: metrica del grafico (la posizione è quella nella classifica nazionale, maschile o femminile).
 - **Periodo** (stagione in corso, dalla stagione scorsa, da tre stagioni fa, tutto): le colonne Δ
   indicano la variazione in quel periodo. I pulsanti seguono la stagione (dal 1° luglio) da soli.
 
@@ -43,7 +43,7 @@ nazionale maschile di tennistavolo (circa 8.900), con dati da [portale.fitet.org
 ```
 node fitet_liguria.js                        # scrive site/index.html e site/storico/
 node fitet_liguria.js out/index.html         # oppure un'altra cartella
-node fitet_liguria.js --limit 200            # solo i primi 200 atleti (prova veloce)
+node fitet_liguria.js --limit 200            # solo i primi 200 uomini e 200 donne (prova veloce)
 ```
 
 La pagina carica gli storici da `storico/`, cosa che il browser non consente aprendo il file
@@ -52,8 +52,8 @@ direttamente: servi la cartella, es. `cd site && python3 -m http.server`, poi ap
 ## Come vengono raccolti i dati
 
 1. `menu.php`: l'ID dell'ultima classifica (`ID_CLASS`, il più alto nei link "Classifiche").
-2. `risultati/new_rank/ranking_unica.php?SESSO=M&ID_CLASS=<id>&TIPO=1&page=<n>`: la classifica
-   generale maschile, 100 atleti per pagina (lo stesso elenco di `fpdf2/excel_classifica.php`, più
+2. `risultati/new_rank/ranking_unica.php?SESSO=<M|F>&ID_CLASS=<id>&TIPO=1&page=<n>`: le classifiche
+   generali maschile e femminile, 100 atleti per pagina (lo stesso elenco di `fpdf2/excel_classifica.php`, più
    l'ID dell'atleta). Servono le intestazioni `X-Requested-With: XMLHttpRequest` e `Referer`.
 3. `risultati/new_rank/dettaglioatleta_unica.php?ATLETA=<id>&ID_CLASS=<id>&ZU=1&AVVERSARIO=0`, uno
    per atleta: "Riepilogo Dati" (Settore Agonistico, Societa' appartenenza) e la scheda "Storico
