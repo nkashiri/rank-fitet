@@ -23,8 +23,7 @@ nazionali maschile e femminile di tennistavolo (circa 8.900 uomini e 900 donne),
   indicano la variazione in quel periodo. I pulsanti seguono la stagione (dal 1° luglio) da soli.
   I punti si azzerano ogni 1° luglio, quindi Δ Punti su più stagioni mescola scale diverse;
   Δ Pos. è confrontabile tra stagioni.
-- **Altre colonne:** **Forma** (punti guadagnati nelle ultime 3 classifiche mensili della stagione
-  in corso), **% vitt.** (percentuale di vittorie nella stagione; vinte e perse nel tooltip) e
+- **Altre colonne:** **% vitt.** (percentuale di vittorie nella stagione; vinte e perse nel tooltip) e
   **Miglior pos.** (record in classifica, con l'anno; la data è nel tooltip).
 
 ## Aggiornamento dei dati

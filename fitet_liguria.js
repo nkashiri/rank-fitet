@@ -139,13 +139,6 @@ function deltas(history, ranges) {
   });
 }
 
-// Form: change in points over the last 3 ranking updates (monthly), within the current season:
-// points are reset every July 1, so comparing across that date means nothing.
-function form(history, since) {
-  const h = history.filter(x => x[2] != null && x[0] >= since);
-  return h.length > 1 ? Math.round((h[h.length - 1][2] - h[Math.max(0, h.length - 4)][2]) * 100) / 100 : null;
-}
-
 // --- main ---
 
 (async () => {
@@ -170,13 +163,12 @@ function form(history, since) {
       p.clubs = d.clubs;
       if (d.sett) p.sett = d.sett;
       p.delta = d.history.length ? deltas(d.history, ranges) : null;
-      p.form = form(d.history, ranges[0].since);
       p.won = d.won; p.lost = d.lost; p.best = d.best;
       if (d.history.length && d.history[d.history.length - 1][0] > rankDate) rankDate = d.history[d.history.length - 1][0];
       fs.writeFileSync(path.join(dir, `${p.id}.json`), JSON.stringify(d.history));
     } catch (err) {
       failed.push(`${p.name} (${err.message})`);
-      p.clubs = []; p.delta = null; p.form = null; p.won = p.lost = 0; p.best = null;
+      p.clubs = []; p.delta = null; p.won = p.lost = 0; p.best = null;
     }
     if (++done % 500 === 0) console.log(`  ${done}/${list.length}`);
   });
