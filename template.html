@@ -81,6 +81,7 @@
   <div class="sub" id="sub"></div>
 
   <div class="controls" id="filters">
+    <details class="ms" data-f="sex"><summary></summary><div class="panel"><div class="opts"></div></div></details>
     <details class="ms" data-f="sett"><summary></summary><div class="panel"><div class="opts"></div></div></details>
     <details class="ms" data-f="club"><summary></summary><div class="panel"><input type="search" placeholder="Cerca società..."><div class="opts"></div></div></details>
     <details class="ms" data-f="reg"><summary></summary><div class="panel"><div class="opts"></div></div></details>
@@ -104,11 +105,11 @@
   </div>
 
   <div class="hint">Clicca su una riga per aggiungere/rimuovere l'atleta dal grafico. Δ = variazione nel periodo selezionato.
-    Posizione = classifica nazionale.</div>
+    Posizione = classifica nazionale maschile o femminile.</div>
   <div class="card tablewrap">
     <table>
       <thead><tr>
-        <th data-k="name">Atleta</th><th data-k="year" class="num">Anno</th><th data-k="sett">Settore</th>
+        <th data-k="name">Atleta</th><th data-k="year" class="num">Anno</th><th data-k="sex">Sesso</th><th data-k="sett">Settore</th>
         <th data-k="club">Società</th><th data-k="reg">Regione</th><th data-k="cat" class="num">Cat.</th>
         <th data-k="pts" class="num">Punti</th><th data-k="pos" class="num">Pos.</th>
         <th data-k="dPts" class="num">Δ Punti</th><th data-k="dPos" class="num">Δ Pos.</th>
@@ -133,6 +134,7 @@ const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 
 const FILTERS = {
+  sex:  { label: 'Sesso', all: 'entrambi', get: p => [p.sex], show: v => v === 'F' ? 'Femminile' : 'Maschile' },
   sett: { label: 'Settore', all: 'tutti', get: p => [p.sett] },
   club: { label: 'Società', all: 'tutte', get: p => p.clubs },
   reg:  { label: 'Regione', all: 'tutte', get: p => [p.reg] },
@@ -145,7 +147,7 @@ const colorOf = new Map();
 const players = DATA.players.map(p => ({ ...p, club: p.clubs.join(' / '), year: +p.birth.slice(-4) || null }));
 const byId = new Map(players.map(p => [p.id, p]));
 
-$('sub').textContent = `Classifica nazionale maschile al ${new Date(DATA.rankDate || DATA.generated).toLocaleDateString('it-IT')} · ` +
+$('sub').textContent = `Classifiche nazionali maschile e femminile al ${new Date(DATA.rankDate || DATA.generated).toLocaleDateString('it-IT')} · ` +
   `dati aggiornati il ${new Date(DATA.generated).toLocaleDateString('it-IT')} · ${players.length} atleti · fonte portale.fitet.org`;
 $('range').innerHTML = DATA.ranges.map((r, i) => `<button data-v="${i}"${i === 0 ? ' class="on"' : ''}>${esc(r.label)}</button>`).join('');
 
@@ -244,7 +246,7 @@ function stats(p) {
 
 function renderTable() {
   const rows = visible().map(p => ({ p, s: stats(p) }));
-  const k = state.sort, text = ['name', 'sett', 'club', 'reg'].includes(k);
+  const k = state.sort, text = ['name', 'sex', 'sett', 'club', 'reg'].includes(k);
   const val = r => k in r.s ? r.s[k] : k === 'cat' ? +r.p.cat : r.p[k];
   rows.sort((a, b) => {
     const va = val(a), vb = val(b);
@@ -254,7 +256,7 @@ function renderTable() {
   const delta = v => v == null ? '–' : `<span class="${v > 0 ? 'up' : v < 0 ? 'down' : ''}">${v > 0 ? '+' : ''}${v}</span>`;
   $('rows').innerHTML = rows.slice(0, state.shown).map(({ p, s }) => `<tr data-k="${p.id}">
     <td><span class="swatch" style="background:${state.selected.has(p.id) ? colorOf.get(p.id) : 'transparent'}"></span>${esc(p.name)}</td>
-    <td class="num">${p.year ?? '–'}</td><td>${esc(p.sett)}</td>
+    <td class="num">${p.year ?? '–'}</td><td>${p.sex}</td><td>${esc(p.sett)}</td>
     <td class="club" title="${esc(p.club)}">${esc(p.club)}</td><td>${esc(p.reg)}</td><td class="num">${esc(p.cat)}</td>
     <td class="num">${s.pts ?? '–'}</td><td class="num">${s.pos ?? '–'}</td>
     <td class="num">${delta(s.dPts)}</td><td class="num">${delta(s.dPos)}</td></tr>`).join('');
@@ -297,7 +299,7 @@ async function renderChart() {
                callback: v => new Date(v).toLocaleDateString('it-IT', { month: 'short', year: '2-digit' }) },
              grid: { color: grid } },
         y: { reverse: state.metric === 'pos', ticks: { color: muted }, grid: { color: grid },
-             title: { display: true, color: muted, text: state.metric === 'pts' ? 'Punti' : 'Posizione (nazionale)' } },
+             title: { display: true, color: muted, text: state.metric === 'pts' ? 'Punti' : 'Posizione (classifica nazionale M/F)' } },
       },
     },
   });
@@ -339,7 +341,7 @@ $('rows').addEventListener('click', e => {
 });
 document.querySelectorAll('th[data-k]').forEach(th => th.addEventListener('click', () => {
   const k = th.dataset.k;
-  state.dir = state.sort === k ? -state.dir : (['name', 'sett', 'club', 'reg', 'cat', 'pos'].includes(k) ? 1 : -1);
+  state.dir = state.sort === k ? -state.dir : (['name', 'sex', 'sett', 'club', 'reg', 'cat', 'pos'].includes(k) ? 1 : -1);
   state.sort = k; renderTable();
 }));
 for (const [id, field] of [['metric', 'metric'], ['range', 'range']]) {

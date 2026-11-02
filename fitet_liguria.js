@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-// Scrapes the FITET national men's ranking (all Italian athletes) and writes a page charting
+// Scrapes the FITET national rankings, men's and women's (all Italian athletes), and writes a page charting
 // their ranking history: the page embeds the athlete list, and each athlete's history goes in
 // its own file (storico/<id>.json next to the page), loaded only when the athlete is selected.
 //
 // Usage: node fitet_liguria.js [output.html] [--limit N]
-//        output defaults to site/index.html; --limit N only takes the top N athletes (for testing).
+//        output defaults to site/index.html; --limit N only takes the top N athletes of each ranking (for testing).
 // Requires Node 18+ (built-in fetch). No dependencies.
 
 const fs = require('fs');
@@ -60,25 +60,25 @@ async function latestRankingId() {
   return Math.max(...[...menu.matchAll(/ID_CLASS=(\d+)/g)].map(m => +m[1]));
 }
 
-// One page (100 athletes) of the general men's ranking, as shown on the portal's ranking page.
+// One page (100 athletes) of the general men's (M) or women's (F) ranking, as shown on the portal's ranking page.
 // Same list as fpdf2/excel_classifica.php, plus the athlete ID, sector and region.
-async function rankingPage(rankId, page) {
-  const html = await get(`${RANK}/ranking_unica.php?SESSO=M&ID_CLASS=${rankId}&ZU=1&TIPO=1&SETT=0&page=${page}&S=0&FQ=0&G=0&V=0`);
+async function rankingPage(rankId, sex, page) {
+  const html = await get(`${RANK}/ranking_unica.php?SESSO=${sex}&ID_CLASS=${rankId}&ZU=1&TIPO=1&SETT=0&page=${page}&S=0&FQ=0&G=0&V=0`);
   const athletes = [];
   for (const row of html.split(/<tr/i).slice(1)) {
     const id = (row.match(/getScheda\((\d+)/) || [])[1];
     const c = cells(row);
     if (!id || c.length < 8) continue;
     const [pos, name, birth, sett, pts, diff, reg, cat] = c;
-    athletes.push({ id, name, birth, sett, reg, cat, pos: +pos, pts: parseFloat(pts) || 0, diff: +diff || 0 });
+    athletes.push({ id, name, sex, birth, sett, reg, cat, pos: +pos, pts: parseFloat(pts) || 0, diff: +diff || 0 });
   }
   return { athletes, pages: +(html.match(/totalPages:\s*(\d+)/) || [])[1] || 1 };
 }
 
-async function ranking(rankId) {
-  const first = await rankingPage(rankId, 1);
+async function ranking(rankId, sex) {
+  const first = await rankingPage(rankId, sex, 1);
   const pages = Math.min(first.pages, Math.ceil(LIMIT / 100));
-  const rest = await pool(Array.from({ length: pages - 1 }, (_, i) => i + 2), p => rankingPage(rankId, p));
+  const rest = await pool(Array.from({ length: pages - 1 }, (_, i) => i + 2), p => rankingPage(rankId, sex, p));
   return [first, ...rest].flatMap(p => p.athletes).slice(0, LIMIT);
 }
 
@@ -135,9 +135,13 @@ function deltas(history, ranges) {
 
 (async () => {
   const rankId = await latestRankingId();
-  console.log(`Fetching national ranking ${rankId}...`);
-  const list = await ranking(rankId);
-  console.log(`  ${list.length} athletes`);
+  console.log(`Fetching national rankings ${rankId}...`);
+  const list = [];
+  for (const sex of ['M', 'F']) {
+    const l = await ranking(rankId, sex);
+    console.log(`  ${sex}: ${l.length} athletes`);
+    list.push(...l);
+  }
 
   const dir = path.join(path.dirname(path.resolve(OUT)), 'storico');
   fs.rmSync(dir, { recursive: true, force: true });
