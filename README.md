@@ -21,6 +21,11 @@ and women's table tennis rankings (about 8,900 men and 900 women), with data fro
 - **Punti / Posizione**: the chart metric, points or position in the national ranking (the men's or the women's one).
 - **Period** (this season, since last season, since three seasons ago, everything): the Δ columns
   show the change over that period. The buttons follow the season (from July 1) automatically.
+  Points are reset every July 1, so Δ Punti over more than one season mixes different seasons' scales;
+  Δ Pos. is comparable across seasons.
+- **Other columns:** **Forma** (form: points gained over the last 3 monthly rankings of the current
+  season), **V-P** and **% vitt.** (matches won-lost and win percentage this season) and
+  **Miglior pos.** (best position ever, with the year; the date is in the tooltip).
 
 ## Data updates
 
@@ -56,7 +61,8 @@ directly: serve the folder, e.g. `cd site && python3 -m http.server`, then open 
    and women's rankings, 100 athletes per page (the same list as `fpdf2/excel_classifica.php`, plus the athlete ID).
    It needs the `X-Requested-With: XMLHttpRequest` and `Referer` headers.
 3. `risultati/new_rank/dettaglioatleta_unica.php?ATLETA=<id>&ID_CLASS=<id>&ZU=1&AVVERSARIO=0`, one
-   per athlete: "Riepilogo Dati" (Settore Agonistico, Societa' appartenenza) and the "Storico
+   per athlete: "Riepilogo Dati" (Settore Agonistico, Societa' appartenenza, Record classifica, the season's
+   matches played/won/lost) and the "Storico
    Classifica" tab (date, position, points, category).
 
 The page embeds the athlete list with the Δ of each period already computed; each athlete's history

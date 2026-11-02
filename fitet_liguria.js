@@ -82,7 +82,7 @@ async function ranking(rankId, sex) {
   return [first, ...rest].flatMap(p => p.athletes).slice(0, LIMIT);
 }
 
-// --- 2. Athlete detail: clubs, sector label and ranking history ("Storico Classifica") ---
+// --- 2. Athlete detail: clubs, sector label, season matches, best position and ranking history ("Storico Classifica") ---
 
 // The value cell next to a label in the "Riepilogo Dati" table, one entry per line.
 function field(html, label) {
@@ -101,7 +101,15 @@ async function detail(id, rankId) {
     }
   }
   history.sort((a, b) => a[0].localeCompare(b[0]));
-  return { clubs: field(html, "Societa' appartenenza"), sett: field(html, 'Settore Agonistico')[0], history };
+  // "Riepilogo Dati" season table: the last columns are matches played, won, lost and the portal's %
+  // (not used: it is sometimes wrong). The protection column before them is not always there.
+  const summary = (html.split('id="fragment-1"')[1] || '').split('id="fragment-3"')[0];
+  const season = [...summary.matchAll(/<tr[^>]*>([^]*?)<\/tr>/gi)].map(r => cells(r[1])).find(c => c.length >= 7 && /^\d+$/.test(c[c.length - 2]));
+  const [won, lost] = season ? season.slice(-3, -1).map(Number) : [0, 0];
+  // "Record classifica": best position ever, e.g. "n.97 il 30/11/2017".
+  const rec = (field(html, 'Record classifica')[0] || '').match(/n\.\s*(\d+)\s+il\s+(\d{2})\/(\d{2})\/(\d{4})/);
+  return { clubs: field(html, "Societa' appartenenza"), sett: field(html, 'Settore Agonistico')[0], history,
+    won, lost, best: rec ? [+rec[1], `${rec[4]}-${rec[3]}-${rec[2]}`] : null };
 }
 
 // --- Periods (the page's buttons): this season, since last season, since 3 seasons ago, everything ---
@@ -131,6 +139,13 @@ function deltas(history, ranges) {
   });
 }
 
+// Form: change in points over the last 3 ranking updates (monthly), within the current season:
+// points are reset every July 1, so comparing across that date means nothing.
+function form(history, since) {
+  const h = history.filter(x => x[2] != null && x[0] >= since);
+  return h.length > 1 ? Math.round((h[h.length - 1][2] - h[Math.max(0, h.length - 4)][2]) * 100) / 100 : null;
+}
+
 // --- main ---
 
 (async () => {
@@ -155,11 +170,13 @@ function deltas(history, ranges) {
       p.clubs = d.clubs;
       if (d.sett) p.sett = d.sett;
       p.delta = d.history.length ? deltas(d.history, ranges) : null;
+      p.form = form(d.history, ranges[0].since);
+      p.won = d.won; p.lost = d.lost; p.best = d.best;
       if (d.history.length && d.history[d.history.length - 1][0] > rankDate) rankDate = d.history[d.history.length - 1][0];
       fs.writeFileSync(path.join(dir, `${p.id}.json`), JSON.stringify(d.history));
     } catch (err) {
       failed.push(`${p.name} (${err.message})`);
-      p.clubs = []; p.delta = null;
+      p.clubs = []; p.delta = null; p.form = null; p.won = p.lost = 0; p.best = null;
     }
     if (++done % 500 === 0) console.log(`  ${done}/${list.length}`);
   });

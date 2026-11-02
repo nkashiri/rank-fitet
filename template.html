@@ -69,6 +69,7 @@
   tbody tr:hover { background: var(--hover); }
   .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: middle; border: 1px solid var(--border); }
   .up { color: var(--up); } .down { color: var(--down); }
+  .muted { color: var(--muted); }
   .club { color: var(--muted); max-width: 260px; overflow: hidden; text-overflow: ellipsis; }
   .hint { color: var(--muted); font-size: 12px; margin: 6px 0 10px; }
   .tablefoot { display: flex; align-items: center; gap: 12px; margin-top: 10px; color: var(--muted); font-size: 12px; }
@@ -105,7 +106,8 @@
   </div>
 
   <div class="hint">Clicca su una riga per aggiungere/rimuovere l'atleta dal grafico. Δ = variazione nel periodo selezionato.
-    Posizione = classifica nazionale maschile o femminile.</div>
+    Posizione = classifica nazionale maschile o femminile. Forma = punti guadagnati nelle ultime 3 classifiche (mensili) della stagione.
+    V-P e % vittorie = partite della stagione in corso. Miglior pos. = record in classifica, con l'anno.</div>
   <div class="card tablewrap">
     <table>
       <thead><tr>
@@ -113,6 +115,8 @@
         <th data-k="club">Società</th><th data-k="reg">Regione</th><th data-k="cat" class="num">Cat.</th>
         <th data-k="pts" class="num">Punti</th><th data-k="pos" class="num">Pos.</th>
         <th data-k="dPts" class="num">Δ Punti</th><th data-k="dPos" class="num">Δ Pos.</th>
+        <th data-k="form" class="num">Forma</th><th data-k="won" class="num">V-P</th>
+        <th data-k="pct" class="num">% vitt.</th><th data-k="best" class="num">Miglior pos.</th>
       </tr></thead>
       <tbody id="rows"></tbody>
     </table>
@@ -144,7 +148,8 @@ const state = { metric: 'pts', range: 0, sort: 'pts', dir: -1, shown: PAGE, sele
   f: Object.fromEntries(Object.keys(FILTERS).map(k => [k, new Set()])) };
 const colorOf = new Map();
 
-const players = DATA.players.map(p => ({ ...p, club: p.clubs.join(' / '), year: +p.birth.slice(-4) || null }));
+const players = DATA.players.map(p => ({ ...p, club: p.clubs.join(' / '), year: +p.birth.slice(-4) || null,
+  pct: p.won + p.lost ? Math.round(p.won / (p.won + p.lost) * 100) : null, best: p.best?.[0] ?? null, bestDate: p.best?.[1] || '' }));
 const byId = new Map(players.map(p => [p.id, p]));
 
 $('sub').textContent = `Classifiche nazionali maschile e femminile al ${new Date(DATA.rankDate || DATA.generated).toLocaleDateString('it-IT')} · ` +
@@ -259,7 +264,10 @@ function renderTable() {
     <td class="num">${p.year ?? '–'}</td><td>${p.sex}</td><td>${esc(p.sett)}</td>
     <td class="club" title="${esc(p.club)}">${esc(p.club)}</td><td>${esc(p.reg)}</td><td class="num">${esc(p.cat)}</td>
     <td class="num">${s.pts ?? '–'}</td><td class="num">${s.pos ?? '–'}</td>
-    <td class="num">${delta(s.dPts)}</td><td class="num">${delta(s.dPos)}</td></tr>`).join('');
+    <td class="num">${delta(s.dPts)}</td><td class="num">${delta(s.dPos)}</td><td class="num">${delta(p.form)}</td>
+    <td class="num">${p.won}-${p.lost}</td><td class="num">${p.pct ?? '–'}</td>
+    <td class="num" title="${p.bestDate ? new Date(p.bestDate).toLocaleDateString('it-IT') : ''}">${p.best ?? '–'}${p.bestDate
+      ? ` <small class="muted">'${p.bestDate.slice(2, 4)}</small>` : ''}</td></tr>`).join('');
   $('count').textContent = rows.length > state.shown ? `${state.shown} di ${rows.length} atleti` : `${rows.length} atleti`;
   $('more').hidden = rows.length <= state.shown;
 }
@@ -341,7 +349,7 @@ $('rows').addEventListener('click', e => {
 });
 document.querySelectorAll('th[data-k]').forEach(th => th.addEventListener('click', () => {
   const k = th.dataset.k;
-  state.dir = state.sort === k ? -state.dir : (['name', 'sex', 'sett', 'club', 'reg', 'cat', 'pos'].includes(k) ? 1 : -1);
+  state.dir = state.sort === k ? -state.dir : (['name', 'sex', 'sett', 'club', 'reg', 'cat', 'pos', 'best'].includes(k) ? 1 : -1);
   state.sort = k; renderTable();
 }));
 for (const [id, field] of [['metric', 'metric'], ['range', 'range']]) {

@@ -21,6 +21,11 @@ nazionali maschile e femminile di tennistavolo (circa 8.900 uomini e 900 donne),
 - **Punti / Posizione**: metrica del grafico (la posizione è quella nella classifica nazionale, maschile o femminile).
 - **Periodo** (stagione in corso, dalla stagione scorsa, da tre stagioni fa, tutto): le colonne Δ
   indicano la variazione in quel periodo. I pulsanti seguono la stagione (dal 1° luglio) da soli.
+  I punti si azzerano ogni 1° luglio, quindi Δ Punti su più stagioni mescola scale diverse;
+  Δ Pos. è confrontabile tra stagioni.
+- **Altre colonne:** **Forma** (punti guadagnati nelle ultime 3 classifiche mensili della stagione
+  in corso), **V-P** e **% vitt.** (partite vinte-perse e percentuale di vittorie nella stagione) e
+  **Miglior pos.** (record in classifica, con l'anno; la data è nel tooltip).
 
 ## Aggiornamento dei dati
 
@@ -56,7 +61,8 @@ direttamente: servi la cartella, es. `cd site && python3 -m http.server`, poi ap
    generali maschile e femminile, 100 atleti per pagina (lo stesso elenco di `fpdf2/excel_classifica.php`, più
    l'ID dell'atleta). Servono le intestazioni `X-Requested-With: XMLHttpRequest` e `Referer`.
 3. `risultati/new_rank/dettaglioatleta_unica.php?ATLETA=<id>&ID_CLASS=<id>&ZU=1&AVVERSARIO=0`, uno
-   per atleta: "Riepilogo Dati" (Settore Agonistico, Societa' appartenenza) e la scheda "Storico
+   per atleta: "Riepilogo Dati" (Settore Agonistico, Societa' appartenenza, Record classifica, partite
+   giocate/vinte/perse nella stagione) e la scheda "Storico
    Classifica" (data, posizione, punti, categoria).
 
 La pagina contiene l'elenco degli atleti con i Δ di ogni periodo già calcolati; lo storico di ogni
