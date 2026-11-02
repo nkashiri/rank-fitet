@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FITET Liguria Progress</title>
+<title>FITET Ranking Progress</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
@@ -30,13 +30,31 @@
   h1 { font-size: 20px; margin: 0 0 2px; }
   .sub { color: var(--muted); font-size: 12px; margin-bottom: 16px; }
   .controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-  select, input, button { font: inherit; color: var(--text); background: var(--panel);
+  select, input, button, summary { font: inherit; color: var(--text); background: var(--panel);
     border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; }
   input[type=search] { flex: 1 1 180px; min-width: 0; }
   button { cursor: pointer; }
   .seg { display: inline-flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
   .seg button { border: 0; border-radius: 0; }
   .seg button.on { background: var(--accent); color: #fff; }
+  .ms { position: relative; }
+  .ms summary { list-style: none; cursor: pointer; white-space: nowrap; max-width: 280px;
+                overflow: hidden; text-overflow: ellipsis; }
+  .ms summary::-webkit-details-marker { display: none; }
+  .ms summary::after { content: " ▾"; color: var(--muted); }
+  .ms.active summary { border-color: var(--accent); color: var(--accent); }
+  .ms .panel { position: absolute; z-index: 10; top: calc(100% + 4px); left: 0; width: 320px; max-width: calc(100vw - 32px);
+               background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 8px;
+               box-shadow: 0 6px 24px rgba(0,0,0,.15); }
+  .ms .panel input[type=search] { width: 100%; margin-bottom: 6px; }
+  .ms label input { flex: none; margin: 0; }
+  .ms .opts { max-height: 300px; overflow-y: auto; }
+  .ms label { display: flex; gap: 6px; align-items: baseline; padding: 3px 4px; border-radius: 4px; cursor: pointer; }
+  .ms label:hover { background: var(--hover); }
+  .ms label span { flex: 1; }
+  .ms label small { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .ms .more { color: var(--muted); font-size: 12px; padding: 4px; }
+  .ms .reset { margin-top: 6px; font-size: 12px; padding: 3px 8px; }
   .card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
   .chart { height: 460px; margin-bottom: 16px; position: relative; }
   .empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
@@ -53,36 +71,29 @@
   .up { color: var(--up); } .down { color: var(--down); }
   .club { color: var(--muted); max-width: 260px; overflow: hidden; text-overflow: ellipsis; }
   .hint { color: var(--muted); font-size: 12px; margin: 6px 0 10px; }
-  .addform { margin-bottom: 16px; }
-  .addform[hidden] { display: none; }
-  .addform label { display: block; font-weight: 600; margin-bottom: 8px; }
-  #addform-row { display: flex; flex-wrap: wrap; gap: 8px; }
-  #addform-row input { flex: 1 1 220px; min-width: 0; }
-  #addform-row button { background: var(--accent); color: #fff; border-color: var(--accent); }
-  a.rm { color: var(--down); font-size: 12px; margin-left: 4px; }
+  .tablefoot { display: flex; align-items: center; gap: 12px; margin-top: 10px; color: var(--muted); font-size: 12px; }
+  .tablefoot button[hidden] { display: none; }
 </style>
 </head>
 <body>
 <main>
-  <h1>FITET Liguria: andamento classifica atleti</h1>
+  <h1>FITET: andamento classifica atleti</h1>
   <div class="sub" id="sub"></div>
 
-  <div class="controls">
-    <select id="champ"></select>
-    <select id="club"></select>
+  <div class="controls" id="filters">
+    <details class="ms" data-f="sett"><summary></summary><div class="panel"><div class="opts"></div></div></details>
+    <details class="ms" data-f="club"><summary></summary><div class="panel"><input type="search" placeholder="Cerca società..."><div class="opts"></div></div></details>
+    <details class="ms" data-f="reg"><summary></summary><div class="panel"><div class="opts"></div></div></details>
+    <details class="ms" data-f="cat"><summary></summary><div class="panel"><div class="opts"></div></div></details>
     <input type="search" id="q" placeholder="Cerca atleta...">
+    <button id="reset">Azzera filtri</button>
   </div>
   <div class="controls">
     <div class="seg" id="metric">
       <button data-v="pts" class="on">Punti</button>
       <button data-v="pos">Posizione</button>
     </div>
-    <div class="seg" id="range">
-      <button data-v="2026-07-01" class="on">Stagione 26/27</button>
-      <button data-v="2025-07-01">Da 25/26</button>
-      <button data-v="2023-07-01">Da 23/24</button>
-      <button data-v="">Tutto</button>
-    </div>
+    <div class="seg" id="range"></div>
     <button id="top">Top 8</button>
     <button id="clear">Deseleziona</button>
   </div>
@@ -92,28 +103,20 @@
     <canvas id="cv"></canvas>
   </div>
 
-  <form class="card addform" id="add" hidden>
-    <label for="newname">Aggiungi un atleta che non è nei campionati liguri:</label>
-    <div id="addform-row">
-      <input id="newname" placeholder="COGNOME NOME (es. ROSSI MARIO)" autocomplete="off">
-      <button type="submit">Aggiungi atleta</button>
-    </div>
-    <div class="hint">Si apre GitHub: clicca "Create" per confermare. La pagina viene aggiornata in circa 3 minuti.
-      In caso di omonimi aggiungi la data di nascita, es. ROSSI MARIO 01/02/2010.</div>
-  </form>
-
-  <div class="hint">Clicca su una riga per aggiungere/rimuovere l'atleta dal grafico. Δ = variazione nel periodo selezionato.</div>
+  <div class="hint">Clicca su una riga per aggiungere/rimuovere l'atleta dal grafico. Δ = variazione nel periodo selezionato.
+    Posizione = classifica nazionale.</div>
   <div class="card tablewrap">
     <table>
       <thead><tr>
-        <th data-k="name">Atleta</th><th data-k="club">Società</th><th data-k="champ">Camp.</th>
+        <th data-k="name">Atleta</th><th data-k="year" class="num">Anno</th><th data-k="sett">Settore</th>
+        <th data-k="club">Società</th><th data-k="reg">Regione</th><th data-k="cat" class="num">Cat.</th>
         <th data-k="pts" class="num">Punti</th><th data-k="pos" class="num">Pos.</th>
         <th data-k="dPts" class="num">Δ Punti</th><th data-k="dPos" class="num">Δ Pos.</th>
-        <th data-k="rec" class="num">V-P</th>
       </tr></thead>
       <tbody id="rows"></tbody>
     </table>
   </div>
+  <div class="tablefoot"><span id="count"></span><button id="more">Mostra altri</button></div>
   <div class="files" id="files" hidden>
     <button id="dl">Scarica lo script (.zip)</button>
     <span id="dlmsg"></span><br>
@@ -125,102 +128,153 @@
 const DATA = /*__DATA__*/null;
 const PALETTE = ['#2563eb','#dc2626','#16a34a','#d97706','#7c3aed','#0891b2','#db2777','#65a30d',
                  '#ea580c','#4f46e5','#0d9488','#be123c','#a16207','#9333ea','#0284c7','#c2410c'];
+const PAGE = 300;
 const $ = id => document.getElementById(id);
-const state = { metric: 'pts', since: '2026-07-01', sort: 'pts', dir: -1, selected: new Set() };
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+
+const FILTERS = {
+  sett: { label: 'Settore', all: 'tutti', get: p => [p.sett] },
+  club: { label: 'Società', all: 'tutte', get: p => p.clubs },
+  reg:  { label: 'Regione', all: 'tutte', get: p => [p.reg] },
+  cat:  { label: 'Categoria', all: 'tutte', get: p => [p.cat], show: v => `${v}ª`, num: true },
+};
+const state = { metric: 'pts', range: 0, sort: 'pts', dir: -1, shown: PAGE, selected: new Set(),
+  f: Object.fromEntries(Object.keys(FILTERS).map(k => [k, new Set()])) };
 const colorOf = new Map();
 
-const players = DATA.players.map((p, i) => ({ ...p, key: i,
-  champLabel: [...p.champs.map(c => c.title.replace(/^(MASCHILE|FEMMINILE)\s*-\s*/, '')), ...(p.extra ? ['Extra'] : [])].join(', ') }));
+const players = DATA.players.map(p => ({ ...p, club: p.clubs.join(' / '), year: +p.birth.slice(-4) || null }));
+const byId = new Map(players.map(p => [p.id, p]));
 
-// Adding/removing extra players goes through a GitHub issue, handled by .github/workflows/extra.yml.
-const issueUrl = (op, name) => `https://github.com/${DATA.repo}/issues/new?title=${encodeURIComponent(`${op}: ${name}`)}` +
-  `&body=${encodeURIComponent("Clicca \"Create\" / \"Submit new issue\" per confermare. La pagina sarà aggiornata in circa 3 minuti.")}`;
-if (DATA.repo) $('add').hidden = false;
-$('add').addEventListener('submit', e => {
-  e.preventDefault();
-  const name = $('newname').value.trim();
-  if (name) window.open(issueUrl('Aggiungi', name.toUpperCase()), '_blank', 'noopener');
-});
+$('sub').textContent = `Classifica nazionale maschile al ${new Date(DATA.rankDate || DATA.generated).toLocaleDateString('it-IT')} · ` +
+  `dati aggiornati il ${new Date(DATA.generated).toLocaleDateString('it-IT')} · ${players.length} atleti · fonte portale.fitet.org`;
+$('range').innerHTML = DATA.ranges.map((r, i) => `<button data-v="${i}"${i === 0 ? ' class="on"' : ''}>${esc(r.label)}</button>`).join('');
 
-$('sub').textContent = `Dati aggiornati al ${new Date(DATA.generated).toLocaleString('it-IT')} · ` +
-  `${players.length} atleti · fonte portale.fitet.org`;
+// --- Filters (state kept in the URL hash, so a filtered view can be bookmarked or shared) ---
 
-$('champ').innerHTML = '<option value="">Tutti i campionati</option>' +
-  DATA.championships.map(c => `<option value="${c.cam}">${c.title}</option>`).join('') +
-  (players.some(p => p.extra) ? '<option value="extra">Atleti extra</option>' : '');
-const clubs = [...new Set(players.map(p => p.club))].sort();
-$('club').innerHTML = '<option value="">Tutte le società</option>' +
-  clubs.map(c => `<option>${c.replace(/</g, '&lt;')}</option>`).join('');
-
-function stats(p) {
-  const h = p.history.filter(x => !state.since || x.d >= state.since);
-  const last = p.history[p.history.length - 1];
-  const first = h[0];
-  const rec = p.champs.reduce((a, c) => [a[0] + c.won, a[1] + c.lost], [0, 0]);
-  return {
-    pts: last ? last.pts : null, pos: last ? last.pos : null,
-    dPts: first && last ? last.pts - first.pts : null,
-    dPos: first && last ? first.pos - last.pos : null,  // positive = climbed
-    rec: rec[0] - rec[1], recText: `${rec[0]}-${rec[1]}`,
-  };
-}
-
-function visible() {
-  const cam = $('champ').value, club = $('club').value, q = $('q').value.trim().toUpperCase();
-  return players.filter(p => (!cam || (cam === 'extra' ? p.extra : p.champs.some(c => String(c.cam) === cam))) &&
-    (!club || p.club === club) && (!q || p.name.includes(q)));
-}
-
-function pickColor(p) {
-  if (!colorOf.has(p.key)) {
-    const used = new Set(colorOf.values());
-    colorOf.set(p.key, PALETTE.find(c => !used.has(c)) || PALETTE[colorOf.size % PALETTE.length]);
+function matches(p, skip) {
+  for (const [k, sel] of Object.entries(state.f)) {
+    if (k !== skip && sel.size && !FILTERS[k].get(p).some(v => sel.has(v))) return false;
   }
-  return colorOf.get(p.key);
+  const q = $('q').value.trim().toUpperCase();
+  return !q || p.name.includes(q);
+}
+const visible = () => players.filter(p => matches(p));
+
+// Options with the number of athletes each would add, given the other filters.
+function renderOptions(k) {
+  const el = document.querySelector(`.ms[data-f="${k}"]`), f = FILTERS[k], sel = state.f[k];
+  const counts = new Map();
+  for (const p of players) if (matches(p, k)) for (const v of f.get(p)) if (v) counts.set(v, (counts.get(v) || 0) + 1);
+  for (const v of sel) if (!counts.has(v)) counts.set(v, 0);
+  const term = (el.querySelector('.panel input')?.value || '').trim().toUpperCase();
+  const opts = [...counts].filter(([v]) => !term || v.toUpperCase().includes(term))
+    .sort((a, b) => (sel.has(b[0]) - sel.has(a[0])) || (f.num ? a[0] - b[0] : a[0].localeCompare(b[0])));
+  el.querySelector('.opts').innerHTML = opts.slice(0, 300).map(([v, n]) =>
+    `<label><input type="checkbox" value="${esc(v)}"${sel.has(v) ? ' checked' : ''}><span>${esc(f.show ? f.show(v) : v)}</span><small>${n}</small></label>`).join('') +
+    (opts.length > 300 ? `<div class="more">Altre ${opts.length - 300}: usa la ricerca.</div>` : '') +
+    (sel.size ? '<button class="reset" type="button">Tutti</button>' : '');
+}
+
+function renderSummaries() {
+  for (const [k, f] of Object.entries(FILTERS)) {
+    const el = document.querySelector(`.ms[data-f="${k}"]`), sel = [...state.f[k]];
+    el.classList.toggle('active', sel.length > 0);
+    el.querySelector('summary').textContent = `${f.label}: ${sel.length === 0 ? f.all
+      : sel.length === 1 ? (f.show ? f.show(sel[0]) : sel[0]) : `${sel.length} selezionati`}`;
+  }
+}
+
+function saveHash() {
+  const h = new URLSearchParams();
+  for (const [k, sel] of Object.entries(state.f)) if (sel.size) h.set(k, [...sel].join('|'));
+  if ($('q').value.trim()) h.set('q', $('q').value.trim());
+  if (state.selected.size) h.set('sel', [...state.selected].join(','));
+  if (state.metric !== 'pts') h.set('m', state.metric);
+  if (state.range) h.set('r', state.range);
+  history.replaceState(null, '', '#' + (h.toString() || 'tutti'));  // not empty, or the Liguria default comes back
+}
+
+function loadHash() {
+  const h = new URLSearchParams(location.hash.slice(1));
+  if (!location.hash && players.some(p => p.reg === 'Liguria')) h.set('reg', 'Liguria');
+  for (const k of Object.keys(FILTERS)) if (h.get(k)) state.f[k] = new Set(h.get(k).split('|'));
+  $('q').value = h.get('q') || '';
+  for (const id of (h.get('sel') || '').split(',')) if (byId.has(id)) { state.selected.add(id); pickColor(id); }
+  if (h.get('m') === 'pos') state.metric = 'pos';
+  state.range = Math.min(+h.get('r') || 0, DATA.ranges.length - 1);
+  for (const [id, v] of [['metric', state.metric], ['range', String(state.range)]]) {
+    $(id).querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
+  }
+}
+
+// --- Ranking histories: one file per athlete, fetched when first shown in the chart ---
+
+const histories = new Map();
+function loadHistory(id) {
+  if (!histories.has(id)) {
+    histories.set(id, fetch(`storico/${id}.json`).then(r => r.ok ? r.json() : []).catch(() => []));
+  }
+  return histories.get(id);
+}
+
+function pickColor(id) {
+  if (!colorOf.has(id)) {
+    const used = new Set(colorOf.values());
+    colorOf.set(id, PALETTE.find(c => !used.has(c)) || PALETTE[colorOf.size % PALETTE.length]);
+  }
 }
 
 function toggle(p) {
-  if (state.selected.has(p.key)) { state.selected.delete(p.key); colorOf.delete(p.key); }
-  else { state.selected.add(p.key); pickColor(p); }
+  if (state.selected.has(p.id)) { state.selected.delete(p.id); colorOf.delete(p.id); }
+  else { state.selected.add(p.id); pickColor(p.id); }
   render();
 }
 
 function topN(n = 8) {
   state.selected.clear(); colorOf.clear();
-  visible().filter(p => p.history.length).sort((a, b) => (stats(b).pts || 0) - (stats(a).pts || 0))
-    .slice(0, n).forEach(p => { state.selected.add(p.key); pickColor(p); });
+  visible().filter(p => p.delta).sort((a, b) => b.pts - a.pts)
+    .slice(0, n).forEach(p => { state.selected.add(p.id); pickColor(p.id); });
   render();
+}
+
+function stats(p) {
+  const d = p.delta ? p.delta[state.range] : [null, null];
+  return { pts: p.pts, pos: p.pos, dPts: d[0], dPos: d[1] };
 }
 
 function renderTable() {
   const rows = visible().map(p => ({ p, s: stats(p) }));
-  const k = state.sort;
+  const k = state.sort, text = ['name', 'sett', 'club', 'reg'].includes(k);
+  const val = r => k in r.s ? r.s[k] : k === 'cat' ? +r.p.cat : r.p[k];
   rows.sort((a, b) => {
-    const va = k === 'name' || k === 'club' ? a.p[k] : k === 'champ' ? a.p.champLabel : a.s[k];
-    const vb = k === 'name' || k === 'club' ? b.p[k] : k === 'champ' ? b.p.champLabel : b.s[k];
-    if (va == null) return 1; if (vb == null) return -1;
-    return (va < vb ? -1 : va > vb ? 1 : 0) * state.dir;
+    const va = val(a), vb = val(b);
+    if (va == null || va === '') return 1; if (vb == null || vb === '') return -1;
+    return (text ? va.localeCompare(vb) : va - vb) * state.dir;
   });
   const delta = v => v == null ? '–' : `<span class="${v > 0 ? 'up' : v < 0 ? 'down' : ''}">${v > 0 ? '+' : ''}${v}</span>`;
-  const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-  $('rows').innerHTML = rows.map(({ p, s }) => `<tr data-k="${p.key}">
-    <td><span class="swatch" style="background:${state.selected.has(p.key) ? colorOf.get(p.key) : 'transparent'}"></span>${esc(p.name)}</td>
-    <td class="club" title="${esc(p.club)}">${esc(p.club)}</td><td>${esc(p.champLabel)}${p.extra && DATA.repo
-      ? ` <a class="rm" href="${issueUrl('Rimuovi', p.name)}" target="_blank" rel="noopener">rimuovi</a>` : ''}</td>
+  $('rows').innerHTML = rows.slice(0, state.shown).map(({ p, s }) => `<tr data-k="${p.id}">
+    <td><span class="swatch" style="background:${state.selected.has(p.id) ? colorOf.get(p.id) : 'transparent'}"></span>${esc(p.name)}</td>
+    <td class="num">${p.year ?? '–'}</td><td>${esc(p.sett)}</td>
+    <td class="club" title="${esc(p.club)}">${esc(p.club)}</td><td>${esc(p.reg)}</td><td class="num">${esc(p.cat)}</td>
     <td class="num">${s.pts ?? '–'}</td><td class="num">${s.pos ?? '–'}</td>
-    <td class="num">${delta(s.dPts)}</td><td class="num">${delta(s.dPos)}</td>
-    <td class="num">${s.recText}</td></tr>`).join('');
+    <td class="num">${delta(s.dPts)}</td><td class="num">${delta(s.dPos)}</td></tr>`).join('');
+  $('count').textContent = rows.length > state.shown ? `${state.shown} di ${rows.length} atleti` : `${rows.length} atleti`;
+  $('more').hidden = rows.length <= state.shown;
 }
 
-let chart;
-function renderChart() {
+let chart, chartRun = 0;
+async function renderChart() {
+  const run = ++chartRun;
+  const ids = [...state.selected];
+  const hs = await Promise.all(ids.map(loadHistory));
+  if (run !== chartRun) return;  // a newer render started while the histories were loading
   const css = getComputedStyle(document.documentElement);
   const muted = css.getPropertyValue('--muted').trim(), grid = css.getPropertyValue('--border').trim();
-  const datasets = [...state.selected].map(k => players[k]).map(p => ({
-    label: p.name,
-    data: p.history.filter(x => !state.since || x.d >= state.since)
-      .map(x => ({ x: Date.parse(x.d), y: x[state.metric] })),
-    borderColor: colorOf.get(p.key), backgroundColor: colorOf.get(p.key),
+  const since = DATA.ranges[state.range].since, col = state.metric === 'pts' ? 2 : 1;
+  const datasets = ids.map((id, i) => ({
+    label: byId.get(id).name,
+    data: hs[i].filter(x => !since || x[0] >= since).map(x => ({ x: Date.parse(x[0]), y: x[col] })),
+    borderColor: colorOf.get(id), backgroundColor: colorOf.get(id),
     borderWidth: 2, pointRadius: 3, tension: 0.15,
   }));
   if (chart) { chart.destroy(); chart = null; }
@@ -249,31 +303,58 @@ function renderChart() {
   });
 }
 
-function render() { renderTable(); renderChart(); }
+function render() { renderSummaries(); renderTable(); renderChart(); saveHash(); }
+function refilter() { state.shown = PAGE; renderSummaries(); renderTable(); saveHash(); }
+
+document.querySelectorAll('.ms').forEach(el => {
+  const k = el.dataset.f;
+  el.addEventListener('toggle', () => {
+    if (!el.open) return;
+    document.querySelectorAll('.ms[open]').forEach(o => { if (o !== el) o.open = false; });
+    renderOptions(k);
+    el.querySelector('.panel input')?.focus();
+  });
+  el.querySelector('.panel input')?.addEventListener('input', () => renderOptions(k));
+  el.querySelector('.opts').addEventListener('change', e => {
+    const v = e.target.value;
+    if (e.target.checked) state.f[k].add(v); else state.f[k].delete(v);
+    refilter();
+  });
+  el.querySelector('.opts').addEventListener('click', e => {
+    if (!e.target.classList.contains('reset')) return;
+    state.f[k].clear(); renderOptions(k); refilter();
+  });
+});
+document.addEventListener('click', e => {
+  document.querySelectorAll('.ms[open]').forEach(o => { if (!e.composedPath().includes(o)) o.open = false; });
+});
+$('reset').addEventListener('click', () => {
+  for (const sel of Object.values(state.f)) sel.clear();
+  $('q').value = ''; refilter();
+});
+$('more').addEventListener('click', () => { state.shown += PAGE; renderTable(); });
 
 $('rows').addEventListener('click', e => {
-  if (e.target.closest('a')) return;
-  const tr = e.target.closest('tr'); if (tr) toggle(players[+tr.dataset.k]);
+  const tr = e.target.closest('tr'); if (tr) toggle(byId.get(tr.dataset.k));
 });
 document.querySelectorAll('th[data-k]').forEach(th => th.addEventListener('click', () => {
   const k = th.dataset.k;
-  state.dir = state.sort === k ? -state.dir : (k === 'name' || k === 'club' || k === 'champ' || k === 'pos' ? 1 : -1);
+  state.dir = state.sort === k ? -state.dir : (['name', 'sett', 'club', 'reg', 'cat', 'pos'].includes(k) ? 1 : -1);
   state.sort = k; renderTable();
 }));
-for (const [id, field] of [['metric', 'metric'], ['range', 'since']]) {
+for (const [id, field] of [['metric', 'metric'], ['range', 'range']]) {
   $(id).addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     $(id).querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
-    state[field] = b.dataset.v; render();
+    state[field] = field === 'range' ? +b.dataset.v : b.dataset.v; render();
   });
 }
-$('champ').addEventListener('change', renderTable);
-$('club').addEventListener('change', renderTable);
-$('q').addEventListener('input', renderTable);
+$('q').addEventListener('input', refilter);
 $('top').addEventListener('click', () => topN());
 $('clear').addEventListener('click', () => { state.selected.clear(); colorOf.clear(); render(); });
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', renderChart);
 
+loadHash();
 render();
 
 // Download button, only when hosted on claude.ai (the zip is published next to the page).

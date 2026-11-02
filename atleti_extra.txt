@@ -1,3 +1,0 @@
-# Atleti da aggiungere oltre a quelli dei campionati liguri.
-# Una riga per atleta: COGNOME NOME, con la data di nascita tra parentesi in caso di omonimi.
-# Si può modificare a mano, oppure dal pulsante "Aggiungi atleta" della pagina.
