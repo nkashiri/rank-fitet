@@ -107,7 +107,7 @@
 
   <div class="hint">Clicca su una riga per aggiungere/rimuovere l'atleta dal grafico. Δ = variazione nel periodo selezionato.
     Posizione = classifica nazionale maschile o femminile. Forma = punti guadagnati nelle ultime 3 classifiche (mensili) della stagione.
-    V-P e % vittorie = partite della stagione in corso. Miglior pos. = record in classifica, con l'anno.</div>
+    % vitt. = partite vinte nella stagione in corso (vinte e perse nel tooltip). Miglior pos. = record in classifica, con l'anno.</div>
   <div class="card tablewrap">
     <table>
       <thead><tr>
@@ -115,8 +115,7 @@
         <th data-k="club">Società</th><th data-k="reg">Regione</th><th data-k="cat" class="num">Cat.</th>
         <th data-k="pts" class="num">Punti</th><th data-k="pos" class="num">Pos.</th>
         <th data-k="dPts" class="num">Δ Punti</th><th data-k="dPos" class="num">Δ Pos.</th>
-        <th data-k="form" class="num">Forma</th><th data-k="won" class="num">V-P</th>
-        <th data-k="pct" class="num">% vitt.</th><th data-k="best" class="num">Miglior pos.</th>
+        <th data-k="form" class="num">Forma</th><th data-k="pct" class="num">% vitt.</th><th data-k="best" class="num">Miglior pos.</th>
       </tr></thead>
       <tbody id="rows"></tbody>
     </table>
@@ -265,7 +264,7 @@ function renderTable() {
     <td class="club" title="${esc(p.club)}">${esc(p.club)}</td><td>${esc(p.reg)}</td><td class="num">${esc(p.cat)}</td>
     <td class="num">${s.pts ?? '–'}</td><td class="num">${s.pos ?? '–'}</td>
     <td class="num">${delta(s.dPts)}</td><td class="num">${delta(s.dPos)}</td><td class="num">${delta(p.form)}</td>
-    <td class="num">${p.won}-${p.lost}</td><td class="num">${p.pct ?? '–'}</td>
+    <td class="num" title="${p.won} vinte, ${p.lost} perse">${p.pct ?? '–'}</td>
     <td class="num" title="${p.bestDate ? new Date(p.bestDate).toLocaleDateString('it-IT') : ''}">${p.best ?? '–'}${p.bestDate
       ? ` <small class="muted">'${p.bestDate.slice(2, 4)}</small>` : ''}</td></tr>`).join('');
   $('count').textContent = rows.length > state.shown ? `${state.shown} di ${rows.length} atleti` : `${rows.length} atleti`;

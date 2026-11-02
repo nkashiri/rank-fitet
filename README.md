@@ -24,7 +24,7 @@ and women's table tennis rankings (about 8,900 men and 900 women), with data fro
   Points are reset every July 1, so Δ Punti over more than one season mixes different seasons' scales;
   Δ Pos. is comparable across seasons.
 - **Other columns:** **Forma** (form: points gained over the last 3 monthly rankings of the current
-  season), **V-P** and **% vitt.** (matches won-lost and win percentage this season) and
+  season), **% vitt.** (win percentage this season; matches won and lost in the tooltip) and
   **Miglior pos.** (best position ever, with the year; the date is in the tooltip).
 
 ## Data updates
