@@ -2,3 +2,4 @@
 # Una riga per atleta: COGNOME NOME, con la data di nascita tra parentesi in caso di omonimi.
 # Si può modificare a mano, oppure dal pulsante "Aggiungi atleta" della pagina.
 BERTOLINI CLAUDIA (26/11/2012)
+GROSSI LUCA (01/08/1973)
