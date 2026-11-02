@@ -57,6 +57,11 @@
   .ms .reset { margin-top: 6px; font-size: 12px; padding: 3px 8px; }
   .card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
   .chart { height: 460px; margin-bottom: 16px; position: relative; }
+  .dist { margin-bottom: 16px; }
+  .dist h2 { font-size: 14px; margin: 0 0 2px; }
+  .dist .plot { height: 220px; position: relative; }
+  .dist ul { list-style: none; margin: 8px 0 0; padding: 0; font-size: 12px; color: var(--muted);
+             display: flex; flex-wrap: wrap; gap: 4px 16px; }
   .empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
            padding: 16px; text-align: center; color: var(--muted); }
   .empty[hidden] { display: none; }
@@ -103,6 +108,13 @@
   <div class="card chart">
     <div class="empty" id="empty">Seleziona uno o più atleti dalla tabella qui sotto, oppure usa "Top 8".</div>
     <canvas id="cv"></canvas>
+  </div>
+
+  <div class="card dist">
+    <h2>Distribuzione dei punti</h2>
+    <div class="hint" id="distsub"></div>
+    <div class="plot"><canvas id="hv"></canvas></div>
+    <ul id="distsel"></ul>
   </div>
 
   <div class="hint">Clicca su una riga per aggiungere/rimuovere l'atleta dal grafico. Δ = variazione nel periodo selezionato.
@@ -312,8 +324,69 @@ async function renderChart() {
   });
 }
 
-function render() { renderSummaries(); renderTable(); renderChart(); saveHash(); }
-function refilter() { state.shown = PAGE; renderSummaries(); renderTable(); saveHash(); }
+// --- Points distribution of the filtered athletes, with a line for each selected athlete ---
+
+// Draws the selected athletes' lines: x is a fractional bar index, set in renderHist.
+const markers = { id: 'markers', afterDatasetsDraw(c) {
+  const { ctx, chartArea: a, scales: { x } } = c;
+  for (const m of c.options.plugins.markers.lines) {
+    const px = x.getPixelForValue(m.at);
+    ctx.save(); ctx.strokeStyle = m.color; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(px, a.top); ctx.lineTo(px, a.bottom); ctx.stroke(); ctx.restore();
+  }
+} };
+
+let hist;
+function renderHist() {
+  const group = visible().map(p => p.pts).sort((a, b) => a - b);
+  if (hist) { hist.destroy(); hist = null; }
+  $('distsel').innerHTML = '';
+  if (!group.length) { $('distsub').textContent = 'Nessun atleta con i filtri scelti.'; return; }
+  const median = group[Math.floor(group.length / 2)];
+  $('distsub').textContent = `${group.length} atleti filtrati, punti attuali · mediana ${median} · ` +
+    `da ${group[0]} a ${group[group.length - 1]}`;
+  // Bar width: the smallest round step that keeps it within 40 bars.
+  const lo = group[0], span = group[group.length - 1] - lo;
+  const step = [50, 100, 200, 250, 500, 1000, 2000].find(w => span / w < 40) || 2000;
+  const start = Math.floor(lo / step) * step;
+  const counts = new Array(Math.floor((group[group.length - 1] - start) / step) + 1).fill(0);
+  for (const v of group) counts[Math.floor((v - start) / step)]++;
+
+  const sel = [...state.selected].map(id => byId.get(id));
+  $('distsel').innerHTML = sel.map(p => {
+    const below = group.filter(v => v < p.pts).length, above = group.filter(v => v > p.pts).length;
+    return `<li><span class="swatch" style="background:${colorOf.get(p.id)}"></span>${esc(p.name)}: ${p.pts} punti · ` +
+      `${above + 1}° su ${group.length} · meglio del ${Math.min(99, Math.round(below / group.length * 100))}%</li>`;
+  }).join('');
+
+  const css = getComputedStyle(document.documentElement);
+  const muted = css.getPropertyValue('--muted').trim(), grid = css.getPropertyValue('--border').trim();
+  hist = new Chart($('hv'), {
+    type: 'bar', plugins: [markers],
+    data: { labels: counts.map((_, i) => start + i * step),
+      datasets: [{ data: counts, backgroundColor: css.getPropertyValue('--accent').trim() + '66',
+        barPercentage: 1, categoryPercentage: 1 }] },
+    options: {
+      maintainAspectRatio: false, animation: false,
+      plugins: {
+        legend: { display: false },
+        markers: { lines: sel.map(p => ({ color: colorOf.get(p.id), at: (p.pts - start) / step - 0.5 })) },
+        tooltip: { callbacks: {
+          title: items => `${items[0].label}–${+items[0].label + step - 1} punti`,
+          label: i => `${i.parsed.y} atleti`,
+        } },
+      },
+      scales: {
+        x: { ticks: { color: muted, maxTicksLimit: 10 }, grid: { display: false } },
+        y: { ticks: { color: muted, precision: 0 }, grid: { color: grid },
+             title: { display: true, color: muted, text: 'Atleti' } },
+      },
+    },
+  });
+}
+
+function render() { renderSummaries(); renderTable(); renderChart(); renderHist(); saveHash(); }
+function refilter() { state.shown = PAGE; renderSummaries(); renderTable(); renderHist(); saveHash(); }
 
 document.querySelectorAll('.ms').forEach(el => {
   const k = el.dataset.f;
@@ -361,7 +434,7 @@ for (const [id, field] of [['metric', 'metric'], ['range', 'range']]) {
 $('q').addEventListener('input', refilter);
 $('top').addEventListener('click', () => topN());
 $('clear').addEventListener('click', () => { state.selected.clear(); colorOf.clear(); render(); });
-matchMedia('(prefers-color-scheme: dark)').addEventListener('change', renderChart);
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { renderChart(); renderHist(); });
 
 loadHash();
 render();

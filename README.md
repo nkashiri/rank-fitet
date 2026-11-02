@@ -23,6 +23,8 @@ and women's table tennis rankings (about 8,900 men and 900 women), with data fro
   show the change over that period. The buttons follow the season (from July 1) automatically.
   Points are reset every July 1, so Δ Punti over more than one season mixes different seasons' scales;
   Δ Pos. is comparable across seasons.
+- **Distribuzione dei punti:** a histogram of the current points of the filtered athletes; a colored
+  line marks each selected athlete, listed below with their rank and percentile in the group.
 - **Other columns:** **% vitt.** (win percentage this season; matches won and lost in the tooltip) and
   **Miglior pos.** (best position ever, with the year; the date is in the tooltip).
 
