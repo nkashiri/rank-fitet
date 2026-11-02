@@ -53,6 +53,13 @@
   .up { color: var(--up); } .down { color: var(--down); }
   .club { color: var(--muted); max-width: 260px; overflow: hidden; text-overflow: ellipsis; }
   .hint { color: var(--muted); font-size: 12px; margin: 6px 0 10px; }
+  .addform { margin-bottom: 16px; }
+  .addform[hidden] { display: none; }
+  .addform label { display: block; font-weight: 600; margin-bottom: 8px; }
+  #addform-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  #addform-row input { flex: 1 1 220px; min-width: 0; }
+  #addform-row button { background: var(--accent); color: #fff; border-color: var(--accent); }
+  a.rm { color: var(--down); font-size: 12px; margin-left: 4px; }
 </style>
 </head>
 <body>
@@ -85,6 +92,16 @@
     <canvas id="cv"></canvas>
   </div>
 
+  <form class="card addform" id="add" hidden>
+    <label for="newname">Aggiungi un atleta che non è nei campionati liguri:</label>
+    <div id="addform-row">
+      <input id="newname" placeholder="COGNOME NOME (es. ROSSI MARIO)" autocomplete="off">
+      <button type="submit">Aggiungi atleta</button>
+    </div>
+    <div class="hint">Si apre GitHub: clicca "Create" per confermare. La pagina viene aggiornata in circa 3 minuti.
+      In caso di omonimi aggiungi la data di nascita, es. ROSSI MARIO 01/02/2010.</div>
+  </form>
+
   <div class="hint">Clicca su una riga per aggiungere/rimuovere l'atleta dal grafico. Δ = variazione nel periodo selezionato.</div>
   <div class="card tablewrap">
     <table>
@@ -113,13 +130,24 @@ const state = { metric: 'pts', since: '2026-07-01', sort: 'pts', dir: -1, select
 const colorOf = new Map();
 
 const players = DATA.players.map((p, i) => ({ ...p, key: i,
-  champLabel: p.champs.map(c => c.title.replace(/^(MASCHILE|FEMMINILE)\s*-\s*/, '')).join(', ') }));
+  champLabel: [...p.champs.map(c => c.title.replace(/^(MASCHILE|FEMMINILE)\s*-\s*/, '')), ...(p.extra ? ['Extra'] : [])].join(', ') }));
+
+// Adding/removing extra players goes through a GitHub issue, handled by .github/workflows/extra.yml.
+const issueUrl = (op, name) => `https://github.com/${DATA.repo}/issues/new?title=${encodeURIComponent(`${op}: ${name}`)}` +
+  `&body=${encodeURIComponent("Clicca \"Create\" / \"Submit new issue\" per confermare. La pagina sarà aggiornata in circa 3 minuti.")}`;
+if (DATA.repo) $('add').hidden = false;
+$('add').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('newname').value.trim();
+  if (name) window.open(issueUrl('Aggiungi', name.toUpperCase()), '_blank', 'noopener');
+});
 
 $('sub').textContent = `Dati aggiornati al ${new Date(DATA.generated).toLocaleString('it-IT')} · ` +
   `${players.length} atleti · fonte portale.fitet.org`;
 
 $('champ').innerHTML = '<option value="">Tutti i campionati</option>' +
-  DATA.championships.map(c => `<option value="${c.cam}">${c.title}</option>`).join('');
+  DATA.championships.map(c => `<option value="${c.cam}">${c.title}</option>`).join('') +
+  (players.some(p => p.extra) ? '<option value="extra">Atleti extra</option>' : '');
 const clubs = [...new Set(players.map(p => p.club))].sort();
 $('club').innerHTML = '<option value="">Tutte le società</option>' +
   clubs.map(c => `<option>${c.replace(/</g, '&lt;')}</option>`).join('');
@@ -139,7 +167,7 @@ function stats(p) {
 
 function visible() {
   const cam = $('champ').value, club = $('club').value, q = $('q').value.trim().toUpperCase();
-  return players.filter(p => (!cam || p.champs.some(c => String(c.cam) === cam)) &&
+  return players.filter(p => (!cam || (cam === 'extra' ? p.extra : p.champs.some(c => String(c.cam) === cam))) &&
     (!club || p.club === club) && (!q || p.name.includes(q)));
 }
 
@@ -177,7 +205,8 @@ function renderTable() {
   const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
   $('rows').innerHTML = rows.map(({ p, s }) => `<tr data-k="${p.key}">
     <td><span class="swatch" style="background:${state.selected.has(p.key) ? colorOf.get(p.key) : 'transparent'}"></span>${esc(p.name)}</td>
-    <td class="club" title="${esc(p.club)}">${esc(p.club)}</td><td>${esc(p.champLabel)}</td>
+    <td class="club" title="${esc(p.club)}">${esc(p.club)}</td><td>${esc(p.champLabel)}${p.extra && DATA.repo
+      ? ` <a class="rm" href="${issueUrl('Rimuovi', p.name)}" target="_blank" rel="noopener">rimuovi</a>` : ''}</td>
     <td class="num">${s.pts ?? '–'}</td><td class="num">${s.pos ?? '–'}</td>
     <td class="num">${delta(s.dPts)}</td><td class="num">${delta(s.dPos)}</td>
     <td class="num">${s.recText}</td></tr>`).join('');
@@ -223,6 +252,7 @@ function renderChart() {
 function render() { renderTable(); renderChart(); }
 
 $('rows').addEventListener('click', e => {
+  if (e.target.closest('a')) return;
   const tr = e.target.closest('tr'); if (tr) toggle(players[+tr.dataset.k]);
 });
 document.querySelectorAll('th[data-k]').forEach(th => th.addEventListener('click', () => {
