@@ -9,8 +9,8 @@ and women's table tennis rankings (about 8,900 men and 900 women), with data fro
 
 ## Using the page
 
-- **Filters:** Sesso (gender: both by default, or only Maschile / Femminile), Settore (sector: Seniores, Master, Giovanili, ...), Società (club), Regione (region)
-  and Categoria (category). Each one can take several values; the number next to each value is how
+- **Filters:** Sesso (gender: both by default, or only Maschile / Femminile), Settore (sector: Seniores, Master, Giovanili, ...), Società (club), Regione (region),
+  Categoria (category) and Elenco (national rankings or extra athletes). Each one can take several values; the number next to each value is how
   many athletes it would add given the other filters. The Società list has a search box.
   With no filter chosen the table lists everyone (300 rows at a time: **Mostra altri** for more).
 - On the first visit the page opens on Regione = Liguria; **Azzera filtri** clears all filters.
@@ -33,24 +33,46 @@ and women's table tennis rankings (about 8,900 men and 900 women), with data fro
 - **Automatic:** every Monday at 06:00 UTC (07:00 or 08:00 in Italy).
 - **Manual:** [Actions](https://github.com/nkashiri/rank-fitet/actions) tab →
   **Aggiorna classifica** → **Run workflow**. The page is updated in about 3 minutes.
-- **On code changes:** pushing a change to `fitet_liguria.js` or `template.html` also updates the page.
+- **On code changes:** pushing a change to `fitet.js`, `template.html` or `atleti_extra.txt` also updates the page.
 - Each update also saves `index.html` (the athlete list, without the histories) in the repository:
   the "Aggiorna dati ..." commit history keeps the previous versions.
 
+## Extra athletes (not in the national rankings)
+
+Foreign players ("Atleta Straniero") have points and a ranking history but no national position, so they
+are not in the rankings the page is built from. Such athletes are listed in `atleti_extra.txt`, one per
+line: `SURNAME NAME (dd/mm/yyyy)`. In the table they have the "extra" label and no position.
+
+- **Add:** on the page, type the name in "Aggiungi un atleta" and click **Aggiungi atleta**;
+  GitHub opens with the request already filled in: click **Create**.
+  After about 3 minutes the athlete appears in the table.
+- **Remove:** click the red **×** next to "extra" in the athlete's row, then **Create**.
+- The reply in the issue says whether it worked. If several athletes share the name, it
+  lists their birth dates: try again with `SURNAME NAME dd/mm/yyyy`.
+- You can also edit `atleti_extra.txt` directly on GitHub (pencil icon → Commit): the page is updated.
+- Only the repository owner and collaborators can add or remove athletes;
+  requests from other users are ignored.
+
 ## Files
 
-- `fitet_liguria.js`: downloads the data and generates the page.
+- `fitet.js`: downloads the data and generates the page.
 - `template.html`: the page (chart and table) the data is inserted into.
+- `atleti_extra.txt`: extra athletes.
 - `.github/workflows/update.yml`: weekly update (and on code changes) and publishing to GitHub Pages.
+- `.github/workflows/extra.yml`: handles the "Aggiungi:" / "Rimuovi:" requests opened from the page.
 - `index.html`: the latest generated page (written by the workflow, don't edit it by hand).
 
 ## Running locally (Node 18+, no dependencies)
 
 ```
-node fitet_liguria.js                        # writes site/index.html and site/storico/
-node fitet_liguria.js out/index.html         # or another folder
-node fitet_liguria.js --limit 200            # only the top 200 men and 200 women (quick test)
+node fitet.js                        # writes site/index.html and site/storico/
+node fitet.js out/index.html         # or another folder
+node fitet.js --limit 200            # only the top 200 men and 200 women (quick test)
+node fitet.js --add "ROSSI MARIO"    # adds an athlete to atleti_extra.txt
+node fitet.js --remove "ROSSI MARIO" # removes them
 ```
+
+In a local copy the "Aggiungi atleta" form doesn't appear (it needs GitHub).
 
 The page loads the histories from `storico/`, which a browser doesn't allow from a file opened
 directly: serve the folder, e.g. `cd site && python3 -m http.server`, then open http://localhost:8000.

@@ -1,0 +1,58 @@
+name: Atleti extra
+
+# Issues titled "Aggiungi: COGNOME NOME" or "Rimuovi: COGNOME NOME" (opened from the page)
+# edit atleti_extra.txt and regenerate the page. Only the owner and collaborators can do it.
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+  actions: write
+
+concurrency:
+  group: extra
+  cancel-in-progress: false
+
+jobs:
+  edit:
+    if: >-
+      contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association) &&
+      (startsWith(github.event.issue.title, 'Aggiungi:') || startsWith(github.event.issue.title, 'Rimuovi:'))
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TITLE: ${{ github.event.issue.title }}
+      ISSUE: ${{ github.event.issue.number }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Aggiorna atleti_extra.txt
+        id: edit
+        run: |
+          if [[ "${TITLE,,}" == aggiungi:* ]]; then op=--add; else op=--remove; fi
+          if node fitet.js "$op" "${TITLE#*:}" > msg.txt; then echo "changed=true" >> "$GITHUB_OUTPUT"; fi
+          [ -s msg.txt ] || echo "Errore durante la ricerca dell'atleta: riprova più tardi." > msg.txt
+          cat msg.txt
+
+      - name: Salva e rigenera la pagina
+        if: steps.edit.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add atleti_extra.txt
+          git commit -m "$TITLE"
+          git pull --rebase -q
+          git push
+          gh workflow run update.yml --ref main
+
+      - name: Rispondi e chiudi
+        if: always()
+        run: |
+          [ -s msg.txt ] || echo "Errore: controlla i dettagli nella scheda Actions." > msg.txt
+          gh issue comment "$ISSUE" --body-file msg.txt
+          gh issue close "$ISSUE"

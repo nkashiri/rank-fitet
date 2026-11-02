@@ -9,7 +9,8 @@ nazionali maschile e femminile di tennistavolo (circa 8.900 uomini e 900 donne),
 
 ## Uso della pagina
 
-- **Filtri:** Sesso (di default entrambi, oppure solo Maschile / Femminile), Settore (Seniores, Master, Giovanili, ...), Società, Regione e Categoria. Ognuno
+- **Filtri:** Sesso (di default entrambi, oppure solo Maschile / Femminile), Settore (Seniores, Master, Giovanili, ...), Società, Regione, Categoria ed
+  Elenco (classifiche nazionali o atleti extra). Ognuno
   accetta più valori; il numero accanto a ogni valore indica quanti atleti aggiungerebbe con gli
   altri filtri. L'elenco delle società ha una casella di ricerca.
   Senza filtri la tabella elenca tutti (300 righe alla volta: **Mostra altri** per le successive).
@@ -33,24 +34,46 @@ nazionali maschile e femminile di tennistavolo (circa 8.900 uomini e 900 donne),
 - **Automatico:** ogni lunedì alle 06:00 UTC (07:00 o 08:00 in Italia).
 - **Manuale:** scheda [Actions](https://github.com/nkashiri/rank-fitet/actions) →
   **Aggiorna classifica** → **Run workflow**. La pagina è aggiornata in circa 3 minuti.
-- **Modifiche al codice:** anche un push che modifica `fitet_liguria.js` o `template.html` aggiorna la pagina.
+- **Modifiche al codice:** anche un push che modifica `fitet.js`, `template.html` o `atleti_extra.txt` aggiorna la pagina.
 - Ogni aggiornamento salva anche `index.html` (l'elenco degli atleti, senza gli storici) nel
   repository: la cronologia dei commit "Aggiorna dati ..." conserva le versioni precedenti.
 
+## Atleti extra (non presenti nelle classifiche nazionali)
+
+Gli stranieri ("Atleta Straniero") hanno punti e storico ma nessuna posizione nazionale, quindi non sono
+nelle classifiche da cui è costruita la pagina. Questi atleti sono elencati in `atleti_extra.txt`, uno per
+riga: `COGNOME NOME (gg/mm/aaaa)`. In tabella hanno l'etichetta "extra" e nessuna posizione.
+
+- **Aggiungere:** nella pagina, scrivi il nome in "Aggiungi un atleta" e clicca
+  **Aggiungi atleta**; si apre GitHub con la richiesta già compilata: clicca **Create**.
+  Dopo circa 3 minuti l'atleta compare in tabella.
+- **Rimuovere:** clicca la **×** rossa accanto a "extra" nella riga dell'atleta, poi **Create**.
+- La risposta nella issue dice se l'operazione è riuscita. In caso di omonimi elenca le date
+  di nascita: riprova con `COGNOME NOME gg/mm/aaaa`.
+- Si può anche modificare `atleti_extra.txt` direttamente su GitHub (matita → Commit): la pagina si aggiorna.
+- Solo il proprietario e i collaboratori del repository possono aggiungere o rimuovere
+  atleti; le richieste di altri utenti vengono ignorate.
+
 ## File
 
-- `fitet_liguria.js`: scarica i dati e genera la pagina.
+- `fitet.js`: scarica i dati e genera la pagina.
 - `template.html`: la pagina (grafico e tabella) in cui vengono inseriti i dati.
+- `atleti_extra.txt`: atleti aggiuntivi.
+- `.github/workflows/extra.yml`: gestisce le richieste "Aggiungi:" / "Rimuovi:" aperte dalla pagina.
 - `.github/workflows/update.yml`: aggiornamento settimanale e pubblicazione su GitHub Pages.
 - `index.html`: l'ultima pagina generata (scritta dal workflow, non modificarla a mano).
 
 ## Uso locale (Node 18+, nessuna dipendenza)
 
 ```
-node fitet_liguria.js                        # scrive site/index.html e site/storico/
-node fitet_liguria.js out/index.html         # oppure un'altra cartella
-node fitet_liguria.js --limit 200            # solo i primi 200 uomini e 200 donne (prova veloce)
+node fitet.js                        # scrive site/index.html e site/storico/
+node fitet.js out/index.html         # oppure un'altra cartella
+node fitet.js --limit 200            # solo i primi 200 uomini e 200 donne (prova veloce)
+node fitet.js --add "ROSSI MARIO"    # aggiunge un atleta ad atleti_extra.txt
+node fitet.js --remove "ROSSI MARIO" # lo rimuove
 ```
+
+Nella copia locale il modulo "Aggiungi atleta" non compare (serve GitHub).
 
 La pagina carica gli storici da `storico/`, cosa che il browser non consente aprendo il file
 direttamente: servi la cartella, es. `cd site && python3 -m http.server`, poi apri http://localhost:8000.

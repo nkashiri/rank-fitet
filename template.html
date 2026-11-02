@@ -76,8 +76,16 @@
   .up { color: var(--up); } .down { color: var(--down); }
   .muted { color: var(--muted); }
   .club { color: var(--muted); max-width: 200px; }
-  .athlete { max-width: 210px; } .region { max-width: 110px; }
-  .club, .athlete, .region { overflow: hidden; text-overflow: ellipsis; }
+  .athlete .nm { display: inline-block; max-width: 200px; vertical-align: bottom; } .region { max-width: 110px; }
+  .tag { font-size: 11px; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 0 4px; margin-left: 4px; }
+  a.rm { color: var(--down); margin-left: 4px; text-decoration: none; font-weight: 600; }
+  .addform { margin-bottom: 16px; }
+  .addform[hidden] { display: none; }
+  .addform label { display: block; font-weight: 600; margin-bottom: 8px; }
+  #addform-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  #addform-row input { flex: 1 1 220px; min-width: 0; }
+  #addform-row button { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .club, .athlete .nm, .region { overflow: hidden; text-overflow: ellipsis; }
   .hint { color: var(--muted); font-size: 12px; margin: 6px 0 10px; }
   .tablefoot { display: flex; align-items: center; gap: 12px; margin-top: 10px; color: var(--muted); font-size: 12px; }
   .tablefoot button[hidden] { display: none; }
@@ -94,6 +102,7 @@
     <details class="ms" data-f="club"><summary></summary><div class="panel"><input type="search" placeholder="Cerca società..."><div class="opts"></div></div></details>
     <details class="ms" data-f="reg"><summary></summary><div class="panel"><div class="opts"></div></div></details>
     <details class="ms" data-f="cat"><summary></summary><div class="panel"><div class="opts"></div></div></details>
+    <details class="ms" data-f="list"><summary></summary><div class="panel"><div class="opts"></div></div></details>
     <input type="search" id="q" placeholder="Cerca atleta...">
     <button id="reset">Azzera filtri</button>
   </div>
@@ -111,6 +120,16 @@
     <div class="empty" id="empty">Seleziona uno o più atleti dalla tabella qui sotto, oppure usa "Top 8".</div>
     <canvas id="cv"></canvas>
   </div>
+
+  <form class="card addform" id="add" hidden>
+    <label for="newname">Aggiungi un atleta che non è nelle classifiche nazionali (es. uno straniero):</label>
+    <div id="addform-row">
+      <input id="newname" placeholder="COGNOME NOME (es. ROSSI MARIO)" autocomplete="off">
+      <button type="submit">Aggiungi atleta</button>
+    </div>
+    <div class="hint">Si apre GitHub: clicca "Create" per confermare. La pagina viene aggiornata in circa 3 minuti.
+      In caso di omonimi aggiungi la data di nascita, es. ROSSI MARIO 01/02/2010.</div>
+  </form>
 
   <div class="card dist">
     <h2>Distribuzione dei punti</h2>
@@ -138,7 +157,7 @@
   <div class="files" id="files" hidden>
     <button id="dl">Scarica lo script (.zip)</button>
     <span id="dlmsg"></span><br>
-    Per aggiornare i dati: estrai lo zip ed esegui <code>node fitet_liguria.js</code> (Node 18+).
+    Per aggiornare i dati: estrai lo zip ed esegui <code>node fitet.js</code> (Node 18+).
   </div>
 </main>
 
@@ -156,6 +175,8 @@ const FILTERS = {
   club: { label: 'Società', all: 'tutte', get: p => p.clubs },
   reg:  { label: 'Regione', all: 'tutte', get: p => [p.reg] },
   cat:  { label: 'Categoria', all: 'tutte', get: p => [p.cat], show: v => `${v}ª`, num: true },
+  list: { label: 'Elenco', all: 'tutti', get: p => [p.extra ? 'Extra' : 'Classifica'],
+          show: v => v === 'Extra' ? 'Atleti extra' : 'Classifiche nazionali' },
 };
 const state = { metric: 'pts', range: 0, sort: 'pts', dir: -1, shown: PAGE, selected: new Set(),
   f: Object.fromEntries(Object.keys(FILTERS).map(k => [k, new Set()])) };
@@ -164,6 +185,16 @@ const colorOf = new Map();
 const players = DATA.players.map(p => ({ ...p, club: p.clubs.join(' / '), year: +p.birth.slice(-4) || null,
   pct: p.won + p.lost ? Math.round(p.won / (p.won + p.lost) * 100) : null, best: p.best?.[0] ?? null, bestDate: p.best?.[1] || '' }));
 const byId = new Map(players.map(p => [p.id, p]));
+
+// Adding/removing extra athletes goes through a GitHub issue, handled by .github/workflows/extra.yml.
+const issueUrl = (op, name) => `https://github.com/${DATA.repo}/issues/new?title=${encodeURIComponent(`${op}: ${name}`)}` +
+  `&body=${encodeURIComponent("Clicca \"Create\" / \"Submit new issue\" per confermare. La pagina sarà aggiornata in circa 3 minuti.")}`;
+if (DATA.repo) $('add').hidden = false;
+$('add').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = $('newname').value.trim();
+  if (name) window.open(issueUrl('Aggiungi', name.toUpperCase()), '_blank', 'noopener');
+});
 
 $('sub').textContent = `Classifiche nazionali maschile e femminile al ${new Date(DATA.rankDate || DATA.generated).toLocaleDateString('it-IT')} · ` +
   `dati aggiornati il ${new Date(DATA.generated).toLocaleDateString('it-IT')} · ${players.length} atleti · fonte portale.fitet.org`;
@@ -276,7 +307,8 @@ function renderTable() {
   });
   const delta = v => v == null ? '–' : `<span class="${v > 0 ? 'up' : v < 0 ? 'down' : ''}">${v > 0 ? '+' : ''}${v}</span>`;
   $('rows').innerHTML = rows.slice(0, state.shown).map(({ p, s }) => `<tr data-k="${p.id}">
-    <td class="athlete" title="${esc(p.name)}"><span class="swatch" style="background:${state.selected.has(p.id) ? colorOf.get(p.id) : 'transparent'}"></span>${esc(p.name)}</td>
+    <td class="athlete" title="${esc(p.name)}"><span class="swatch" style="background:${state.selected.has(p.id) ? colorOf.get(p.id) : 'transparent'}"></span><span class="nm">${esc(p.name)}</span>${p.extra ? '<span class="tag">extra</span>' +
+      (DATA.repo ? `<a class="rm" href="${issueUrl('Rimuovi', p.name)}" target="_blank" rel="noopener" title="Rimuovi dagli atleti extra">×</a>` : '') : ''}</td>
     <td class="num">${p.year ?? '–'}</td><td>${p.sex}</td><td title="${esc(p.sett)}">${esc(shortSett(p.sett))}</td>
     <td class="club" title="${esc(p.club)}">${esc(p.club)}</td><td class="region" title="${esc(p.reg)}">${esc(p.reg)}</td><td class="num">${esc(p.cat)}</td>
     <td class="num">${s.pts ?? '–'}</td><td class="num">${s.pos ?? '–'}</td>
@@ -422,6 +454,7 @@ $('reset').addEventListener('click', () => {
 $('more').addEventListener('click', () => { state.shown += PAGE; renderTable(); });
 
 $('rows').addEventListener('click', e => {
+  if (e.target.closest('a')) return;
   const tr = e.target.closest('tr'); if (tr) toggle(byId.get(tr.dataset.k));
 });
 document.querySelectorAll('th[data-k]').forEach(th => th.addEventListener('click', () => {
@@ -453,13 +486,13 @@ render();
     $('dlmsg').textContent = '';
     try {
       const zip = new JSZip();
-      for (const f of ['fitet_liguria.js', 'template.html']) {
+      for (const f of ['fitet.js', 'template.html']) {
         const res = await fetch(f);
         if (!res.ok) throw new Error(f + ': HTTP ' + res.status);
         zip.file(f, await res.text());
       }
       const data = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
-      await downloads.save({ filename: 'fitet-liguria.zip', data });
+      await downloads.save({ filename: 'fitet.zip', data });
     } catch (err) {
       if (err.code !== 'declined') $('dlmsg').textContent = 'Download non disponibile (' + (err.code || err.message) + ')';
     }

@@ -1,0 +1,8 @@
+# Atleti da aggiungere oltre a quelli delle classifiche nazionali (es. stranieri, che non hanno posizione).
+# Una riga per atleta: COGNOME NOME, con la data di nascita tra parentesi in caso di omonimi.
+# Si può modificare a mano, oppure dal pulsante "Aggiungi atleta" della pagina.
+TUDOR ANDREI (26/08/1991)
+KAPOGLU OMIROS (19/12/1968)
+KRAMER ALEXANDER RONALD (11/05/1962)
+RON RODRIGUEZ CARLOS (12/05/1966)
+MEGYERI GRATIAN CRISTIAN (21/08/1981)
