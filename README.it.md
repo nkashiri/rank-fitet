@@ -28,6 +28,26 @@ nazionali maschile e femminile di tennistavolo (circa 8.900 uomini e 900 donne),
   indica ogni atleta selezionato, elencato sotto con posizione e percentile nel gruppo.
 - **Altre colonne:** **% vitt.** (percentuale di vittorie nella stagione; vinte e perse nel tooltip) e
   **Miglior pos.** (record in classifica, con l'anno; la data è nel tooltip).
+  **#** numera le righe nell'ordine attuale della tabella: è la posizione tra gli atleti filtrati.
+- **Per data / Per età / Per anni in classifica:** l'asse orizzontale del grafico. *Per età* allinea gli atleti
+  per età anagrafica (data della classifica − data di nascita), per confrontare un dodicenne di oggi con quello
+  che un atleta più grande faceva a 12 anni; *Per anni in classifica* li allinea per anni dalla prima classifica
+  (lo storico del portale inizia a luglio 2011). Entrambi mostrano tutto lo storico. Se tra gli atleti selezionati
+  ci sono più di 3 anni di differenza, un avviso propone il confronto per età.
+- **Grafico Posizione:** linee orizzontali tratteggiate dove cambia la categoria (1ª … 6ª maschile, 1ª … 5ª femminile),
+  stimate dalla classifica attuale: la posizione che separa meglio due categorie, dato che le categorie sono
+  assegnate a inizio stagione e poi si sovrappongono. I triangoli indicano i passaggi di categoria
+  (▲ verde in salita, ▼ rosso in discesa). **Proiezione 12 mesi** disegna la proiezione puntinata dei prossimi 12 mesi.
+- **Analisi della posizione** (sotto il grafico, per uno degli atleti selezionati):
+  - miglioramento mese per mese, migl. % = (pos. precedente − pos. attuale) / pos. precedente × 100,
+    con l'ultima classifica di ogni mese (un intervallo di più mesi è diviso in parti uguali);
+  - medie mobili a 6 e 12 mesi, con la media totale tratteggiata;
+  - **Previsione:** mesi per arrivare a una posizione obiettivo (10° di default) con il ritmo attuale,
+    mesi = log(obiettivo / partenza) / log(1 − ritmo), con ritmo = media degli ultimi 12 mesi;
+    inoltre il trend lineare degli ultimi 12 mesi (posizioni al mese) con l'R².
+    La proiezione nel grafico usa lo stesso ritmo;
+  - anno per anno: media % mensile, posizione di inizio e fine, guadagno e posizione migliore;
+  - l'elenco dei passaggi di categoria.
 
 ## Aggiornamento dei dati
 
@@ -42,7 +62,9 @@ nazionali maschile e femminile di tennistavolo (circa 8.900 uomini e 900 donne),
 
 Gli stranieri ("Atleta Straniero") hanno punti e storico ma nessuna posizione nazionale, quindi non sono
 nelle classifiche da cui è costruita la pagina. Questi atleti sono elencati in `atleti_extra.txt`, uno per
-riga: `COGNOME NOME (gg/mm/aaaa)`. In tabella hanno l'etichetta "extra" e nessuna posizione.
+riga: `COGNOME NOME (gg/mm/aaaa)`. In tabella hanno l'etichetta "extra" e, in corsivo, una posizione
+fittizia (≈): quella che avrebbe avuto un italiano con gli stessi punti, a ogni data di classifica. Anche il grafico
+e l'analisi la usano, segnalata come stimata.
 
 - **Aggiungere:** nella pagina, scrivi il nome in "Aggiungi un atleta" e clicca
   **Aggiungi atleta**; si apre GitHub con la richiesta già compilata: clicca **Create**.

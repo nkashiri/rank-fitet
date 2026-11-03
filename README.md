@@ -27,6 +27,25 @@ and women's table tennis rankings (about 8,900 men and 900 women), with data fro
   line marks each selected athlete, listed below with their rank and percentile in the group.
 - **Other columns:** **% vitt.** (win percentage this season; matches won and lost in the tooltip) and
   **Miglior pos.** (best position ever, with the year; the date is in the tooltip).
+  **#** numbers the rows in the table's current order, so it is the position among the filtered athletes.
+- **Per data / Per età / Per anni in classifica:** the chart's horizontal axis. *Per età* aligns athletes by
+  age (ranking date − birth date), to compare a 12-year-old today with what an older athlete did at 12;
+  *Per anni in classifica* aligns them by years since their first ranking (the portal's history starts in July 2011).
+  Both show the whole history. When the selected athletes are more than 3 years apart, a banner offers the age view.
+- **Position chart:** dashed horizontal lines where the categories change (1ª … 6ª men, 1ª … 5ª women),
+  estimated from the current ranking: the position that best separates two categories, since categories
+  are set at the start of the season and overlap afterwards. Triangles mark category changes
+  (green ▲ promotion, red ▼ relegation). **Proiezione 12 mesi** draws a dotted projection of the next 12 months.
+- **Analisi della posizione** (below the chart, for one of the selected athletes):
+  - month-by-month improvement, migl. % = (previous position − position) / previous position × 100,
+    using the last ranking of each month (a gap of several months is split evenly);
+  - moving averages over 6 and 12 months, with the overall average dashed;
+  - **Previsione:** months to a target position (10° by default) at the current pace,
+    months = log(target / start) / log(1 − rate), with rate = average of the last 12 months;
+    also the linear trend of the last 12 months (positions per month) with its R².
+    The projection on the chart uses the same rate;
+  - year by year: average monthly %, start and end position, gain and best position;
+  - the list of category changes.
 
 ## Data updates
 
@@ -41,7 +60,9 @@ and women's table tennis rankings (about 8,900 men and 900 women), with data fro
 
 Foreign players ("Atleta Straniero") have points and a ranking history but no national position, so they
 are not in the rankings the page is built from. Such athletes are listed in `atleti_extra.txt`, one per
-line: `SURNAME NAME (dd/mm/yyyy)`. In the table they have the "extra" label and no position.
+line: `SURNAME NAME (dd/mm/yyyy)`. In the table they have the "extra" label and, in italics, a fictitious
+position (≈): the one an Italian with the same points would have had, at each ranking date. The chart and the
+analysis use it too, marked as estimated.
 
 - **Add:** on the page, type the name in "Aggiungi un atleta" and click **Aggiungi atleta**;
   GitHub opens with the request already filled in: click **Create**.

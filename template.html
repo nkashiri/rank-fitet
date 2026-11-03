@@ -89,6 +89,27 @@
   .hint { color: var(--muted); font-size: 12px; margin: 6px 0 10px; }
   .tablefoot { display: flex; align-items: center; gap: 12px; margin-top: 10px; color: var(--muted); font-size: 12px; }
   .tablefoot button[hidden] { display: none; }
+  td.rank { color: var(--muted); }
+  th:not([data-k]) { cursor: default; }
+  .est { font-style: italic; color: var(--muted); }
+  .chk { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
+  .chk input { margin: 0; }
+  .banner { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 12px; padding: 8px 12px;
+            border: 1px solid var(--accent); border-radius: 8px; background: var(--panel); }
+  .banner[hidden] { display: none; }
+  .banner button { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .ana { margin-bottom: 16px; }
+  .ana[hidden] { display: none; }
+  .ana h2 { font-size: 14px; margin: 0; }
+  .ana h3 { font-size: 13px; margin: 16px 0 4px; }
+  .anahead { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+  .ana .plot { height: 200px; position: relative; }
+  .fc { margin-top: 10px; padding: 10px 12px; border-radius: 8px; background: var(--hover); }
+  .fc p { margin: 4px 0 0; }
+  .fc input { width: 72px; padding: 3px 6px; }
+  .ana ul { margin: 4px 0 0; padding-left: 18px; font-size: 13px; }
+  .ana table { width: auto; min-width: 100%; }
+  .ana th { cursor: default; }
 </style>
 </head>
 <body>
@@ -112,13 +133,45 @@
       <button data-v="pos">Posizione</button>
     </div>
     <div class="seg" id="range"></div>
+    <div class="seg" id="xmode" title="Asse orizzontale del grafico">
+      <button data-v="date" class="on">Per data</button>
+      <button data-v="eta" title="Allinea per età anagrafica: età = data della classifica - data di nascita">Per età</button>
+      <button data-v="anni" title="Allinea per anni di presenza in classifica (dal primo dato disponibile)">Per anni in classifica</button>
+    </div>
+    <label class="chk" title="Solo per la posizione: proiezione dei prossimi 12 mesi con la media % degli ultimi 12 mesi"><input type="checkbox" id="proj" checked> Proiezione 12 mesi</label>
     <button id="top">Top 8</button>
     <button id="clear">Deseleziona</button>
   </div>
 
+  <div class="banner" id="agebanner" hidden>
+    <span id="agetext"></span><button id="toage">Confronta per età</button>
+  </div>
   <div class="card chart">
     <div class="empty" id="empty">Seleziona uno o più atleti dalla tabella qui sotto, oppure usa "Top 8".</div>
     <canvas id="cv"></canvas>
+  </div>
+
+  <div class="card ana" id="ana" hidden>
+    <div class="anahead"><h2>Analisi della posizione</h2><select id="anasel" aria-label="Atleta"></select></div>
+    <div class="hint" id="anasub"></div>
+    <div class="fc">
+      <strong>Previsione</strong> · obiettivo <input type="number" id="target" min="1" value="10" aria-label="Posizione obiettivo">°
+      <div id="fc"></div>
+    </div>
+    <h3>Miglioramento % mese per mese</h3>
+    <div class="hint">migl. % = (pos. precedente − pos. attuale) / pos. precedente × 100, con l'ultima classifica di ogni mese
+      (se mancano dei mesi, la variazione è divisa in parti uguali tra i mesi).</div>
+    <div class="plot"><canvas id="mv"></canvas></div>
+    <h3>Medie mobili</h3>
+    <div class="plot"><canvas id="av"></canvas></div>
+    <h3>Anno per anno</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Anno</th><th class="num">Media % mensile</th><th class="num">Inizio</th><th class="num">Fine</th>
+        <th class="num">Guadagno</th><th class="num">Migliore</th></tr></thead>
+      <tbody id="years"></tbody>
+    </table></div>
+    <h3>Passaggi di categoria</h3>
+    <ul id="catchg"></ul>
   </div>
 
   <form class="card addform" id="add" hidden>
@@ -140,11 +193,13 @@
 
   <div class="hint">Clicca su una riga per aggiungere/rimuovere l'atleta dal grafico. Δ = variazione nel periodo selezionato.
     Posizione = classifica nazionale maschile o femminile.
-    % vitt. = partite vinte nella stagione in corso (vinte e perse nel tooltip). Miglior pos. = record in classifica, con l'anno.</div>
+    % vitt. = partite vinte nella stagione in corso (vinte e perse nel tooltip). Miglior pos. = record in classifica, con l'anno.
+    # = posizione tra gli atleti filtrati, nell'ordine della tabella.
+    <span class="est">≈ Pos.</span> = posizione fittizia di uno straniero, che non è in classifica: quella che avrebbe un italiano con gli stessi punti.</div>
   <div class="card tablewrap">
     <table>
       <thead><tr>
-        <th data-k="name">Atleta</th><th data-k="year" class="num">Anno</th><th data-k="sex" title="Sesso">M/F</th><th data-k="sett">Settore</th>
+        <th class="num">#</th><th data-k="name">Atleta</th><th data-k="year" class="num">Anno</th><th data-k="sex" title="Sesso">M/F</th><th data-k="sett">Settore</th>
         <th data-k="club">Società</th><th data-k="reg">Regione</th><th data-k="cat" class="num">Cat.</th>
         <th data-k="pts" class="num">Punti</th><th data-k="pos" class="num">Pos.</th>
         <th data-k="dPts" class="num">Δ Punti</th><th data-k="dPos" class="num">Δ Pos.</th>
@@ -178,13 +233,22 @@ const FILTERS = {
   list: { label: 'Elenco', all: 'tutti', get: p => [p.extra ? 'Extra' : 'Classifica'],
           show: v => v === 'Extra' ? 'Atleti extra' : 'Classifiche nazionali' },
 };
-const state = { metric: 'pts', range: 0, sort: 'pts', dir: -1, shown: PAGE, selected: new Set(),
+const state = { metric: 'pts', range: 0, x: 'date', proj: true, ana: null, sort: 'pts', dir: -1, shown: PAGE, selected: new Set(),
   f: Object.fromEntries(Object.keys(FILTERS).map(k => [k, new Set()])) };
 const colorOf = new Map();
+const YEAR = 365.2425 * 864e5, MONTH = YEAR / 12;
+const born = s => { const m = (s || '').match(/(\d{2})\/(\d{2})\/(\d{4})/); return m ? Date.UTC(+m[3], m[2] - 1, +m[1]) : null; };
 
-const players = DATA.players.map(p => ({ ...p, club: p.clubs.join(' / '), year: +p.birth.slice(-4) || null,
+const players = DATA.players.map(p => ({ ...p, club: p.clubs.join(' / '), year: +p.birth.slice(-4) || null, born: born(p.birth),
   pct: p.won + p.lost ? Math.round(p.won / (p.won + p.lost) * 100) : null, best: p.best?.[0] ?? null, bestDate: p.best?.[1] || '' }));
 const byId = new Map(players.map(p => [p.id, p]));
+const fmt = (v, d = 1) => v.toLocaleString('it-IT', { minimumFractionDigits: d, maximumFractionDigits: d });
+const pct = v => v == null ? '–' : `${v > 0 ? '+' : ''}${fmt(v, 2)}%`;
+// A change, green when positive and red when negative; show formats it (default: the number with its sign).
+const signed = (v, show = x => `${x > 0 ? '+' : ''}${x}`) =>
+  v == null ? '–' : `<span class="${v > 0 ? 'up' : v < 0 ? 'down' : ''}">${show(v)}</span>`;
+// Position in a history row: the real one, or the estimate for a foreign athlete (5th value, see fitet.js).
+const posOf = x => x[1] ?? x[4] ?? null;
 
 // Adding/removing extra athletes goes through a GitHub issue, handled by .github/workflows/extra.yml.
 const issueUrl = (op, name) => `https://github.com/${DATA.repo}/issues/new?title=${encodeURIComponent(`${op}: ${name}`)}` +
@@ -217,7 +281,7 @@ function renderOptions(k) {
   const counts = new Map();
   for (const p of players) if (matches(p, k)) for (const v of f.get(p)) if (v) counts.set(v, (counts.get(v) || 0) + 1);
   for (const v of sel) if (!counts.has(v)) counts.set(v, 0);
-  const term = (el.querySelector('.panel input')?.value || '').trim().toUpperCase();
+  const term = (el.querySelector('.panel input[type=search]')?.value || '').trim().toUpperCase();
   const opts = [...counts].filter(([v]) => !term || v.toUpperCase().includes(term))
     .sort((a, b) => (sel.has(b[0]) - sel.has(a[0])) || (f.num ? a[0] - b[0] : a[0].localeCompare(b[0])));
   el.querySelector('.opts').innerHTML = opts.slice(0, 300).map(([v, n]) =>
@@ -242,6 +306,10 @@ function saveHash() {
   if (state.selected.size) h.set('sel', [...state.selected].join(','));
   if (state.metric !== 'pts') h.set('m', state.metric);
   if (state.range) h.set('r', state.range);
+  if (state.x !== 'date') h.set('x', state.x);
+  if (!state.proj) h.set('p', '0');
+  if (state.ana && state.selected.has(state.ana)) h.set('a', state.ana);
+  if ($('target').value !== '10') h.set('t', $('target').value);
   history.replaceState(null, '', '#' + (h.toString() || 'tutti'));  // not empty, or the Liguria default comes back
 }
 
@@ -253,7 +321,11 @@ function loadHash() {
   for (const id of (h.get('sel') || '').split(',')) if (byId.has(id)) { state.selected.add(id); pickColor(id); }
   if (h.get('m') === 'pos') state.metric = 'pos';
   state.range = Math.min(+h.get('r') || 0, DATA.ranges.length - 1);
-  for (const [id, v] of [['metric', state.metric], ['range', String(state.range)]]) {
+  if (['eta', 'anni'].includes(h.get('x'))) state.x = h.get('x');
+  state.proj = $('proj').checked = h.get('p') !== '0';
+  if (byId.has(h.get('a'))) state.ana = h.get('a');
+  if (+h.get('t') >= 1) $('target').value = +h.get('t');
+  for (const [id, v] of [['metric', state.metric], ['range', String(state.range)], ['xmode', state.x]]) {
     $(id).querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
   }
 }
@@ -290,7 +362,7 @@ function topN(n = 8) {
 
 function stats(p) {
   const d = p.delta ? p.delta[state.range] : [null, null];
-  return { pts: p.pts, pos: p.pos, dPts: d[0], dPos: d[1] };
+  return { pts: p.pts, pos: p.pos ?? p.estPos ?? null, dPts: d[0], dPos: d[1] };
 }
 
 // Shorter sector labels for the table (the filter and the tooltip keep the full ones).
@@ -305,19 +377,97 @@ function renderTable() {
     if (va == null || va === '') return 1; if (vb == null || vb === '') return -1;
     return (text ? va.localeCompare(vb) : va - vb) * state.dir;
   });
-  const delta = v => v == null ? '–' : `<span class="${v > 0 ? 'up' : v < 0 ? 'down' : ''}">${v > 0 ? '+' : ''}${v}</span>`;
-  $('rows').innerHTML = rows.slice(0, state.shown).map(({ p, s }) => `<tr data-k="${p.id}">
-    <td class="athlete" title="${esc(p.name)}"><span class="swatch" style="background:${state.selected.has(p.id) ? colorOf.get(p.id) : 'transparent'}"></span><span class="nm">${esc(p.name)}</span>${p.extra ? '<span class="tag">extra</span>' +
+  $('rows').innerHTML = rows.slice(0, state.shown).map(({ p, s }, i) => `<tr data-k="${p.id}">
+    <td class="num rank">${i + 1}</td><td class="athlete" title="${esc(p.name)}"><span class="swatch" style="background:${state.selected.has(p.id) ? colorOf.get(p.id) : 'transparent'}"></span><span class="nm">${esc(p.name)}</span>${p.extra ? '<span class="tag">extra</span>' +
       (DATA.repo ? `<a class="rm" href="${issueUrl('Rimuovi', p.name)}" target="_blank" rel="noopener" title="Rimuovi dagli atleti extra">×</a>` : '') : ''}</td>
     <td class="num">${p.year ?? '–'}</td><td>${p.sex}</td><td title="${esc(p.sett)}">${esc(shortSett(p.sett))}</td>
     <td class="club" title="${esc(p.club)}">${esc(p.club)}</td><td class="region" title="${esc(p.reg)}">${esc(p.reg)}</td><td class="num">${esc(p.cat)}</td>
-    <td class="num">${s.pts ?? '–'}</td><td class="num">${s.pos ?? '–'}</td>
-    <td class="num">${delta(s.dPts)}</td><td class="num">${delta(s.dPos)}</td>
+    <td class="num">${s.pts ?? '–'}</td><td class="num">${p.pos == null && s.pos != null
+      ? `<span class="est" title="Posizione fittizia: lo straniero non è in classifica. È quella che avrebbe un italiano con gli stessi punti.">≈${s.pos}</span>` : s.pos ?? '–'}</td>
+    <td class="num">${signed(s.dPts)}</td><td class="num">${signed(s.dPos)}</td>
     <td class="num" title="${p.won} vinte, ${p.lost} perse">${p.pct ?? '–'}</td>
     <td class="num" title="${p.bestDate ? new Date(p.bestDate).toLocaleDateString('it-IT') : ''}">${p.best ?? '–'}${p.bestDate
       ? ` <small class="muted">'${p.bestDate.slice(2, 4)}</small>` : ''}</td></tr>`).join('');
   $('count').textContent = rows.length > state.shown ? `${state.shown} di ${rows.length} atleti` : `${rows.length} atleti`;
   $('more').hidden = rows.length <= state.shown;
+}
+
+// --- Position analysis: month-by-month % improvement, moving averages, trend and forecast ---
+
+const mean = xs => xs.length ? xs.reduce((s, v) => s + v, 0) / xs.length : null;
+const monthLabel = m => new Date(Date.UTC(+m.slice(0, 4), m.slice(5) - 1))
+  .toLocaleDateString('it-IT', { month: 'short', year: '2-digit', timeZone: 'UTC' });
+
+// Monthly series of a history, with the last position of each month. rate = % improvement on the previous
+// month, (prev - pos) / prev × 100; over a gap of g months it is spread evenly: 1 - (pos / prev)^(1/g).
+function analyze(h) {
+  const byMonth = new Map();
+  for (const x of h) if (posOf(x) != null) byMonth.set(x[0].slice(0, 7), posOf(x));
+  const months = [...byMonth].map(([m, pos]) => ({ m, i: m.slice(0, 4) * 12 + (m.slice(5) - 1), pos }));
+  if (!months.length) return null;
+  for (let k = 1; k < months.length; k++) {
+    const a = months[k - 1], b = months[k];
+    b.rate = (1 - Math.pow(b.pos / a.pos, 1 / (b.i - a.i))) * 100;
+  }
+  const rated = months.slice(1);
+  const avgTo = (i, n) => mean(rated.filter(x => x.i > i - n && x.i <= i).map(x => x.rate));
+  for (const x of rated) { x.ma6 = avgTo(x.i, 6); x.ma12 = avgTo(x.i, 12); }
+  const last = months[months.length - 1];
+  // Linear trend of the position over the last 12 months: positions per month and R².
+  const recent = months.filter(x => x.i > last.i - 12);
+  let slope = null, r2 = null;
+  if (recent.length >= 3) {
+    const mx = mean(recent.map(x => x.i)), my = mean(recent.map(x => x.pos));
+    let sxy = 0, sxx = 0, syy = 0;
+    for (const x of recent) { sxy += (x.i - mx) * (x.pos - my); sxx += (x.i - mx) ** 2; syy += (x.pos - my) ** 2; }
+    slope = sxy / sxx; r2 = syy ? sxy * sxy / (sxx * syy) : 1;
+  }
+  return { months, rated, last, slope, r2, avg6: avgTo(last.i, 6), avg12: avgTo(last.i, 12), avgAll: mean(rated.map(x => x.rate)) };
+}
+
+// The next 12 months at the average rate of the last 12: [months from now, position], never above 1st.
+function projection(a) {
+  if (!a || a.avg12 == null) return [];
+  return Array.from({ length: 13 }, (_, k) => [k, Math.max(1, a.last.pos * Math.pow(1 - a.avg12 / 100, k))]);
+}
+
+// Category changes in a history: [{d: date, from, to, up}], up = promoted (lower category number).
+function catChanges(h) {
+  const out = [];
+  let prev = null;
+  for (const x of h) {
+    if (!x[3]) continue;
+    if (prev && x[3] !== prev) out.push({ d: x[0], from: prev, to: x[3], up: +x[3] < +prev });
+    prev = x[3];
+  }
+  return out;
+}
+
+// Dashed horizontal lines where the categories change, on the position chart (DATA.cats, see catLimits in fitet.js).
+const catLines = { id: 'catLines', afterDatasetsDraw(c) {
+  const { ctx, chartArea: a, scales: { y } } = c, o = c.options.plugins.catLines;
+  ctx.save(); ctx.setLineDash([4, 4]); ctx.lineWidth = 1; ctx.strokeStyle = ctx.fillStyle = o.color;
+  ctx.font = '11px system-ui, sans-serif'; ctx.textAlign = 'right'; ctx.textBaseline = 'bottom';
+  let lastLabel = -Infinity;
+  for (const l of [...o.lines].sort((p, q) => y.getPixelForValue(p.y) - y.getPixelForValue(q.y))) {
+    if (l.y < y.min || l.y > y.max) continue;
+    const py = y.getPixelForValue(l.y);
+    ctx.beginPath(); ctx.moveTo(a.left, py); ctx.lineTo(a.right, py); ctx.stroke();
+    if (py - lastLabel >= 14) { ctx.fillText(l.label, a.right - 4, py - 2); lastLabel = py; }  // skip labels that would overlap
+  }
+  ctx.restore();
+} };
+
+function catLineList(sexes) {
+  return sexes.flatMap(sex => (DATA.cats?.[sex] || []).map((v, k) =>
+    ({ y: v + 0.5, label: `${sexes.length > 1 ? sex + ' ' : ''}↑ ${k + 1}ª · ${k + 2}ª ↓ (${v}°)` })));
+}
+
+function renderBanner() {
+  const b = [...state.selected].map(id => byId.get(id).born).filter(v => v != null);
+  const gap = b.length > 1 ? (Math.max(...b) - Math.min(...b)) / YEAR : 0;
+  $('agebanner').hidden = state.x !== 'date' || gap <= 3;
+  $('agetext').textContent = `Tra gli atleti selezionati ci sono ${Math.floor(gap)} anni di differenza d'età: vuoi confrontarli per età?`;
 }
 
 let chart, chartRun = 0;
@@ -326,39 +476,153 @@ async function renderChart() {
   const ids = [...state.selected];
   const hs = await Promise.all(ids.map(loadHistory));
   if (run !== chartRun) return;  // a newer render started while the histories were loading
-  const css = getComputedStyle(document.documentElement);
-  const muted = css.getPropertyValue('--muted').trim(), grid = css.getPropertyValue('--border').trim();
-  const since = DATA.ranges[state.range].since, col = state.metric === 'pts' ? 2 : 1;
-  const datasets = ids.map((id, i) => ({
-    label: byId.get(id).name,
-    data: hs[i].filter(x => !since || x[0] >= since).map(x => ({ x: Date.parse(x[0]), y: x[col] })),
-    borderColor: colorOf.get(id), backgroundColor: colorOf.get(id),
-    borderWidth: 2, pointRadius: 3, tension: 0.15,
-  }));
+  const css = getComputedStyle(document.documentElement), color = v => css.getPropertyValue(v).trim();
+  const muted = color('--muted'), grid = color('--border');
+  const pos = state.metric === 'pos', since = state.x === 'date' ? DATA.ranges[state.range].since : '';
+  const datasets = [];
+  ids.forEach((id, i) => {
+    const p = byId.get(id), h = hs[i];
+    if (!h.length || (state.x === 'eta' && p.born == null)) return;
+    // x of a time t: the time itself, the athlete's age, or the years since their first ranking.
+    const t0 = Date.parse(h[0][0]);
+    const X = t => state.x === 'eta' ? (t - p.born) / YEAR : state.x === 'anni' ? (t - t0) / YEAR : t;
+    const chg = new Map(catChanges(h).map(c => [c.d, c]));
+    const est = pos && h.some(x => x[1] == null && x[4] != null);
+    datasets.push({
+      label: p.name + (est ? ' (pos. stimata)' : ''),
+      data: h.filter(x => !since || x[0] >= since).map(x => ({ x: X(Date.parse(x[0])), y: pos ? posOf(x) : x[2],
+        t: Date.parse(x[0]), est: x[1] == null && x[4] != null, chg: chg.get(x[0]) })),
+      borderColor: colorOf.get(id), backgroundColor: colorOf.get(id), borderDash: est ? [5, 3] : [],
+      borderWidth: 2, tension: 0.15,
+      pointStyle: c => c.raw?.chg ? 'triangle' : 'circle', pointRadius: c => c.raw?.chg ? 6 : 3,
+      pointRotation: c => c.raw?.chg && !c.raw.chg.up ? 180 : 0,
+      pointBackgroundColor: c => c.raw?.chg ? color(c.raw.chg.up ? '--up' : '--down') : colorOf.get(id),
+    });
+    const proj = pos && state.proj ? projection(analyze(h)) : [];
+    const tEnd = Date.parse(h[h.length - 1][0]);
+    if (proj.length) datasets.push({
+      label: `${p.name}: proiezione`, proj: true,
+      data: proj.map(([k, y]) => ({ x: X(tEnd + k * MONTH), y, t: tEnd + k * MONTH })),
+      borderColor: colorOf.get(id), borderDash: [2, 3], borderWidth: 1.5, pointRadius: 0, tension: 0,
+    });
+  });
   if (chart) { chart.destroy(); chart = null; }
   $('empty').hidden = datasets.length > 0;
   if (!datasets.length) return;
+  const day = t => new Date(t).toLocaleDateString('it-IT');
   chart = new Chart($('cv'), {
-    type: 'line', data: { datasets },
+    type: 'line', data: { datasets }, plugins: [catLines],
     options: {
       maintainAspectRatio: false, animation: false,
       interaction: { mode: 'nearest', intersect: false },
       plugins: {
-        legend: { labels: { color: muted, boxWidth: 12 } },
+        legend: { labels: { color: muted, boxWidth: 12, filter: (it, d) => !d.datasets[it.datasetIndex].proj } },
+        catLines: { color: muted, lines: pos ? catLineList([...new Set(ids.map(id => byId.get(id).sex))].sort().reverse()) : [] },
         tooltip: { callbacks: {
-          title: items => new Date(items[0].parsed.x).toLocaleDateString('it-IT'),
-          label: i => `${i.dataset.label}: ${i.parsed.y} ${state.metric === 'pts' ? 'pt' : '°'}`,
+          title: items => { const r = items[0].raw;
+            return state.x === 'eta' ? `${fmt(r.x)} anni · ${day(r.t)}` : state.x === 'anni' ? `${fmt(r.x)} anni in classifica · ${day(r.t)}` : day(r.t); },
+          label: i => { const r = i.raw;
+            if (i.dataset.proj) return `${i.dataset.label}: ${Math.round(r.y)}°`;
+            const v = pos ? `${r.est ? '≈' : ''}${r.y}°${r.est ? ' (stimata)' : ''}` : `${r.y} pt`;
+            return `${i.dataset.label}: ${v}${r.chg ? ` · ${r.chg.up ? '▲' : '▼'} ${r.chg.from}ª → ${r.chg.to}ª` : ''}`; },
         } },
       },
       scales: {
-        x: { type: 'linear', ticks: { color: muted, maxTicksLimit: 8,
-               callback: v => new Date(v).toLocaleDateString('it-IT', { month: 'short', year: '2-digit' }) },
-             grid: { color: grid } },
-        y: { reverse: state.metric === 'pos', ticks: { color: muted }, grid: { color: grid },
-             title: { display: true, color: muted, text: state.metric === 'pts' ? 'Punti' : 'Posizione (classifica nazionale M/F)' } },
+        x: { type: 'linear', grid: { color: grid },
+             ticks: { color: muted, maxTicksLimit: 8, callback: v => state.x === 'date'
+               ? new Date(v).toLocaleDateString('it-IT', { month: 'short', year: '2-digit' }) : fmt(v, v % 1 ? 1 : 0) },
+             title: { display: state.x !== 'date', color: muted, text: state.x === 'eta' ? 'Età (anni) · tutto lo storico'
+               : 'Anni in classifica, dal primo dato disponibile (lo storico inizia a luglio 2011) · tutto lo storico' } },
+        y: { reverse: pos, ticks: { color: muted }, grid: { color: grid },
+             title: { display: true, color: muted, text: pos ? 'Posizione (classifica nazionale M/F)' : 'Punti' } },
       },
     },
   });
+}
+
+let barChart, avgChart, anaData = null, anaRun = 0;
+async function renderAnalysis() {
+  const run = ++anaRun;
+  const ids = [...state.selected];
+  $('ana').hidden = !ids.length;
+  if (!ids.length) { barChart?.destroy(); avgChart?.destroy(); barChart = avgChart = anaData = null; return; }
+  if (!state.selected.has(state.ana)) state.ana = ids[0];
+  $('anasel').innerHTML = ids.map(id => `<option value="${id}"${id === state.ana ? ' selected' : ''}>${esc(byId.get(id).name)}</option>`).join('');
+  const p = byId.get(state.ana), h = await loadHistory(p.id);
+  if (run !== anaRun) return;
+  barChart?.destroy(); avgChart?.destroy(); barChart = avgChart = null;
+  const a = analyze(h), est = h.some(x => x[1] == null && x[4] != null);
+  anaData = a && { p, a };
+  const limits = DATA.cats?.[p.sex] || [];
+  $('anasub').textContent = !a ? 'Nessuna posizione in classifica per questo atleta.'
+    : `Posizione nella classifica nazionale ${p.sex === 'F' ? 'femminile' : 'maschile'}${est
+      ? ' STIMATA: è uno straniero, non è in classifica; la posizione è fittizia, quella di un italiano con gli stessi punti' : ''}` +
+      ` · ${a.months.length} mesi di dati, da ${monthLabel(a.months[0].m)} · tutto lo storico.`;
+  renderForecast();
+  const catList = catChanges(h).reverse();
+  $('catchg').innerHTML = (catList.length ? catList.map(c => `<li class="${c.up ? 'up' : 'down'}">${c.up ? '▲' : '▼'} ` +
+    `${new Date(c.d).toLocaleDateString('it-IT')}: ${c.from}ª → ${c.to}ª</li>`).join('')
+    : '<li class="muted">Nessun cambio di categoria nei dati disponibili.</li>') +
+    (limits.length ? `<li class="muted">Soglie stimate dalla classifica attuale (linee tratteggiate nel grafico Posizione): ` +
+      `${limits.map((v, k) => `${k + 1}ª fino al ${v}°`).join(', ')}, poi ${limits.length + 1}ª.</li>` : '');
+  if (!a) { $('years').innerHTML = ''; return; }
+
+  const years = new Map();
+  for (const x of h) {
+    const v = posOf(x), y = x[0].slice(0, 4);
+    if (v == null) continue;
+    if (!years.has(y)) years.set(y, { start: v, best: v });
+    const r = years.get(y); r.end = v; r.best = Math.min(r.best, v);
+  }
+  $('years').innerHTML = [...years].reverse().map(([y, r]) => {
+    const avg = mean(a.rated.filter(x => x.m.startsWith(y)).map(x => x.rate));
+    return `<tr><td>${y}</td><td class="num">${signed(avg, pct)}</td><td class="num">${r.start}°</td><td class="num">${r.end}°</td>` +
+      `<td class="num">${signed(r.start - r.end)}</td><td class="num">${r.best}°</td></tr>`;
+  }).join('');
+
+  const css = getComputedStyle(document.documentElement), color = v => css.getPropertyValue(v).trim();
+  const muted = color('--muted'), grid = color('--border'), up = color('--up'), down = color('--down');
+  const labels = a.rated.map(x => monthLabel(x.m));
+  const scales = { x: { ticks: { color: muted, maxTicksLimit: 12 }, grid: { display: false } },
+                   y: { ticks: { color: muted, callback: v => `${v}%` }, grid: { color: grid } } };
+  barChart = new Chart($('mv'), {
+    type: 'bar',
+    data: { labels, datasets: [{ data: a.rated.map(x => x.rate), backgroundColor: a.rated.map(x => x.rate >= 0 ? up : down) }] },
+    options: { maintainAspectRatio: false, animation: false, scales,
+      plugins: { legend: { display: false },
+        tooltip: { callbacks: { label: i => `${pct(i.parsed.y)} · ${est ? '≈' : ''}${a.rated[i.dataIndex].pos}°` } } } },
+  });
+  const line = (label, data, c, extra) => ({ label, data, borderColor: c, backgroundColor: c, pointRadius: 0, borderWidth: 2, spanGaps: true, ...extra });
+  avgChart = new Chart($('av'), {
+    type: 'line',
+    data: { labels, datasets: [
+      line('Media mobile 6 mesi', a.rated.map(x => x.ma6), color('--accent')),
+      line('Media mobile 12 mesi', a.rated.map(x => x.ma12), '#d97706'),
+      line(`Media totale (${pct(a.avgAll)})`, a.rated.map(() => a.avgAll), muted, { borderDash: [6, 4], borderWidth: 1.5 }),
+    ] },
+    options: { maintainAspectRatio: false, animation: false, scales, interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { labels: { color: muted, boxWidth: 12 } },
+        tooltip: { callbacks: { label: i => `${i.dataset.label.replace(/ \(.*/, '')}: ${pct(i.parsed.y)}` } } } },
+  });
+}
+
+// "Previsione" box: months to the target position at the current pace, mesi = log(target/start) / log(1 - rate).
+function renderForecast() {
+  if (!anaData) { $('fc').innerHTML = ''; return; }
+  const { p, a } = anaData, T = Math.max(1, Math.round(+$('target').value) || 10), start = a.last.pos;
+  const lines = [`Media % mensile: ultimi 6 mesi <b>${pct(a.avg6)}</b> · ultimi 12 mesi <b>${pct(a.avg12)}</b> · totale <b>${pct(a.avgAll)}</b>`];
+  if (start <= T) lines.push(`${esc(p.name)} è ${start}°: già entro i primi ${T}.`);
+  else if (!(a.avg12 > 0)) lines.push(`Con il ritmo attuale (${pct(a.avg12)} al mese negli ultimi 12 mesi) la posizione non migliora: ` +
+    `l'obiettivo ${T}° non si raggiunge.`);
+  else {
+    const m = Math.log(T / start) / Math.log(1 - a.avg12 / 100), end = a.last.i + Math.ceil(m);
+    const when = new Date(Date.UTC(Math.floor(end / 12), end % 12)).toLocaleDateString('it-IT', { month: 'long', year: 'numeric', timeZone: 'UTC' });
+    lines.push(`Con il ritmo attuale (<b>${pct(a.avg12)}</b> al mese, media degli ultimi 12 mesi) ${esc(p.name)} passa da <b>${start}°</b> ` +
+      `a <b>${T}°</b> in circa <b>${m < 12 ? `${Math.ceil(m)} ${Math.ceil(m) === 1 ? 'mese' : 'mesi'}` : `${fmt(m / 12)} anni`}</b> (${when}).`);
+  }
+  if (a.slope != null) lines.push(`Trend lineare degli ultimi 12 mesi: <b>${a.slope <= 0 ? `+${fmt(-a.slope)} posizioni` : `−${fmt(a.slope)} posizioni`}</b> al mese, ` +
+    `R² ${fmt(a.r2, 2)} (${a.r2 >= 0.7 ? 'trend regolare' : a.r2 >= 0.4 ? 'trend abbastanza regolare' : 'andamento irregolare, previsione poco affidabile'}).`);
+  $('fc').innerHTML = lines.map(l => `<p>${l}</p>`).join('');
 }
 
 // --- Points distribution of the filtered athletes, with a line for each selected athlete ---
@@ -422,7 +686,7 @@ function renderHist() {
   });
 }
 
-function render() { renderSummaries(); renderTable(); renderChart(); renderHist(); saveHash(); }
+function render() { renderSummaries(); renderTable(); renderBanner(); renderChart(); renderAnalysis(); renderHist(); saveHash(); }
 function refilter() { state.shown = PAGE; renderSummaries(); renderTable(); renderHist(); saveHash(); }
 
 document.querySelectorAll('.ms').forEach(el => {
@@ -462,7 +726,7 @@ document.querySelectorAll('th[data-k]').forEach(th => th.addEventListener('click
   state.dir = state.sort === k ? -state.dir : (['name', 'sex', 'sett', 'club', 'reg', 'cat', 'pos', 'best'].includes(k) ? 1 : -1);
   state.sort = k; renderTable();
 }));
-for (const [id, field] of [['metric', 'metric'], ['range', 'range']]) {
+for (const [id, field] of [['metric', 'metric'], ['range', 'range'], ['xmode', 'x']]) {
   $(id).addEventListener('click', e => {
     const b = e.target.closest('button'); if (!b) return;
     $(id).querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
@@ -472,7 +736,15 @@ for (const [id, field] of [['metric', 'metric'], ['range', 'range']]) {
 $('q').addEventListener('input', refilter);
 $('top').addEventListener('click', () => topN());
 $('clear').addEventListener('click', () => { state.selected.clear(); colorOf.clear(); render(); });
-matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { renderChart(); renderHist(); });
+$('proj').addEventListener('change', e => { state.proj = e.target.checked; renderChart(); saveHash(); });
+$('toage').addEventListener('click', () => {
+  state.x = 'eta';
+  $('xmode').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === 'eta'));
+  render();
+});
+$('anasel').addEventListener('change', e => { state.ana = e.target.value; renderAnalysis(); saveHash(); });
+$('target').addEventListener('input', () => { renderForecast(); saveHash(); });
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { renderChart(); renderAnalysis(); renderHist(); });
 
 loadHash();
 render();

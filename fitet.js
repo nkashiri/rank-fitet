@@ -213,6 +213,49 @@ function deltas(history, ranges) {
   });
 }
 
+// Last position of each category (1ª, 2ª, ...) in the current ranking of one sex. FITET assigns categories from
+// the ranking at the start of the season and they overlap afterwards, so for each pair this is the position
+// that best separates them: the fewest athletes of 1..k below it plus athletes of k+1.. above it.
+function catLimits(list, sex) {
+  const a = list.filter(p => p.sex === sex && p.pos && +p.cat).map(p => [p.pos, +p.cat]).sort((x, y) => x[0] - y[0]);
+  const n = Math.max(0, ...a.map(x => x[1]));
+  const limits = [];
+  for (let k = 1; k < n; k++) {
+    let err = a.filter(x => x[1] <= k).length, best = [err, 0];
+    for (const [pos, c] of a) { err += c <= k ? -1 : 1; if (err < best[0]) best = [err, pos]; }
+    limits.push(best[1]);
+  }
+  return limits;
+}
+
+// Foreign athletes have points but no position: adds to each of their history rows (as a 5th value) the
+// position they would have had, from the Italians of the same sex at the same ranking date
+// (the position of the last Italian with more points, + 1). Returns the latest estimate.
+function estimatePositions(list, histories) {
+  const scale = new Map();  // "sex date" -> [[pts, pos], ...], most points first
+  for (const p of list) {
+    for (const [date, pos, pts] of histories.get(p.id) || []) {
+      if (pos == null || pts == null) continue;
+      const k = `${p.sex} ${date}`;
+      if (!scale.has(k)) scale.set(k, []);
+      scale.get(k).push([pts, pos]);
+    }
+  }
+  for (const s of scale.values()) s.sort((a, b) => b[0] - a[0] || a[1] - b[1]);
+  for (const p of list) {
+    const h = histories.get(p.id);
+    if (!p.extra || p.pos != null || !h || !h.length) continue;
+    for (const x of h) {
+      const s = scale.get(`${p.sex} ${x[0]}`);
+      if (x[1] != null || x[2] == null || !s) continue;
+      let lo = 0, hi = s.length;
+      while (lo < hi) { const m = (lo + hi) >> 1; if (s[m][0] > x[2]) lo = m + 1; else hi = m; }
+      x[4] = lo ? s[lo - 1][1] + 1 : 1;
+    }
+    p.estPos = h[h.length - 1][4] ?? null;
+  }
+}
+
 // --- main ---
 
 (async () => {
@@ -250,6 +293,7 @@ function deltas(history, ranges) {
   fs.mkdirSync(dir, { recursive: true });
 
   const ranges = periods();
+  const histories = new Map();
   let done = 0, failed = [], rankDate = '';
   await pool(list, async p => {
     try {
@@ -263,7 +307,7 @@ function deltas(history, ranges) {
         Object.assign(p, { sex: d.sex, reg: d.reg, pts: last[2] ?? null, cat: last[3] || '' });
       }
       if (d.history.length && d.history[d.history.length - 1][0] > rankDate) rankDate = d.history[d.history.length - 1][0];
-      fs.writeFileSync(path.join(dir, `${p.id}.json`), JSON.stringify(d.history));
+      histories.set(p.id, d.history);
     } catch (err) {
       failed.push(`${p.name} (${err.message})`);
       p.clubs = []; p.delta = null; p.won = p.lost = 0; p.best = null;
@@ -272,10 +316,18 @@ function deltas(history, ranges) {
   });
   if (failed.length) console.log(`Failed (${failed.length}): ${failed.slice(0, 50).join(', ')}${failed.length > 50 ? ', ...' : ''}`);
 
+  estimatePositions(list, histories);
+  for (const p of list) {
+    const h = histories.get(p.id);
+    if (p.estPos != null) p.delta = deltas(h.map(x => [x[0], x[1] ?? x[4] ?? null, x[2]]), ranges);
+    if (h) fs.writeFileSync(path.join(dir, `${p.id}.json`), JSON.stringify(h));
+  }
+
   const data = {
     generated: new Date().toISOString(),
     repo: process.env.GITHUB_REPOSITORY || '',
     rankId, rankDate, ranges,
+    cats: { M: catLimits(list, 'M'), F: catLimits(list, 'F') },
     players: list,
   };
   const json = JSON.stringify(data).replace(/</g, '\\u003c');
