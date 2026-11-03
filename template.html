@@ -91,7 +91,7 @@
   .tablefoot button[hidden] { display: none; }
   td.rank { color: var(--muted); }
   th:not([data-k]) { cursor: default; }
-  .est { font-style: italic; color: var(--muted); }
+  .est { font-style: italic; color: var(--muted); cursor: help; }
   .chk { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); }
   .chk input { margin: 0; }
   .banner { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 12px; padding: 8px 12px;
@@ -247,6 +247,11 @@ const pct = v => v == null ? '–' : `${v > 0 ? '+' : ''}${fmt(v, 2)}%`;
 // A change, green when positive and red when negative; show formats it (default: the number with its sign).
 const signed = (v, show = x => `${x > 0 ? '+' : ''}${x}`) =>
   v == null ? '–' : `<span class="${v > 0 ? 'up' : v < 0 ? 'down' : ''}">${show(v)}</span>`;
+// Estimated positions (foreign athletes) are drawn in the colour blended with grey, and say so on hover.
+const greyish = c => '#' + [16, 8, 0].map(s => Math.round(((parseInt(c.slice(1), 16) >> s) & 255) * 0.4 + 0x9a * 0.6)
+  .toString(16).padStart(2, '0')).join('');
+const EST_NOTE = 'Posizione stimata (fittizia): lo straniero non è in classifica. È quella che avrebbe un italiano con gli stessi punti.';
+const estPos = v => `<span class="est" title="${EST_NOTE}">≈${v}°</span>`;
 // Position in a history row: the real one, or the estimate for a foreign athlete (5th value, see fitet.js).
 const posOf = x => x[1] ?? x[4] ?? null;
 
@@ -382,8 +387,8 @@ function renderTable() {
       (DATA.repo ? `<a class="rm" href="${issueUrl('Rimuovi', p.name)}" target="_blank" rel="noopener" title="Rimuovi dagli atleti extra">×</a>` : '') : ''}</td>
     <td class="num">${p.year ?? '–'}</td><td>${p.sex}</td><td title="${esc(p.sett)}">${esc(shortSett(p.sett))}</td>
     <td class="club" title="${esc(p.club)}">${esc(p.club)}</td><td class="region" title="${esc(p.reg)}">${esc(p.reg)}</td><td class="num">${esc(p.cat)}</td>
-    <td class="num">${s.pts ?? '–'}</td><td class="num">${p.pos == null && s.pos != null
-      ? `<span class="est" title="Posizione fittizia: lo straniero non è in classifica. È quella che avrebbe un italiano con gli stessi punti.">≈${s.pos}</span>` : s.pos ?? '–'}</td>
+    <td class="num">${s.pts ?? '–'}</td>${p.pos == null && s.pos != null
+      ? `<td class="num est" title="${EST_NOTE}">≈${s.pos}</td>` : `<td class="num">${s.pos ?? '–'}</td>`}
     <td class="num">${signed(s.dPts)}</td><td class="num">${signed(s.dPos)}</td>
     <td class="num" title="${p.won} vinte, ${p.lost} perse">${p.pct ?? '–'}</td>
     <td class="num" title="${p.bestDate ? new Date(p.bestDate).toLocaleDateString('it-IT') : ''}">${p.best ?? '–'}${p.bestDate
@@ -492,11 +497,15 @@ async function renderChart() {
       label: p.name + (est ? ' (pos. stimata)' : ''),
       data: h.filter(x => !since || x[0] >= since).map(x => ({ x: X(Date.parse(x[0])), y: pos ? posOf(x) : x[2],
         t: Date.parse(x[0]), est: x[1] == null && x[4] != null, chg: chg.get(x[0]) })),
-      borderColor: colorOf.get(id), backgroundColor: colorOf.get(id), borderDash: est ? [5, 3] : [],
+      borderColor: est ? greyish(colorOf.get(id)) : colorOf.get(id), backgroundColor: est ? greyish(colorOf.get(id)) : colorOf.get(id),
       borderWidth: 2, tension: 0.15,
+      segment: { borderColor: c => c.p1.raw.est ? greyish(colorOf.get(id)) : undefined,
+                 borderDash: c => c.p1.raw.est ? [5, 3] : undefined },
       pointStyle: c => c.raw?.chg ? 'triangle' : 'circle', pointRadius: c => c.raw?.chg ? 6 : 3,
       pointRotation: c => c.raw?.chg && !c.raw.chg.up ? 180 : 0,
-      pointBackgroundColor: c => c.raw?.chg ? color(c.raw.chg.up ? '--up' : '--down') : colorOf.get(id),
+      pointBorderColor: c => c.raw?.est ? greyish(colorOf.get(id)) : colorOf.get(id),
+      pointBackgroundColor: c => { const v = c.raw?.chg ? color(c.raw.chg.up ? '--up' : '--down') : colorOf.get(id);
+        return c.raw?.est ? greyish(v) : v; },
     });
     const proj = pos && state.proj ? projection(analyze(h)) : [];
     const tEnd = Date.parse(h[h.length - 1][0]);
@@ -523,8 +532,10 @@ async function renderChart() {
             return state.x === 'eta' ? `${fmt(r.x)} anni · ${day(r.t)}` : state.x === 'anni' ? `${fmt(r.x)} anni in classifica · ${day(r.t)}` : day(r.t); },
           label: i => { const r = i.raw;
             if (i.dataset.proj) return `${i.dataset.label}: ${Math.round(r.y)}°`;
-            const v = pos ? `${r.est ? '≈' : ''}${r.y}°${r.est ? ' (stimata)' : ''}` : `${r.y} pt`;
+            const v = pos ? `${r.est ? '≈' : ''}${r.y}°` : `${r.y} pt`;
             return `${i.dataset.label}: ${v}${r.chg ? ` · ${r.chg.up ? '▲' : '▼'} ${r.chg.from}ª → ${r.chg.to}ª` : ''}`; },
+          afterLabel: i => pos && i.raw.est ? 'stimata: straniero non in classifica, posizione di un italiano con gli stessi punti' : '',
+          labelTextColor: i => pos && i.raw.est ? greyish('#ffffff') : '#ffffff',
         } },
       },
       scales: {
@@ -574,10 +585,11 @@ async function renderAnalysis() {
     if (!years.has(y)) years.set(y, { start: v, best: v });
     const r = years.get(y); r.end = v; r.best = Math.min(r.best, v);
   }
+  const P = v => est ? estPos(v) : `${v}°`;
   $('years').innerHTML = [...years].reverse().map(([y, r]) => {
     const avg = mean(a.rated.filter(x => x.m.startsWith(y)).map(x => x.rate));
-    return `<tr><td>${y}</td><td class="num">${signed(avg, pct)}</td><td class="num">${r.start}°</td><td class="num">${r.end}°</td>` +
-      `<td class="num">${signed(r.start - r.end)}</td><td class="num">${r.best}°</td></tr>`;
+    return `<tr><td>${y}</td><td class="num">${signed(avg, pct)}</td><td class="num">${P(r.start)}</td><td class="num">${P(r.end)}</td>` +
+      `<td class="num">${signed(r.start - r.end)}</td><td class="num">${P(r.best)}</td></tr>`;
   }).join('');
 
   const css = getComputedStyle(document.documentElement), color = v => css.getPropertyValue(v).trim();
@@ -587,10 +599,12 @@ async function renderAnalysis() {
                    y: { ticks: { color: muted, callback: v => `${v}%` }, grid: { color: grid } } };
   barChart = new Chart($('mv'), {
     type: 'bar',
-    data: { labels, datasets: [{ data: a.rated.map(x => x.rate), backgroundColor: a.rated.map(x => x.rate >= 0 ? up : down) }] },
+    data: { labels, datasets: [{ data: a.rated.map(x => x.rate),
+      backgroundColor: a.rated.map(x => est ? greyish(x.rate >= 0 ? up : down) : x.rate >= 0 ? up : down) }] },
     options: { maintainAspectRatio: false, animation: false, scales,
       plugins: { legend: { display: false },
-        tooltip: { callbacks: { label: i => `${pct(i.parsed.y)} · ${est ? '≈' : ''}${a.rated[i.dataIndex].pos}°` } } } },
+        tooltip: { callbacks: { label: i => `${pct(i.parsed.y)} · ${est ? '≈' : ''}${a.rated[i.dataIndex].pos}°`,
+          afterLabel: () => est ? 'posizione stimata (straniero non in classifica)' : '' } } } },
   });
   const line = (label, data, c, extra) => ({ label, data, borderColor: c, backgroundColor: c, pointRadius: 0, borderWidth: 2, spanGaps: true, ...extra });
   avgChart = new Chart($('av'), {
