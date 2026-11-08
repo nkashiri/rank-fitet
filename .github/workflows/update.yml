@@ -31,6 +31,8 @@ jobs:
 
       - name: Scarica i dati da portale.fitet.org
         run: node fitet.js site/index.html
+        env:
+          GITHUB_TOKEN: ${{ github.token }}   # for the date of the last template change (GitHub API)
 
       # Keep a copy in the repo too: a history of the data, and the commits keep the schedule active.
       - name: Salva la pagina nel repository

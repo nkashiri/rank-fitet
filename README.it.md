@@ -92,6 +92,15 @@ nazionali maschile e femminile di tennistavolo (circa 8.900 uomini e 900 donne),
   pubblicare comunque, esegui lo script con `FORCE=1` (nel workflow: aggiungi `FORCE: 1` all'`env` del passo
   "Scarica i dati", avvia, poi toglilo).
 
+## Piè di pagina: aggiornamenti e visite
+
+- Il piè di pagina mostra quando sono stati aggiornati i dati (data e ora dello scaricamento) e quando è stato
+  modificato l'ultima volta il codice della pagina (`template.html`, dall'API di GitHub al momento della generazione).
+- **Visite:** contate con [Abacus](https://abacus.jasoncameron.dev), un servizio gratuito che non richiede un account:
+  una visita per browser al giorno, solo sul sito pubblicato (non nelle copie locali), con quelle di oggi tra parentesi.
+  Il conteggio parte dall'08/11/2026. È un servizio amatoriale gratuito: se smette di rispondere, il contatore
+  semplicemente non compare. Il contatore è su `abacus.jasoncameron.dev/get/nkashiri-rank-fitet/visite`.
+
 ## Telefoni e anteprime dei link
 
 - La pagina si adatta ai telefoni: filtri due per riga, gruppi di pulsanti scorrevoli, grafico più basso e meno

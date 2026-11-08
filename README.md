@@ -87,6 +87,15 @@ and women's table tennis rankings (about 8,900 men and 900 women), with data fro
   GitHub emails the repository owner, and the previous page stays online. To publish anyway, run the script with
   `FORCE=1` (in the workflow: add `FORCE: 1` to the `env` of the "Scarica i dati" step, run, then remove it).
 
+## Footer: updates and visits
+
+- The footer shows when the data was last updated (date and time of the scrape) and when the page code
+  (`template.html`) was last changed (from the GitHub API at build time).
+- **Visits:** counted with [Abacus](https://abacus.jasoncameron.dev), a free counter service that needs no account:
+  one visit per browser per day, only on the published site (not in local copies), with today's count in brackets.
+  The count starts on 08/11/2026. It is a free hobby service: if it stops answering, the counter is simply not shown.
+  The counter lives at `abacus.jasoncameron.dev/get/nkashiri-rank-fitet/visite`.
+
 ## Phones and link previews
 
 - The page adapts to phones: filters two per row, scrollable button groups, a shorter chart and fewer table

@@ -366,6 +366,19 @@ function checkScrape(list, failed) {
   if (problems.length) throw new Error(`Scrape looks broken, not publishing: ${problems.join('; ')}. Run with FORCE=1 to publish anyway.`);
 }
 
+// Date of the last change to the page code (template.html), shown in the footer: from the GitHub API when the
+// repository is known (the workflow's checkout has no history), otherwise from the local git history.
+async function templateDate(repo) {
+  try {
+    if (repo) {
+      const res = await fetch(`https://api.github.com/repos/${repo}/commits?path=template.html&per_page=1`,
+        { headers: process.env.GITHUB_TOKEN ? { Authorization: `Bearer ${process.env.GITHUB_TOKEN}` } : {} });
+      if (res.ok) return (await res.json())[0]?.commit?.committer?.date || '';
+    }
+    return require('child_process').execSync('git log -1 --format=%cI -- template.html', { cwd: __dirname, encoding: 'utf8' }).trim();
+  } catch { return ''; }
+}
+
 // --- main ---
 
 (async () => {
@@ -444,7 +457,7 @@ function checkScrape(list, failed) {
   const repo = process.env.GITHUB_REPOSITORY || '';
   const data = {
     generated: new Date().toISOString(),
-    repo, rankId, rankDate, prevDate, ranges,
+    repo, rankId, rankDate, prevDate, ranges, templateDate: await templateDate(repo),
     cats: { M: catLimits(list, 'M'), F: catLimits(list, 'F') },
     sim: similarRanges(list, histories),
     players: list,

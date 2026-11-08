@@ -340,6 +340,7 @@
   <footer>
     <p>Dati dal <a href="https://portale.fitet.org" target="_blank" rel="noopener">portale FITET</a>, aggiornati ogni lunedì.
       Le soglie di categoria e le previsioni sono stime calcolate da questa pagina, non dati ufficiali.</p>
+    <p id="updinfo"></p>
     <p>Sito non ufficiale, non affiliato alla Federazione Italiana Tennistavolo.
       <span id="repolinks"></span></p>
   </footer>
@@ -435,8 +436,31 @@ $('add').addEventListener('submit', e => {
   if (name) window.open(issueUrl('Aggiungi', name.toUpperCase()), '_blank', 'noopener');
 });
 
+const when = d => { const t = new Date(d); return `${t.toLocaleDateString('it-IT')} alle ${t.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' })}`; };
 $('sub').textContent = `Classifiche nazionali maschile e femminile al ${new Date(DATA.rankDate || DATA.generated).toLocaleDateString('it-IT')} · ` +
-  `dati aggiornati il ${new Date(DATA.generated).toLocaleDateString('it-IT')} · ${players.length} atleti · fonte portale.fitet.org`;
+  `dati aggiornati il ${when(DATA.generated)} · ${players.length} atleti · fonte portale.fitet.org`;
+
+// Footer: when the data and the page code were last updated, and the visit counter.
+// Visits are counted with abacus.jasoncameron.dev (free, no account): one per browser per day, only on the published
+// site; a second counter per day gives today's visits. If the service does not answer, the counter is just not shown.
+const COUNTER = 'https://abacus.jasoncameron.dev', COUNTER_NS = 'nkashiri-rank-fitet', COUNTER_SINCE = '2026-11-08';
+$('updinfo').innerHTML = `Dati aggiornati il ${when(DATA.generated)}` +
+  (DATA.templateDate ? ` · pagina (grafica e funzioni) aggiornata il ${when(DATA.templateDate)}` : '') + '<span id="visits"></span>';
+(async () => {
+  if (!location.hostname.endsWith('github.io')) return;
+  const today = new Date().toISOString().slice(0, 10);
+  let counted = null;
+  try { counted = localStorage.getItem('visit-day'); } catch {}
+  const op = counted === today ? 'get' : 'hit';
+  try {
+    const [all, todays] = await Promise.all(['visite', `visite-${today}`].map(k =>
+      fetch(`${COUNTER}/${op}/${COUNTER_NS}/${k}`).then(r => r.ok ? r.json() : r.status === 404 ? { value: 0 } : null)));
+    if (all?.value == null) return;
+    try { localStorage.setItem('visit-day', today); } catch {}
+    $('visits').textContent = ` · ${all.value.toLocaleString('it-IT')} ${all.value === 1 ? 'visita' : 'visite'} dal ${day(COUNTER_SINCE)}` +
+      (todays?.value != null ? ` (oggi ${todays.value.toLocaleString('it-IT')})` : '');
+  } catch {}
+})();
 $('range').innerHTML = DATA.ranges.map((r, i) => `<button data-v="${i}"${i === 0 ? ' class="on"' : ''}>${esc(r.label)}</button>`).join('');
 
 // --- Filters (state kept in the URL hash, so a filtered view can be bookmarked or shared) ---
