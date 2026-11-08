@@ -17,6 +17,8 @@
 <meta name="theme-color" content="#2563eb">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232563eb'/%3E%3Cpolyline points='6,23 12,17 17,20 26,9' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='26' cy='9' r='3' fill='%23fbbf24'/%3E%3C/svg%3E">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.0.1/chartjs-plugin-zoom.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
   :root {
@@ -155,6 +157,34 @@
   .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--text); color: var(--bg);
            padding: 8px 14px; border-radius: 8px; font-size: 13px; z-index: 20; }
   .toast[hidden] { display: none; }
+  .tools { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-bottom: 6px; font-size: 12px; color: var(--muted); }
+  .tools .hint { margin: 0; flex: 1 1 260px; }
+  .tools button { font-size: 12px; padding: 3px 8px; }
+  .tools button[hidden] { display: none; }
+  .tools button.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .movhead { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px; }
+  .seg.small button { font-size: 12px; padding: 3px 8px; }
+  .group { margin-bottom: 16px; }
+  .group[hidden] { display: none; }
+  .group h2 { font-size: 16px; margin: 0; }
+  .group .meta { color: var(--muted); font-size: 13px; }
+  .group table { font-size: 13px; }
+  .group .clubs { max-height: 420px; overflow: auto; margin-top: 8px; }
+  .group .clubs tbody tr:hover { background: var(--hover); }
+  .group li[data-info] { cursor: pointer; }
+  .group li[data-info]:hover { text-decoration: underline; }
+  .matches h3 { font-size: 13px; margin: 14px 0 4px; }
+  .matches table { font-size: 12px; }
+  .matches td { white-space: normal; }
+  .matches .off { color: var(--muted); text-decoration: line-through; }
+  .matches details summary { cursor: pointer; border: 0; padding: 4px 0; background: none; color: var(--accent); }
+  .matches details .tablewrap { max-height: 360px; overflow: auto; }
+  a.opp, span.opp { color: var(--accent); cursor: pointer; }
+  .res-v { color: var(--up); font-weight: 600; } .res-p { color: var(--down); font-weight: 600; }
+  .h2h { margin-top: 8px; padding: 10px 12px; border-radius: 8px; background: var(--hover); }
+  .h2h select { max-width: 100%; }
+  .h2h table { width: auto; min-width: 60%; margin-top: 6px; font-size: 13px; }
+  .h2h td, .h2h th { border-bottom-color: var(--border); }
 
   /* Phones and narrow windows: filters two per row, scrollable button groups, shorter chart, fewer table columns. */
   @media (max-width: 700px) {
@@ -209,6 +239,7 @@
       <button data-v="date" class="on">Per data</button>
       <button data-v="eta" title="Allinea per età anagrafica: età = data della classifica - data di nascita">Per età</button>
       <button data-v="anni" title="Allinea per anni di presenza in classifica (dal primo dato disponibile)">Per anni in classifica</button>
+      <button data-v="stag" title="Una linea per stagione, allineate al 1° luglio, per l'atleta scelto nell'analisi">Per stagione</button>
     </div>
     <label class="chk" title="Solo per la posizione: proiezione dei prossimi 12 mesi con la media % degli ultimi 12 mesi"><input type="checkbox" id="proj" checked> Proiezione 12 mesi</label>
     <button id="top">Top 8</button>
@@ -219,6 +250,12 @@
 
   <div class="banner" id="agebanner" hidden>
     <span id="agetext"></span><button id="toage">Confronta per età</button>
+  </div>
+  <div class="tools">
+    <span class="hint" id="zoomhint"></span>
+    <button id="zoomtouch" type="button" hidden title="Attiva lo zoom con due dita sui grafici (la pagina non scorre sopra i grafici finché è attivo)">Zoom</button>
+    <button id="zoomreset" type="button" hidden>Reimposta zoom</button>
+    <button id="png" type="button" title="Scarica il grafico come immagine">Scarica PNG</button>
   </div>
   <div class="card chart">
     <div class="empty" id="empty">Seleziona uno o più atleti dalla tabella qui sotto, oppure usa "Top 8".</div>
@@ -259,13 +296,15 @@
   </form>
 
   <div class="card movers" id="movers" hidden>
-    <h2>Chi sale e chi scende</h2>
+    <div class="movhead"><h2>Chi sale e chi scende</h2><div class="seg small" id="mvrange"></div></div>
     <div class="hint" id="moverssub"></div>
     <div class="procols">
       <div><h3 class="up">▲ Migliori progressi</h3><ol id="mvup"></ol></div>
       <div><h3 class="down">▼ Maggiori cali</h3><ol id="mvdown"></ol></div>
     </div>
   </div>
+
+  <section class="card group" id="group" hidden></section>
 
   <div class="card dist">
     <h2>Distribuzione dei punti</h2>
@@ -291,7 +330,8 @@
       <tbody id="rows"></tbody>
     </table>
   </div>
-  <div class="tablefoot"><span id="count"></span><button id="more">Mostra altri</button></div>
+  <div class="tablefoot"><span id="count"></span><button id="more">Mostra altri</button>
+    <button id="csv" type="button" title="Tutti gli atleti filtrati, nell'ordine della tabella (apribile con Excel)">Scarica CSV</button></div>
   <div class="files" id="files" hidden>
     <button id="dl">Scarica lo script (.zip)</button>
     <span id="dlmsg"></span><br>
@@ -323,7 +363,8 @@ const FILTERS = {
   list: { label: 'Elenco', all: 'tutti', get: p => [p.extra ? 'Extra' : 'Classifica'],
           show: v => v === 'Extra' ? 'Atleti extra' : 'Classifiche nazionali' },
 };
-const state = { metric: 'pts', range: 0, x: 'date', proj: true, ana: null, profile: null, sort: 'pts', dir: -1, shown: PAGE, selected: new Set(),
+const state = { metric: 'pts', range: 0, x: 'date', proj: true, ana: null, profile: null, mv: 'last', h2h: null, touchZoom: false,
+  sort: 'pts', dir: -1, shown: PAGE, selected: new Set(),
   f: Object.fromEntries(Object.keys(FILTERS).map(k => [k, new Set()])) };
 const colorOf = new Map();
 const YEAR = 365.2425 * 864e5, MONTH = YEAR / 12;
@@ -344,6 +385,45 @@ const EST_NOTE = 'Posizione stimata (fittizia): lo straniero non è in classific
 const estPos = v => `<span class="est" title="${EST_NOTE}">≈${v}°</span>`;
 // Position in a history row: the real one, or the estimate for a foreign athlete (5th value, see fitet.js).
 const posOf = x => x[1] ?? x[4] ?? null;
+const day = d => new Date(d).toLocaleDateString('it-IT');
+const yy = n => String(n % 100).padStart(2, '0');
+const alpha = (c, a) => c + Math.round(a * 255).toString(16).padStart(2, '0');  // #rrggbb + opacity
+
+// --- Zoom (chartjs-plugin-zoom): drag a box or Ctrl+wheel with a mouse, Shift+drag to pan, double click to reset.
+// On touch screens two-finger zoom would stop the page from scrolling over the charts, so it is behind a "Zoom" button.
+if (window.ChartZoom) Chart.register(window.ChartZoom);
+const coarse = matchMedia('(pointer: coarse)').matches;
+const zoomOpts = mode => ({
+  zoom: { mode, drag: { enabled: !coarse, backgroundColor: 'rgba(37,99,235,.12)' }, wheel: { enabled: !coarse, modifierKey: 'ctrl' },
+          pinch: { enabled: coarse && state.touchZoom }, onZoomComplete: updZoomBtn },
+  pan: { enabled: !coarse || state.touchZoom, mode, modifierKey: coarse ? null : 'shift', onPanComplete: updZoomBtn },
+});
+const allCharts = () => [chart, hist, barChart, avgChart];
+function updZoomBtn() { $('zoomreset').hidden = !allCharts().some(c => c?.isZoomedOrPanned?.()); }
+$('zoomhint').textContent = coarse ? 'Tocca "Zoom" per ingrandire i grafici con due dita.'
+  : 'Zoom: trascina un\'area del grafico o usa Ctrl+rotella · Maiusc+trascina per spostarti · doppio clic per tornare indietro.';
+$('zoomtouch').hidden = !coarse;
+
+// Saves a Blob as a file.
+function download(blob, name) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+
+// Range of the projection: how athletes of the same sex, age band and position band moved in k months
+// (DATA.sim, see similarRanges in fitet.js). Returns {start, q: [[p10, p25, p50, p75, p90] ratio for k = 1..12]}.
+function simBand(p, pos) {
+  const s = DATA.sim;
+  if (!s || pos == null) return null;
+  const band = (lims, v) => { const i = lims.findIndex(l => v <= l); return i < 0 ? lims.length : i; };
+  const age = p.born != null ? (Date.parse(DATA.rankDate || DATA.generated) - p.born) / YEAR : null;
+  const ab = age == null ? -1 : (i => i < 0 ? s.ages.length : i)(s.ages.findIndex(l => age < l));
+  const pb = band(s.pos, pos);
+  const q = (ab >= 0 && s.q[`${p.sex}|${pb}|${ab}`]) || s.q[`${p.sex}|${pb}`];
+  return q ? { start: pos, q } : null;
+}
 
 // Adding/removing extra athletes goes through a GitHub issue, handled by .github/workflows/extra.yml.
 const issueUrl = (op, name) => `https://github.com/${DATA.repo}/issues/new?title=${encodeURIComponent(`${op}: ${name}`)}` +
@@ -406,6 +486,7 @@ function saveHash() {
   if (state.ana && state.selected.has(state.ana)) h.set('a', state.ana);
   if ($('target').value !== '10') h.set('t', $('target').value);
   if (state.profile) h.set('pr', state.profile);
+  if (state.mv !== 'last') h.set('mv', state.mv);
   history.replaceState(null, '', '#' + (h.toString() || 'tutti'));  // not empty, or the Liguria default comes back
 }
 
@@ -417,7 +498,8 @@ function loadHash() {
   for (const id of (h.get('sel') || '').split(',')) if (byId.has(id)) { state.selected.add(id); pickColor(id); }
   if (h.get('m') === 'pos') state.metric = 'pos';
   state.range = Math.min(+h.get('r') || 0, DATA.ranges.length - 1);
-  if (['eta', 'anni'].includes(h.get('x'))) state.x = h.get('x');
+  if (['eta', 'anni', 'stag'].includes(h.get('x'))) state.x = h.get('x');
+  if (/^\d+$/.test(h.get('mv') || '') && +h.get('mv') < DATA.ranges.length) state.mv = h.get('mv');
   state.proj = $('proj').checked = h.get('p') !== '0';
   if (byId.has(h.get('a'))) state.ana = h.get('a');
   if (+h.get('t') >= 1) $('target').value = +h.get('t');
@@ -468,15 +550,45 @@ function stats(p) {
 // Shorter sector labels for the table (the filter and the tooltip keep the full ones).
 const shortSett = s => (s || '').replace(/^Giovanile /, '').replace(/ - Paralimpico$/, ' (para)');
 
-function renderTable() {
+// The filtered athletes in the table's order: [{p, s: stats(p)}].
+function sortedRows() {
   const rows = visible().map(p => ({ p, s: stats(p) }));
   const k = state.sort, text = ['name', 'sex', 'sett', 'club', 'reg'].includes(k);
   const val = r => k in r.s ? r.s[k] : k === 'cat' ? +r.p.cat : r.p[k];
-  rows.sort((a, b) => {
+  return rows.sort((a, b) => {
     const va = val(a), vb = val(b);
     if (va == null || va === '') return 1; if (vb == null || vb === '') return -1;
     return (text ? va.localeCompare(vb) : va - vb) * state.dir;
   });
+}
+
+// CSV of all the filtered athletes, in the table's order: semicolons and decimal commas, as Excel expects in Italy.
+function exportCsv() {
+  const q = v => v == null ? '' : /[;"\r\n]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : String(v);
+  const num = v => v == null ? '' : String(v).replace('.', ',');
+  const period = DATA.ranges[state.range].label;
+  const head = ['#', 'Atleta', 'Anno', 'Sesso', 'Settore', 'Società', 'Regione', 'Categoria', 'Punti', 'Posizione', 'Posizione stimata',
+    `Δ Punti (${period})`, `Δ Pos. (${period})`, 'Vinte', 'Perse', '% vittorie', 'Miglior posizione', 'Data miglior posizione'];
+  const lines = sortedRows().map(({ p, s }, i) => [i + 1, p.name, p.year, p.sex, p.sett, p.club, p.reg, p.cat, num(s.pts), p.pos,
+    p.pos == null ? s.pos : null, num(s.dPts), s.dPos, p.won, p.lost, p.pct, p.best, p.bestDate].map(q).join(';'));
+  download(new Blob(['﻿' + [head.map(q).join(';'), ...lines].join('\r\n')], { type: 'text/csv;charset=utf-8' }),
+    `fitet-classifica-${DATA.rankDate || 'dati'}.csv`);
+}
+
+// PNG of a chart, on the panel colour (the canvas itself is transparent).
+function exportPng(c, name) {
+  if (!c) { toast('Nessun grafico da scaricare'); return; }
+  const out = document.createElement('canvas');
+  out.width = c.canvas.width; out.height = c.canvas.height;
+  const ctx = out.getContext('2d');
+  ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--panel').trim() || '#fff';
+  ctx.fillRect(0, 0, out.width, out.height);
+  ctx.drawImage(c.canvas, 0, 0);
+  out.toBlob(b => download(b, name));
+}
+
+function renderTable() {
+  const rows = sortedRows();
   $('rows').innerHTML = rows.slice(0, state.shown).map(({ p, s }, i) => `<tr data-k="${p.id}" tabindex="0" aria-selected="${state.selected.has(p.id)}">
     <td class="num rank">${i + 1}</td><td class="athlete" title="${esc(p.name)}"><span class="swatch" style="background:${state.selected.has(p.id) ? colorOf.get(p.id) : 'transparent'}"></span><span class="nm">${esc(p.name)}</span><button class="info" type="button" data-info="${p.id}" title="Scheda dell'atleta" aria-label="Scheda di ${esc(p.name)}">ⓘ</button>${p.extra ? '<span class="tag">extra</span>' +
       (DATA.repo ? `<a class="rm" href="${issueUrl('Rimuovi', p.name)}" target="_blank" rel="noopener" title="Rimuovi dagli atleti extra">×</a>` : '') : ''}</td>
@@ -580,7 +692,26 @@ async function renderChart() {
   const muted = color('--muted'), grid = color('--border');
   const pos = state.metric === 'pos', since = state.x === 'date' ? DATA.ranges[state.range].since : '';
   const datasets = [];
-  ids.forEach((id, i) => {
+  const season = state.x === 'stag';
+  // "Per stagione": one line per season of one athlete (the one of the analysis), x = days since July 1.
+  // Points restart every July 1, so the seasons are comparable with each other; the last 5 are shown, up to 7 older ones in the legend.
+  const sid = season && ids.length ? (state.selected.has(state.ana) ? state.ana : ids[0]) : null;
+  if (sid) {
+    const h = hs[ids.indexOf(sid)], seasons = new Map();
+    for (const x of h) {
+      const y = +x[0].slice(0, 4) - (x[0].slice(5) < '07-01' ? 1 : 0), v = pos ? posOf(x) : x[2];
+      if (v == null) continue;
+      if (!seasons.has(y)) seasons.set(y, []);
+      seasons.get(y).push({ x: (Date.parse(x[0]) - Date.UTC(y, 6, 1)) / 864e5, y: v, t: Date.parse(x[0]) });
+    }
+    const others = PALETTE.filter(c => c !== colorOf.get(sid));
+    [...seasons.keys()].sort((a, b) => b - a).slice(0, 12).forEach((y, k) => datasets.push({
+      label: `${yy(y)}/${yy(y + 1)}`, data: seasons.get(y), hidden: k >= 5, tension: 0.15,
+      borderColor: k ? others[(k - 1) % others.length] : colorOf.get(sid), backgroundColor: k ? others[(k - 1) % others.length] : colorOf.get(sid),
+      borderWidth: k ? 1.5 : 3, pointRadius: k ? 0 : 3,
+    }));
+  }
+  if (!season) ids.forEach((id, i) => {
     const p = byId.get(id), h = hs[i];
     if (!h.length || (state.x === 'eta' && p.born == null)) return;
     // x of a time t: the time itself, the athlete's age, or the years since their first ranking.
@@ -609,11 +740,20 @@ async function renderChart() {
       data: proj.map(([k, y]) => ({ x: X(tEnd + k * MONTH), y, t: tEnd + k * MONTH })),
       borderColor: colorOf.get(id), borderDash: [2, 3], borderWidth: 1.5, pointRadius: 0, tension: 0,
     });
+    // Range of similar athletes (simBand): 10-90% lightly shaded, 25-75% darker.
+    const band = pos && state.proj ? simBand(p, posOf(h[h.length - 1])) : null;
+    if (band) {
+      const line = (j, fill, a) => ({ label: 'band', band: true, fill, tension: 0.3, borderWidth: 0, pointRadius: 0, pointHitRadius: 0,
+        backgroundColor: alpha(colorOf.get(id), a), borderColor: 'transparent',
+        data: Array.from({ length: 13 }, (_, k) => ({ x: X(tEnd + k * MONTH), y: Math.max(1, band.start * (k ? band.q[k - 1][j] : 1)), t: tEnd + k * MONTH })) });
+      datasets.push(line(4, false, 0), line(0, '-1', 0.08), line(3, false, 0), line(1, '-1', 0.16));
+    }
   });
   if (chart) { chart.destroy(); chart = null; }
   $('empty').hidden = datasets.length > 0;
   if (!datasets.length) return;
   const day = t => new Date(t).toLocaleDateString('it-IT');
+  const MONTHS = ['lug', 'ago', 'set', 'ott', 'nov', 'dic', 'gen', 'feb', 'mar', 'apr', 'mag', 'giu'];
   chart = new Chart($('cv'), {
     type: 'line', data: { datasets }, plugins: [catLines],
     options: {
@@ -621,9 +761,11 @@ async function renderChart() {
       interaction: { mode: 'nearest', intersect: false },
       plugins: {
         legend: { labels: { color: muted, boxWidth: innerWidth < 700 ? 8 : 12, padding: innerWidth < 700 ? 6 : 10,
-          font: { size: innerWidth < 700 ? 10 : 12 }, filter: (it, d) => !d.datasets[it.datasetIndex].proj } },
-        catLines: { color: muted, lines: pos ? catLineList([...new Set(ids.map(id => byId.get(id).sex))].sort().reverse()) : [] },
-        tooltip: { callbacks: {
+          font: { size: innerWidth < 700 ? 10 : 12 }, filter: (it, d) => !d.datasets[it.datasetIndex].proj && !d.datasets[it.datasetIndex].band } },
+        title: { display: season, color: muted, text: sid ? `${byId.get(sid).name}: una linea per stagione (clicca sulla legenda per mostrare le più vecchie)` : '' },
+        catLines: { color: muted, lines: pos ? catLineList([...new Set((sid ? [sid] : ids).map(id => byId.get(id).sex))].sort().reverse()) : [] },
+        zoom: zoomOpts('xy'),
+        tooltip: { filter: i => !i.dataset.band, callbacks: {
           title: items => { const r = items[0].raw;
             return state.x === 'eta' ? `${fmt(r.x)} anni · ${day(r.t)}` : state.x === 'anni' ? `${fmt(r.x)} anni in classifica · ${day(r.t)}` : day(r.t); },
           label: i => { const r = i.raw;
@@ -635,16 +777,20 @@ async function renderChart() {
         } },
       },
       scales: {
-        x: { type: 'linear', grid: { color: grid },
+        x: season ? { type: 'linear', min: 0, max: 365, grid: { color: grid },
+               ticks: { color: muted, stepSize: 365.25 / 12, callback: v => MONTHS[Math.round(v / (365.25 / 12))] ?? '' },
+               title: { display: true, color: muted, text: 'Mese della stagione (dal 1° luglio)' } }
+          : { type: 'linear', grid: { color: grid },
              ticks: { color: muted, maxTicksLimit: 8, callback: v => state.x === 'date'
                ? new Date(v).toLocaleDateString('it-IT', { month: 'short', year: '2-digit' }) : fmt(v, v % 1 ? 1 : 0) },
              title: { display: state.x !== 'date', color: muted, text: state.x === 'eta' ? 'Età (anni) · tutto lo storico'
                : 'Anni in classifica, dal primo dato disponibile (lo storico inizia a luglio 2011) · tutto lo storico' } },
-        y: { reverse: pos, ticks: { color: muted }, grid: { color: grid },
+        y: { reverse: pos, ticks: { color: muted, callback: v => Math.round(v).toLocaleString('it-IT') }, grid: { color: grid },
              title: { display: true, color: muted, text: pos ? 'Posizione (classifica nazionale M/F)' : 'Punti' } },
       },
     },
   });
+  updZoomBtn();
 }
 
 let barChart, avgChart, anaData = null, anaRun = 0;
@@ -698,7 +844,7 @@ async function renderAnalysis() {
     data: { labels, datasets: [{ data: a.rated.map(x => x.rate),
       backgroundColor: a.rated.map(x => est ? greyish(x.rate >= 0 ? up : down) : x.rate >= 0 ? up : down) }] },
     options: { maintainAspectRatio: false, animation: false, scales,
-      plugins: { legend: { display: false },
+      plugins: { legend: { display: false }, zoom: zoomOpts('x'),
         tooltip: { callbacks: { label: i => `${pct(i.parsed.y)} · ${est ? '≈' : ''}${a.rated[i.dataIndex].pos}°`,
           afterLabel: () => est ? 'posizione stimata (straniero non in classifica)' : '' } } } },
   });
@@ -711,9 +857,10 @@ async function renderAnalysis() {
       line(`Media totale (${pct(a.avgAll)})`, a.rated.map(() => a.avgAll), muted, { borderDash: [6, 4], borderWidth: 1.5 }),
     ] },
     options: { maintainAspectRatio: false, animation: false, scales, interaction: { mode: 'index', intersect: false },
-      plugins: { legend: { labels: { color: muted, boxWidth: 12 } },
+      plugins: { legend: { labels: { color: muted, boxWidth: 12 } }, zoom: zoomOpts('x'),
         tooltip: { callbacks: { label: i => `${i.dataset.label.replace(/ \(.*/, '')}: ${pct(i.parsed.y)}` } } } },
   });
+  updZoomBtn();
 }
 
 // "Previsione" box: months to the target position at the current pace, mesi = log(target/start) / log(1 - rate).
@@ -732,6 +879,13 @@ function renderForecast() {
   }
   if (a.slope != null) lines.push(`Trend lineare degli ultimi 12 mesi: <b>${a.slope <= 0 ? `+${fmt(-a.slope)} posizioni` : `−${fmt(a.slope)} posizioni`}</b> al mese, ` +
     `R² ${fmt(a.r2, 2)} (${a.r2 >= 0.7 ? 'trend regolare' : a.r2 >= 0.4 ? 'trend abbastanza regolare' : 'andamento irregolare, previsione poco affidabile'}).`);
+  const band = simBand(p, start);
+  if (band) {
+    const v = band.q[11].map(r => Math.max(1, Math.round(start * r)));
+    lines.push(`Atleti simili (stesso sesso, fascia d'età e livello, ultime 5 stagioni) partiti dal ${start}°, dopo 12 mesi: ` +
+      `metà tra il <b>${v[1]}°</b> e il <b>${v[3]}°</b> (mediana ${v[2]}°), 8 su 10 tra il ${v[0]}° e il ${v[4]}°. ` +
+      `È la fascia colorata nel grafico Posizione (con "Proiezione 12 mesi").`);
+  }
   $('fc').innerHTML = lines.map(l => `<p>${l}</p>`).join('');
 }
 
@@ -742,6 +896,7 @@ const markers = { id: 'markers', afterDatasetsDraw(c) {
   const { ctx, chartArea: a, scales: { x } } = c;
   for (const m of c.options.plugins.markers.lines) {
     const px = x.getPixelForValue(m.at);
+    if (px < a.left || px > a.right) continue;  // outside the zoomed range
     ctx.save(); ctx.strokeStyle = m.color; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(px, a.top); ctx.lineTo(px, a.bottom); ctx.stroke(); ctx.restore();
   }
@@ -780,7 +935,7 @@ function renderHist() {
     options: {
       maintainAspectRatio: false, animation: false,
       plugins: {
-        legend: { display: false },
+        legend: { display: false }, zoom: zoomOpts('x'),
         markers: { lines: sel.map(p => ({ color: colorOf.get(p.id), at: (p.pts - start) / step - 0.5 })) },
         tooltip: { callbacks: {
           title: items => `${items[0].label}–${+items[0].label + step - 1} punti`,
@@ -798,7 +953,6 @@ function renderHist() {
 
 // --- Athlete profile ("scheda"): summary, comparison with peers, distance from the category thresholds ---
 
-const day = d => new Date(d).toLocaleDateString('it-IT');
 // Rank by points within a group of athletes: "3° su 41".
 const rankIn = (p, group) => `<b>${1 + group.filter(q => q.pts > p.pts).length}°</b> su ${group.length}`;
 
@@ -845,7 +999,83 @@ function renderProfile() {
         `<li>${k}: ${rankIn(p, g)}</li>`).join('') || '<li class="muted">Nessun confronto disponibile.</li>'}</ul></div>
       <div><h3>Categoria</h3><ul>${cats.map(t => `<li>${t}</li>`).join('') || '<li class="muted">Nessuna soglia disponibile.</li>'}
         <li class="muted">Soglie stimate dalla classifica attuale (${P(s.pos ?? '–')} oggi); le categorie si riassegnano a inizio stagione, il 1° luglio.</li></ul></div>
-    </div>`;
+    </div>
+    <div class="matches" id="promatch"></div>`;
+  renderMatches(p);
+}
+
+// --- Season matches (partite/<id>.json, see writeMatches in fitet.js) and head-to-head ---
+// Row: [date, 'C'|'T', competition, event · round, opponent, opponent id, won, opp. points, opp. position, not counted].
+
+const matchCache = new Map();
+function loadMatches(id) {
+  if (!matchCache.has(id)) matchCache.set(id, fetch(`partite/${id}.json`).then(r => r.ok ? r.json() : []).catch(() => []));
+  return matchCache.get(id);
+}
+const oppName = m => m[5] && byId.has(m[5]) ? `<span class="opp" data-info="${m[5]}">${esc(m[4])}</span>` : esc(m[4]);
+const oppLevel = m => m[7] != null ? `${m[7]} pt${m[8] != null ? ` · ${m[8]}°` : ''}` : '–';
+
+async function renderMatches(p) {
+  const el = $('promatch');
+  if (!p.nm) { el.innerHTML = '<h3>Partite della stagione</h3><p class="muted">Nessuna partita nella stagione in corso.</p>'; renderH2h(p, []); return; }
+  el.innerHTML = '<h3>Partite della stagione</h3><p class="muted">Caricamento…</p>';
+  const ms = await loadMatches(p.id);
+  if (state.profile !== p.id || !$('promatch')) return;  // another profile was opened meanwhile
+  const won = ms.filter(m => m[6]), lost = ms.filter(m => !m[6]), kind = k => ms.filter(m => m[1] === k);
+  const wl = l => `${l.filter(m => m[6]).length}–${l.filter(m => !m[6]).length}`;
+  const best = won.filter(m => m[7] != null).sort((a, b) => b[7] - a[7]).slice(0, 5);
+  const worst = lost.filter(m => m[7] != null).sort((a, b) => a[7] - b[7]).slice(0, 5);
+  const li = m => `<li>${oppName(m)} <small class="muted">(${oppLevel(m)}) · ${day(m[0])} · ${esc(m[2])}</small></li>`;
+  el.innerHTML = `<h3>Partite della stagione</h3>
+    <p>${ms.length} partite: <b>${won.length}</b> vinte, <b>${lost.length}</b> perse
+      ${kind('C').length ? ` · campionato ${wl(kind('C'))}` : ''}${kind('T').length ? ` · tornei ${wl(kind('T'))}` : ''}.
+      <small class="muted">Punti e posizione degli avversari alla classifica precedente la partita.</small></p>
+    <div class="procols">
+      <div><h3 class="up">Migliori vittorie</h3><ul>${best.map(li).join('') || '<li class="muted">Nessuna.</li>'}</ul></div>
+      <div><h3 class="down">Sconfitte più pesanti</h3><ul>${worst.map(li).join('') || '<li class="muted">Nessuna.</li>'}</ul></div>
+    </div>
+    <details><summary>Tutte le partite (${ms.length})</summary><div class="tablewrap"><table>
+      <thead><tr><th>Data</th><th>Gara</th><th>Avversario</th><th class="num">Avversario: punti · pos.</th><th>Esito</th></tr></thead>
+      <tbody>${ms.map(m => `<tr${m[9] ? ' class="off" title="Non conteggiata per la classifica"' : ''}><td>${day(m[0])}</td>
+        <td>${esc(m[2])}${m[3] ? `<br><small class="muted">${esc(m[3])}</small>` : ''}</td><td>${oppName(m)}</td><td class="num">${oppLevel(m)}</td>
+        <td class="${m[6] ? 'res-v' : 'res-p'}">${m[6] ? 'V' : 'P'}</td></tr>`).join('')}</tbody></table></div></details>`;
+  renderH2h(p, ms);
+}
+
+// Head-to-head with another athlete: the selected ones, plus this season's opponents in the page.
+function renderH2h(p, ms) {
+  const el = $('promatch');
+  const opts = new Map([...state.selected].filter(id => id !== p.id).map(id => [id, byId.get(id)]));
+  for (const m of ms) if (m[5] && byId.has(m[5]) && m[5] !== p.id) opts.set(m[5], byId.get(m[5]));
+  if (!opts.size) return;
+  if (!opts.has(state.h2h)) state.h2h = null;
+  const box = document.createElement('div');
+  box.className = 'h2h';
+  const o = state.h2h && byId.get(state.h2h);
+  let table = '';
+  if (o) {
+    const so = stats(o), sp = stats(p), mine = ms.filter(m => m[5] === o.id);
+    const age = x => x.born != null ? Math.floor((Date.parse(DATA.rankDate || DATA.generated) - x.born) / YEAR) : '–';
+    const row = (k, a, b, better) => `<tr><th>${k}</th><td class="num${better === 1 ? ' up' : ''}">${a}</td><td class="num${better === 2 ? ' up' : ''}">${b}</td></tr>`;
+    const cmp = (a, b, low) => a == null || b == null || a === b ? 0 : (low ? a < b : a > b) ? 1 : 2;
+    table = `<table><thead><tr><th></th><th class="num">${esc(p.name)}</th><th class="num">${esc(o.name)}</th></tr></thead><tbody>
+      ${row('Punti', sp.pts ?? '–', so.pts ?? '–', cmp(sp.pts, so.pts))}
+      ${row('Posizione', sp.pos != null ? `${sp.pos}°` : '–', so.pos != null ? `${so.pos}°` : '–', p.sex === o.sex ? cmp(sp.pos, so.pos, true) : 0)}
+      ${row('Categoria', p.cat ? `${p.cat}ª` : '–', o.cat ? `${o.cat}ª` : '–', cmp(+p.cat || null, +o.cat || null, true))}
+      ${row(`Δ Pos. (${esc(DATA.ranges[state.range].label)})`, signed(sp.dPos), signed(so.dPos), cmp(sp.dPos, so.dPos))}
+      ${row('Miglior posizione', p.best != null ? `${p.best}°` : '–', o.best != null ? `${o.best}°` : '–', p.sex === o.sex ? cmp(p.best, o.best, true) : 0)}
+      ${row('% vittorie (stagione)', p.pct ?? '–', o.pct ?? '–', cmp(p.pct, o.pct))}
+      ${row('Età', age(p), age(o), 0)}
+      ${row('Società', esc(p.clubs[p.clubs.length - 1] || '–'), esc(o.clubs[o.clubs.length - 1] || '–'), 0)}
+    </tbody></table>
+    <p>Scontri diretti nella stagione: ${mine.length ? `<b>${mine.filter(m => m[6]).length}–${mine.filter(m => !m[6]).length}</b> · ` +
+      mine.map(m => `${day(m[0])} ${esc(m[2])}: <span class="${m[6] ? 'res-v' : 'res-p'}">${m[6] ? 'V' : 'P'}</span>`).join(' · ') : 'nessuno.'}</p>`;
+  }
+  box.innerHTML = `<strong>Confronto diretto</strong> con
+    <select id="h2hsel" aria-label="Avversario"><option value="">scegli un atleta…</option>${[...opts.values()]
+      .sort((a, b) => a.name.localeCompare(b.name)).map(x => `<option value="${x.id}"${x.id === state.h2h ? ' selected' : ''}>${esc(x.name)}</option>`).join('')}</select>
+    <div class="hint">Atleti selezionati nel grafico e avversari della stagione. Gli scontri diretti sono quelli della stagione in corso.</div>${table}`;
+  el.append(box);
 }
 
 function openProfile(id) {
@@ -860,24 +1090,86 @@ function toast(msg) {
   clearTimeout(toast.t); toast.t = setTimeout(() => { $('toast').hidden = true; }, 2500);
 }
 
-// --- Movers: biggest climbs and falls since the previous ranking, among the filtered athletes ---
+// --- Movers: biggest climbs and falls among the filtered athletes, since the previous ranking or over a period ---
+
+const MOVERS = 10;
+$('mvrange').innerHTML = (DATA.prevDate ? [['last', 'Ultima classifica']] : []).concat(DATA.ranges.map((r, i) => [String(i), r.label]))
+  .map(([v, l]) => `<button type="button" data-v="${v}">${esc(l)}</button>`).join('');
 
 function renderMovers() {
-  const rows = visible().filter(p => p.last?.[1] != null && (p.pos ?? p.estPos) != null)
-    .map(p => { const now = p.pos ?? p.estPos, before = now + p.last[1]; return { p, d: p.last[1], rate: p.last[1] / before * 100 }; });
-  $('movers').hidden = !DATA.prevDate || !rows.length;
-  if ($('movers').hidden) return;
-  $('moverssub').textContent = `Dalla classifica del ${day(DATA.prevDate)} a quella del ${day(DATA.rankDate)}, tra i ${rows.length} atleti filtrati. ` +
-    `Ordinati per migl. % = (pos. precedente − pos. attuale) / pos. precedente, così un salto in alto conta quanto uno più lungo in basso.`;
+  if (state.mv === 'last' && !DATA.prevDate) state.mv = '0';
+  const dPos = p => state.mv === 'last' ? p.last?.[1] : p.delta?.[+state.mv]?.[1];
+  const rows = visible().filter(p => dPos(p) != null && (p.pos ?? p.estPos) != null)
+    .map(p => { const d = dPos(p), before = (p.pos ?? p.estPos) + d; return { p, d, rate: before > 0 ? d / before * 100 : 0 }; });
+  $('mvrange').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === state.mv));
+  $('movers').hidden = !rows.length;
+  if (!rows.length) return;
+  const since = state.mv === 'last' ? `Dalla classifica del ${day(DATA.prevDate)}` : DATA.ranges[+state.mv].since
+    ? `Dal ${day(DATA.ranges[+state.mv].since)}` : 'Da inizio storico (luglio 2011)';
+  $('moverssub').textContent = `${since} alla classifica del ${day(DATA.rankDate)}, tra i ${rows.length} atleti filtrati. ` +
+    `Ordinati per migl. % = (pos. iniziale − pos. attuale) / pos. iniziale, così un salto in alto conta quanto uno più lungo in basso.`;
   const item = ({ p, d, rate }) => `<li data-info="${p.id}"><span class="nm2">${esc(p.name)}</span> <small>${esc(p.clubs[p.clubs.length - 1] || '')}</small> · ` +
     `${signed(d)} pos. <small>(${p.pos == null ? '≈' : ''}${p.pos ?? p.estPos}°, ${pct(rate)})</small></li>`;
   const by = rows.sort((a, b) => b.rate - a.rate);
-  $('mvup').innerHTML = by.filter(r => r.d > 0).slice(0, 5).map(item).join('') || '<li class="muted">Nessuno.</li>';
-  $('mvdown').innerHTML = by.filter(r => r.d < 0).reverse().slice(0, 5).map(item).join('') || '<li class="muted">Nessuno.</li>';
+  $('mvup').innerHTML = by.filter(r => r.d > 0).slice(0, MOVERS).map(item).join('') || '<li class="muted">Nessuno.</li>';
+  $('mvdown').innerHTML = by.filter(r => r.d < 0).reverse().slice(0, MOVERS).map(item).join('') || '<li class="muted">Nessuno.</li>';
 }
 
-function render() { renderSummaries(); renderTable(); renderProfile(); renderBanner(); renderChart(); renderAnalysis(); renderMovers(); renderHist(); saveHash(); }
-function refilter() { state.shown = PAGE; renderSummaries(); renderTable(); renderMovers(); renderHist(); saveHash(); }
+// --- Club and region card: shown when the filters pick exactly one club (club card) or one region (region card) ---
+
+function renderGroup() {
+  const el = $('group');
+  const club = state.f.club.size === 1 ? [...state.f.club][0] : null;
+  const reg = !club && state.f.reg.size === 1 ? [...state.f.reg][0] : null;
+  const g = club || reg ? visible() : [];
+  el.hidden = !g.length;
+  if (!g.length) { el.innerHTML = ''; return; }
+  const period = DATA.ranges[state.range].label, now = Date.parse(DATA.rankDate || DATA.generated);
+  const tile = (k, v, d = '') => `<div class="tile"><div class="k">${k}</div><div class="v">${v}</div><div class="d">${d}</div></div>`;
+  const avg = xs => xs.length ? Math.round(mean(xs)) : '–';
+  const m = g.filter(p => p.sex === 'M').length, f = g.length - m;
+  const ages = g.filter(p => p.born != null).map(p => (now - p.born) / YEAR);
+  const won = g.reduce((s, p) => s + p.won, 0), lost = g.reduce((s, p) => s + p.lost, 0);
+  const dPos = g.map(p => stats(p).dPos).filter(v => v != null);
+  const counts = key => [...g.reduce((mp, p) => mp.set(key(p), (mp.get(key(p)) || 0) + 1), new Map())].filter(([k]) => k)
+    .sort((a, b) => String(a[0]).localeCompare(String(b[0]), 'it', { numeric: true }));
+  const person = p => `<li data-info="${p.id}">${esc(p.name)} <small class="muted">${p.pts ?? '–'} pt · ${p.pos != null ? `${p.pos}°` : p.estPos != null ? `≈${p.estPos}°` : '–'} ${p.sex}</small></li>`;
+  const top = [...g].sort((a, b) => (b.pts ?? -1) - (a.pts ?? -1)).slice(0, 5);
+  const risers = g.map(p => ({ p, d: stats(p).dPos, now: p.pos ?? p.estPos })).filter(r => r.d > 0 && r.now != null)
+    .sort((a, b) => b.d / (b.now + b.d) - a.d / (a.now + a.d)).slice(0, 5);
+  const head = `<h2>${club ? 'Società' : 'Regione'}: ${esc(club || reg)}</h2>
+    <div class="meta">${club ? esc([...new Set(g.map(p => p.reg).filter(Boolean))].join(', ')) + ' · ' : ''}atleti che rispettano i filtri attuali${state.f.sex.size === 1 ? '' : ' (maschile e femminile)'}</div>
+    <div class="tiles">
+      ${tile('Atleti', g.length, `${m} M · ${f} F`)}
+      ${tile('Punti medi', avg(g.map(p => p.pts).filter(v => v != null)), `mediana ${g.map(p => p.pts).filter(v => v != null).sort((a, b) => a - b)[Math.floor(g.length / 2)] ?? '–'}`)}
+      ${tile('Età media', ages.length ? Math.round(mean(ages)) : '–', ages.length ? `da ${Math.floor(Math.min(...ages))} a ${Math.floor(Math.max(...ages))} anni` : '')}
+      ${tile('Vittorie', won + lost ? `${Math.round(won / (won + lost) * 100)}%` : '–', won + lost ? `${won} vinte, ${lost} perse · stagione` : '')}
+      ${tile('Δ Pos. medio', dPos.length ? signed(Math.round(mean(dPos))) : '–', esc(period))}
+    </div>
+    <div class="procols">
+      <div><h3>I migliori per punti</h3><ul>${top.map(person).join('')}</ul></div>
+      <div><h3>Più in crescita (${esc(period)})</h3><ul>${risers.map(r => person(r.p).replace('</small>', ` · ${signed(r.d)}</small>`)).join('') || '<li class="muted">Nessuno.</li>'}</ul></div>
+      <div><h3>Per categoria</h3><ul>${counts(p => p.cat).map(([k, n]) => `<li>${k}ª: ${n}</li>`).join('')}</ul></div>
+      <div><h3>Per settore</h3><ul>${counts(p => p.sett).map(([k, n]) => `<li>${esc(k)}: ${n}</li>`).join('')}</ul></div>
+    </div>`;
+  if (club) { el.innerHTML = head; return; }
+  // Region: its clubs, ranked by the sum of the points of their 4 best athletes (a team-strength measure).
+  const clubs = new Map();
+  for (const p of g) for (const c of p.clubs) { if (!clubs.has(c)) clubs.set(c, []); clubs.get(c).push(p); }
+  const rows = [...clubs].map(([c, ps]) => {
+    const pts = ps.map(p => p.pts ?? 0).sort((a, b) => b - a), d = ps.map(p => stats(p).dPos).filter(v => v != null);
+    return { c, n: ps.length, force: Math.round(pts.slice(0, 4).reduce((s, v) => s + v, 0)), best: [...ps].sort((a, b) => (b.pts ?? 0) - (a.pts ?? 0))[0], d: d.length ? Math.round(mean(d)) : null };
+  }).sort((a, b) => b.force - a.force);
+  el.innerHTML = head + `<h3 style="font-size:13px;margin:12px 0 0">Società della regione (${rows.length})</h3>
+    <div class="hint">Forza = somma dei punti dei 4 atleti migliori. Clicca su una società per la sua scheda.</div>
+    <div class="clubs tablewrap"><table><thead><tr><th class="num">#</th><th>Società</th><th class="num">Atleti</th><th class="num">Forza</th>
+      <th>Migliore</th><th class="num">Δ Pos. medio</th></tr></thead><tbody>${rows.map((r, i) => `<tr data-club="${esc(r.c)}">
+      <td class="num rank">${i + 1}</td><td class="club" title="${esc(r.c)}">${esc(r.c)}</td><td class="num">${r.n}</td><td class="num">${r.force}</td>
+      <td>${esc(r.best.name)} <small class="muted">${r.best.pts ?? '–'} pt</small></td><td class="num">${signed(r.d)}</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+function render() { renderSummaries(); renderTable(); renderProfile(); renderBanner(); renderChart(); renderAnalysis(); renderMovers(); renderGroup(); renderHist(); saveHash(); }
+function refilter() { state.shown = PAGE; renderSummaries(); renderTable(); renderMovers(); renderGroup(); renderHist(); saveHash(); }
 
 document.querySelectorAll('.ms').forEach(el => {
   const k = el.dataset.f;
@@ -919,7 +1211,32 @@ $('rows').addEventListener('keydown', e => {
 for (const id of ['mvup', 'mvdown']) $(id).addEventListener('click', e => {
   const li = e.target.closest('[data-info]'); if (li) openProfile(li.dataset.info);
 });
+$('mvrange').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  state.mv = b.dataset.v; renderMovers(); saveHash();
+});
+$('group').addEventListener('click', e => {
+  const info = e.target.closest('[data-info]');
+  if (info) { openProfile(info.dataset.info); return; }
+  const tr = e.target.closest('tr[data-club]');
+  if (tr) { state.f.club = new Set([tr.dataset.club]); refilter(); $('group').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+});
+$('profile').addEventListener('change', e => {
+  if (e.target.id === 'h2hsel') { state.h2h = e.target.value || null; renderMatches(byId.get(state.profile)); }
+});
+$('csv').addEventListener('click', exportCsv);
+$('png').addEventListener('click', () => exportPng(chart, `fitet-grafico-${DATA.rankDate || 'dati'}.png`));
+$('zoomreset').addEventListener('click', () => { allCharts().forEach(c => c?.resetZoom?.()); updZoomBtn(); });
+$('zoomtouch').addEventListener('click', () => {
+  state.touchZoom = !state.touchZoom;
+  $('zoomtouch').classList.toggle('on', state.touchZoom);
+  $('zoomtouch').textContent = state.touchZoom ? 'Zoom attivo' : 'Zoom';
+  renderChart(); renderAnalysis(); renderHist();
+});
+for (const id of ['cv', 'hv', 'mv', 'av']) $(id).addEventListener('dblclick', () => { Chart.getChart($(id))?.resetZoom?.(); updZoomBtn(); });
 $('profile').addEventListener('click', async e => {
+  const opp = e.target.closest('[data-info]');
+  if (opp) { openProfile(opp.dataset.info); return; }
   if (e.target.id === 'proclose') { state.profile = null; renderProfile(); saveHash(); }
   if (e.target.id === 'share') {
     const p = byId.get(state.profile), url = location.href;

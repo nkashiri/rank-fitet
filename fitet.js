@@ -96,7 +96,10 @@ function field(html, label) {
 }
 
 async function detail(id, rankId) {
-  const html = await get(`${RANK}/dettaglioatleta_unica.php?ATLETA=${id}&ID_CLASS=${rankId}&ZU=1&AVVERSARIO=0`);
+  const url = `${RANK}/dettaglioatleta_unica.php?ATLETA=${id}&ID_CLASS=${rankId}&ZU=1&AVVERSARIO=0`;
+  const html = await get(url);
+  // The season's matches are on a separate static page, linked from a frame of the detail page.
+  const matchSrc = (html.match(/src="([^"]*details_page_\d+\.html)"/) || [])[1];
   const frag = (html.split('id="fragment-4"')[1] || '').split('id="fragment-5"')[0];
   const history = [];
   for (const r of frag.matchAll(/<tr>([^]*?)<\/tr>/gi)) {
@@ -114,9 +117,88 @@ async function detail(id, rankId) {
   // "Record classifica": best position ever, e.g. "n.97 il 30/11/2017".
   const rec = (field(html, 'Record classifica')[0] || '').match(/n\.\s*(\d+)\s+il\s+(\d{2})\/(\d{2})\/(\d{4})/);
   return { clubs: field(html, "Societa' appartenenza"), sett: field(html, 'Settore Agonistico')[0], history,
+    matchUrl: matchSrc ? new URL(matchSrc, url).href : null,
     won, lost, best: rec ? [+rec[1], `${rec[4]}-${rec[3]}-${rec[2]}`] : null,
     // For extra athletes, who are not in the ranking list: the "Dettaglio Punti" frame path names the ranking.
     reg: field(html, 'Regione')[0] || '', sex: /\/Femminile\//.test(html) ? 'F' : 'M' };
+}
+
+// --- 3. Season matches ("Incontri in campionato" and "Incontri in gare di torneo") ---
+
+// [{d: ISO date, k: 'C' league | 'T' tournament, comp, gara, opp: name, win, off: not counted in the ranking}].
+// The tables are told apart by their headers; columns are found by name, so their order does not matter.
+async function matches(url) {
+  const html = await get(url);
+  const out = [];
+  for (const table of html.split(/<table/i).slice(1)) {
+    const head = [...(table.match(/<thead>([^]*?)<\/thead>/i) || [, ''])[1].matchAll(/<th[^>]*>([^]*?)<\/th>/gi)].map(m => strip(m[1]));
+    const col = name => head.indexOf(name);
+    const league = col('Campionato') >= 0, tourn = col('Nome gara') >= 0 && col('Fase') >= 0;
+    if (!(league || tourn) || col('Nome avversario') < 0) continue;  // the points tables have no opponent
+    for (const r of ((table.match(/<tbody>([^]*?)<\/tbody>/i) || [, ''])[1]).matchAll(/<tr([^>]*)>([^]*?)<\/tr>/gi)) {
+      const c = cells(r[2]), dm = (c[col('Data')] || '').match(/(\d{2})\/(\d{2})\/(\d{4})/);
+      if (!dm) continue;
+      out.push({ d: `${dm[3]}-${dm[2]}-${dm[1]}`, k: league ? 'C' : 'T',
+        comp: c[col(league ? 'Campionato' : 'Competizione')] || '', gara: tourn ? `${c[col('Nome gara')] || ''} · ${c[col('Fase')] || ''}` : '',
+        opp: c[col('Nome avversario')] || '', win: (c[col('Risultato')] || '').trim().toUpperCase() === 'V', off: /discarded/.test(r[1]) });
+    }
+  }
+  return out.sort((a, b) => b.d.localeCompare(a.d));
+}
+
+// Writes partite/<id>.json for each athlete with matches. Opponents are named, not numbered: a name is linked to an
+// athlete of the page when exactly one has it. Each row also gets the opponent's points and position at the last
+// ranking before the match (so a "best win" means the strongest opponent at that time).
+// Row: [date, 'C'|'T', competition, event · round, opponent, opponent id or '', 1 won | 0 lost, points, position, 1 = not counted].
+function writeMatches(list, histories, all, dir) {
+  const byName = new Map();
+  for (const p of list) { const k = norm(p.name); byName.set(k, byName.has(k) ? null : p); }
+  const at = (id, d) => { let r = null; for (const x of histories.get(id) || []) { if (x[0] <= d) r = x; else break; } return r; };
+  for (const [id, ms] of all) {
+    const rows = ms.map(m => {
+      const o = byName.get(norm(m.opp)), h = o && at(o.id, m.d);
+      return [m.d, m.k, m.comp, m.gara, m.opp, o ? o.id : '', m.win ? 1 : 0, h ? h[2] : null, h ? h[1] ?? h[4] ?? null : null, m.off ? 1 : 0];
+    });
+    fs.writeFileSync(path.join(dir, `${id}.json`), JSON.stringify(rows));
+  }
+}
+
+// --- 4. Range of the projection: how athletes of the same sex, age and level actually moved ---
+
+// For every athlete and month of the last 5 seasons: the ratio position after k months / position now (k = 1..12),
+// grouped by sex, age band and position band. Stores the 10th, 25th, 50th, 75th and 90th percentiles of each group
+// (as ratios), and the same without the age band as a fallback for small groups. The page multiplies the athlete's
+// current position by them to draw the band.
+const SIM_AGES = [12, 15, 18, 22, 30, 40, 50, Infinity];   // upper limits (exclusive): <12, 12-14, ..., 50+
+const SIM_POS = [50, 150, 400, 1000, 2500, 5000, Infinity];
+function similarRanges(list, histories) {
+  const from = `${new Date().getUTCFullYear() - 5}-07-01`, groups = new Map();
+  const add = (key, k, v) => { if (!groups.has(key)) groups.set(key, Array.from({ length: 12 }, () => [])); groups.get(key)[k - 1].push(v); };
+  for (const p of list) {
+    const m = (p.birth || '').match(/(\d{2})\/(\d{2})\/(\d{4})/), h = histories.get(p.id);
+    if (!h) continue;
+    const born = m ? Date.UTC(+m[3], m[2] - 1, +m[1]) : null;
+    const months = new Map();  // last position of each month
+    for (const x of h) { const v = x[1] ?? x[4]; if (v != null && x[0] >= from) months.set(x[0].slice(0, 7), [Date.parse(x[0]), v]); }
+    const idx = [...months].map(([ym, [t, v]]) => ({ i: ym.slice(0, 4) * 12 + (ym.slice(5) - 1), t, v }));
+    const byI = new Map(idx.map(x => [x.i, x]));
+    for (const x of idx) {
+      const pb = SIM_POS.findIndex(l => x.v <= l), ab = born == null ? -1 : SIM_AGES.findIndex(l => (x.t - born) / 31556952000 < l);
+      for (let k = 1; k <= 12; k++) {
+        const y = byI.get(x.i + k);
+        if (!y) continue;
+        add(`${p.sex}|${pb}`, k, y.v / x.v);
+        if (ab >= 0) add(`${p.sex}|${pb}|${ab}`, k, y.v / x.v);
+      }
+    }
+  }
+  const q = (a, f) => a[Math.min(a.length - 1, Math.floor(f * a.length))];
+  const out = {};
+  for (const [key, ks] of groups) {
+    if (ks[11].length < 30) continue;  // too few cases for 12 months ahead: use the fallback
+    out[key] = ks.map(a => { a.sort((x, y) => x - y); return [0.1, 0.25, 0.5, 0.75, 0.9].map(f => Math.round(q(a, f) * 1000) / 1000); });
+  }
+  return { ages: SIM_AGES.slice(0, -1), pos: SIM_POS.slice(0, -1), q: out };
 }
 
 // --- Extra athletes (atleti_extra.txt: one "COGNOME NOME (gg/mm/aaaa)" per line, # for comments) ---
@@ -317,12 +399,12 @@ function checkScrape(list, failed) {
   });
 
   const dir = path.join(path.dirname(path.resolve(OUT)), 'storico');
-  fs.rmSync(dir, { recursive: true, force: true });
-  fs.mkdirSync(dir, { recursive: true });
+  const matchDir = path.join(path.dirname(path.resolve(OUT)), 'partite');
+  for (const d of [dir, matchDir]) { fs.rmSync(d, { recursive: true, force: true }); fs.mkdirSync(d, { recursive: true }); }
 
   const ranges = periods();
-  const histories = new Map();
-  let done = 0, failed = [], rankDate = '';
+  const histories = new Map(), allMatches = new Map();
+  let done = 0, failed = [], matchFailed = 0, rankDate = '';
   await pool(list, async p => {
     try {
       const d = await detail(p.id, rankId);
@@ -336,6 +418,9 @@ function checkScrape(list, failed) {
       }
       if (d.history.length && d.history[d.history.length - 1][0] > rankDate) rankDate = d.history[d.history.length - 1][0];
       histories.set(p.id, d.history);
+      if (d.matchUrl && d.won + d.lost > 0) {  // no matches this season: no page to fetch
+        try { allMatches.set(p.id, await matches(d.matchUrl)); } catch { matchFailed++; }
+      }
     } catch (err) {
       failed.push(`${p.name} (${err.message})`);
       p.clubs = []; p.delta = null; p.won = p.lost = 0; p.best = null;
@@ -343,6 +428,7 @@ function checkScrape(list, failed) {
     if (++done % 500 === 0) console.log(`  ${done}/${list.length}`);
   });
   if (failed.length) console.log(`Failed (${failed.length}): ${failed.slice(0, 50).join(', ')}${failed.length > 50 ? ', ...' : ''}`);
+  console.log(`Matches: ${allMatches.size} athletes${matchFailed ? `, ${matchFailed} match pages failed` : ''}`);
   checkScrape(list, failed);
 
   estimatePositions(list, histories);
@@ -351,13 +437,16 @@ function checkScrape(list, failed) {
     const h = histories.get(p.id);
     if (p.estPos != null) p.delta = deltas(h.map(x => [x[0], x[1] ?? x[4] ?? null, x[2]]), ranges);
     if (h) fs.writeFileSync(path.join(dir, `${p.id}.json`), JSON.stringify(h));
+    p.nm = allMatches.get(p.id)?.length || 0;  // number of season matches (0: no partite file)
   }
+  writeMatches(list, histories, allMatches, matchDir);
 
   const repo = process.env.GITHUB_REPOSITORY || '';
   const data = {
     generated: new Date().toISOString(),
     repo, rankId, rankDate, prevDate, ranges,
     cats: { M: catLimits(list, 'M'), F: catLimits(list, 'F') },
+    sim: similarRanges(list, histories),
     players: list,
   };
   const json = JSON.stringify(data).replace(/</g, '\\u003c');

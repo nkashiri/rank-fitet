@@ -24,9 +24,27 @@ and women's table tennis rankings (about 8,900 men and 900 women), with data fro
   year, in their club, region, category and sector (same gender); and the distance from the estimated category
   thresholds above and below. **Condividi** shares the link (or copies it), which reopens the profile with the athlete
   in the chart.
-- **Chi sale e chi scende** (movers): the 5 biggest climbs and falls since the previous ranking among the filtered
-  athletes, ordered by percentage improvement, (previous position − position) / previous position, so a jump near
-  the top counts as much as a longer one further down. Click a name for the profile.
+  The profile also lists the **season's matches** (league and tournaments, from the portal), with the best wins and
+  the heaviest losses (by the opponent's points at the ranking before the match), and a **Confronto diretto**
+  (head-to-head) with any selected athlete or season opponent: key figures side by side and their matches this season.
+- **Chi sale e chi scende** (movers): the 10 biggest climbs and falls among the filtered athletes, since the previous
+  ranking or over one of the periods (buttons in the card), ordered by percentage improvement,
+  (starting position − position) / starting position, so a jump near the top counts as much as a longer one further
+  down. Click a name for the profile.
+- **Club and region card:** choose exactly one club in Società (or one region in Regione) to see a card with the
+  number of athletes, average points, average age, win %, the best athletes and the biggest improvers, and the counts
+  by category and sector. The region card also ranks its clubs by strength (sum of the points of their 4 best
+  athletes); click a club to open its card.
+- **Per stagione:** a chart axis that draws one line per season of the athlete chosen in the analysis, aligned on
+  July 1 (the points restart every July 1, so seasons are comparable); the last 5 are shown, older ones in the legend.
+- **Range of the projection:** with Proiezione 12 mesi, the position chart also shows a shaded band: where athletes
+  of the same sex, age band and position band actually were after 1–12 months, over the last 5 seasons (darker 25–75%
+  of cases, lighter 10–90%). The analysis's Previsione box gives the same figures for 12 months.
+- **Zoom:** on every chart drag a box (or Ctrl+wheel) to zoom, Shift+drag to pan, double click or
+  **Reimposta zoom** to go back. On phones, tap **Zoom** to enable two-finger zoom (while it is on the page does not
+  scroll over the charts).
+- **Downloads:** **Scarica PNG** saves the main chart as an image; **Scarica CSV** (under the table) saves all the
+  filtered athletes in the table's order, for Excel (semicolons, decimal commas).
 - **Punti / Posizione**: the chart metric, points or position in the national ranking (the men's or the women's one).
 - **Period** (this season, since last season, since three seasons ago, everything): the Δ columns
   show the change over that period. The buttons follow the season (from July 1) automatically.
@@ -100,6 +118,8 @@ analysis use it too, marked as estimated.
 - `template.html`: the page (chart and table) the data is inserted into.
 - `atleti_extra.txt`: extra athletes.
 - `og.png`: the image of the link previews.
+- On the published site, besides `index.html`: `storico/<id>.json` (ranking history) and `partite/<id>.json` (season
+  matches) for each athlete.
 - `.github/workflows/update.yml`: weekly update (and on code changes) and publishing to GitHub Pages.
 - `.github/workflows/extra.yml`: handles the "Aggiungi:" / "Rimuovi:" requests opened from the page.
 - `index.html`: the latest generated page (written by the workflow, don't edit it by hand).
@@ -129,6 +149,11 @@ directly: serve the folder, e.g. `cd site && python3 -m http.server`, then open 
    per athlete: "Riepilogo Dati" (Settore Agonistico, Societa' appartenenza, Record classifica, the season's
    matches played/won/lost) and the "Storico
    Classifica" tab (date, position, points, category).
+4. For athletes with matches this season: the static page linked from a frame of the detail page
+   (`risultati/new_rank/html/<ranking>/<Maschile|Femminile>/.../details_page_<n>.html`), with the tables
+   "Incontri in campionato" and "Incontri in gare di torneo" (date, competition, opponent, round, result; matches
+   not counted for the ranking are marked). Opponents are named, not numbered: a name is linked to an athlete of the
+   page when exactly one has it. This roughly doubles the time of the weekly scrape.
 
 The page embeds the athlete list with the Δ of each period already computed; each athlete's history
 is a separate file, `storico/<id>.json`, loaded only when the athlete is shown in the chart, so the

@@ -25,9 +25,29 @@ nazionali maschile e femminile di tennistavolo (circa 8.900 uomini e 900 donne),
   anno, nella società, in regione, in categoria e nel settore (stesso sesso); la distanza dalle soglie stimate della
   categoria superiore e inferiore. **Condividi** condivide il link (o lo copia), che riapre la scheda con l'atleta
   nel grafico.
-- **Chi sale e chi scende:** i 5 maggiori progressi e i 5 maggiori cali dall'ultima classifica tra gli atleti
-  filtrati, ordinati per miglioramento percentuale, (pos. precedente − pos. attuale) / pos. precedente, così un salto
-  in alto conta quanto uno più lungo in basso. Clicca su un nome per la scheda.
+  La scheda elenca anche le **partite della stagione** (campionato e tornei, dal portale), con le migliori vittorie e
+  le sconfitte più pesanti (secondo i punti dell'avversario alla classifica precedente la partita), e un **Confronto
+  diretto** con un atleta selezionato o un avversario della stagione: i dati principali affiancati e gli scontri della
+  stagione.
+- **Chi sale e chi scende:** i 10 maggiori progressi e i 10 maggiori cali tra gli atleti filtrati, dall'ultima
+  classifica o in uno dei periodi (pulsanti nel riquadro), ordinati per miglioramento percentuale,
+  (pos. iniziale − pos. attuale) / pos. iniziale, così un salto in alto conta quanto uno più lungo in basso.
+  Clicca su un nome per la scheda.
+- **Scheda società e regione:** scegli una sola società in Società (o una sola regione in Regione) per un riquadro con
+  numero di atleti, punti medi, età media, % vittorie, i migliori e i più in crescita, e i conteggi per categoria e
+  settore. La scheda regione classifica anche le sue società per forza (somma dei punti dei 4 atleti migliori);
+  clicca su una società per la sua scheda.
+- **Per stagione:** asse del grafico con una linea per stagione dell'atleta scelto nell'analisi, allineate al 1° luglio
+  (i punti ripartono ogni 1° luglio, quindi le stagioni sono confrontabili); si vedono le ultime 5, le più vecchie nella
+  legenda.
+- **Fascia della proiezione:** con Proiezione 12 mesi il grafico Posizione mostra anche una fascia colorata: dove sono
+  arrivati dopo 1–12 mesi gli atleti dello stesso sesso, fascia d'età e livello, nelle ultime 5 stagioni (più scura
+  25–75% dei casi, più chiara 10–90%). Il riquadro Previsione dell'analisi riporta gli stessi valori a 12 mesi.
+- **Zoom:** su tutti i grafici trascina un'area (o Ctrl+rotella) per ingrandire, Maiusc+trascina per spostarti, doppio
+  clic o **Reimposta zoom** per tornare indietro. Sul telefono tocca **Zoom** per ingrandire con due dita (finché è
+  attivo la pagina non scorre sopra i grafici).
+- **Download:** **Scarica PNG** salva il grafico principale come immagine; **Scarica CSV** (sotto la tabella) salva
+  tutti gli atleti filtrati nell'ordine della tabella, per Excel (punto e virgola, virgola decimale).
 - **Punti / Posizione**: metrica del grafico (la posizione è quella nella classifica nazionale, maschile o femminile).
 - **Periodo** (stagione in corso, dalla stagione scorsa, da tre stagioni fa, tutto): le colonne Δ
   indicano la variazione in quel periodo. I pulsanti seguono la stagione (dal 1° luglio) da soli.
@@ -103,6 +123,8 @@ e l'analisi la usano, segnalata come stimata.
 - `template.html`: la pagina (grafico e tabella) in cui vengono inseriti i dati.
 - `atleti_extra.txt`: atleti aggiuntivi.
 - `og.png`: l'immagine delle anteprime dei link.
+- Nel sito pubblicato, oltre a `index.html`: `storico/<id>.json` (storico della classifica) e `partite/<id>.json`
+  (partite della stagione) per ogni atleta.
 - `.github/workflows/extra.yml`: gestisce le richieste "Aggiungi:" / "Rimuovi:" aperte dalla pagina.
 - `.github/workflows/update.yml`: aggiornamento settimanale e pubblicazione su GitHub Pages.
 - `index.html`: l'ultima pagina generata (scritta dal workflow, non modificarla a mano).
@@ -132,6 +154,11 @@ direttamente: servi la cartella, es. `cd site && python3 -m http.server`, poi ap
    per atleta: "Riepilogo Dati" (Settore Agonistico, Societa' appartenenza, Record classifica, partite
    giocate/vinte/perse nella stagione) e la scheda "Storico
    Classifica" (data, posizione, punti, categoria).
+4. Per gli atleti con partite nella stagione: la pagina statica collegata da un frame della pagina di dettaglio
+   (`risultati/new_rank/html/<classifica>/<Maschile|Femminile>/.../details_page_<n>.html`), con le tabelle
+   "Incontri in campionato" e "Incontri in gare di torneo" (data, gara, avversario, fase, esito; le partite non
+   conteggiate per la classifica sono segnate). Gli avversari hanno solo il nome: un nome è collegato a un atleta della
+   pagina quando uno solo lo ha. Questo raddoppia circa il tempo dell'aggiornamento settimanale.
 
 La pagina contiene l'elenco degli atleti con i Δ di ogni periodo già calcolati; lo storico di ogni
 atleta è un file a parte, `storico/<id>.json`, caricato solo quando l'atleta compare nel grafico,
