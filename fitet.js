@@ -463,9 +463,11 @@ async function templateDate(repo) {
     players: list,
   };
   const json = JSON.stringify(data).replace(/</g, '\\u003c');
-  // Absolute page address for the link previews (WhatsApp, Facebook, ...), which need a full URL for the image.
+  // Absolute page address for the link previews (WhatsApp, Facebook, ...), which need a full URL for the image:
+  // the custom domain when the repository has a CNAME file (e.g. "fitet.eu.org"), otherwise the github.io address.
   const [owner, name] = repo.split('/');
-  const site = repo ? `https://${owner.toLowerCase()}.github.io/${name}/` : '';
+  const cname = fs.existsSync(path.join(__dirname, 'CNAME')) ? fs.readFileSync(path.join(__dirname, 'CNAME'), 'utf8').trim() : '';
+  const site = cname ? `https://${cname}/` : repo ? `https://${owner.toLowerCase()}.github.io/${name}/` : '';
   const template = fs.readFileSync(path.join(__dirname, 'template.html'), 'utf8');
   fs.writeFileSync(OUT, template.replace('/*__DATA__*/null', json).replaceAll('__SITE__', site));
   const outDir = path.dirname(path.resolve(OUT));
