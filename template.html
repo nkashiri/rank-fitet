@@ -162,6 +162,9 @@
   .tools button { font-size: 12px; padding: 3px 8px; }
   .tools button[hidden] { display: none; }
   .tools button.on { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .zmodes button { display: inline-flex; align-items: center; gap: 4px; }
+  .zmodes svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .zmodes button.on { background: var(--accent); color: #fff; }
   .movhead { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px; }
   .seg.small button { font-size: 12px; padding: 3px 8px; }
   .group { margin-bottom: 16px; }
@@ -253,7 +256,12 @@
   </div>
   <div class="tools">
     <span class="hint" id="zoomhint"></span>
-    <button id="zoomtouch" type="button" hidden title="Attiva lo zoom con due dita sui grafici (la pagina non scorre sopra i grafici finché è attivo)">Zoom</button>
+    <span class="seg zmodes" role="group" aria-label="Strumento dei grafici">
+      <button id="zm-zoom" type="button" data-z="zoom" aria-pressed="false" title="Zoom: trascina un'area per ingrandirla">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/><line x1="10.5" y1="7.5" x2="10.5" y2="13.5"/><line x1="7.5" y1="10.5" x2="13.5" y2="10.5"/></svg> Zoom</button>
+      <button id="zm-pan" type="button" data-z="pan" aria-pressed="false" title="Sposta: trascina il grafico per spostarti">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="12,2 12,22"/><polyline points="2,12 22,12"/><polyline points="9,5 12,2 15,5"/><polyline points="9,19 12,22 15,19"/><polyline points="5,9 2,12 5,15"/><polyline points="19,9 22,12 19,15"/></svg> Sposta</button>
+    </span>
     <button id="zoomreset" type="button" hidden>Reimposta zoom</button>
     <button id="png" type="button" title="Scarica il grafico come immagine">Scarica PNG</button>
   </div>
@@ -366,7 +374,7 @@ const FILTERS = {
   list: { label: 'Elenco', all: 'tutti', get: p => [p.extra ? 'Extra' : 'Classifica'],
           show: v => v === 'Extra' ? 'Atleti extra' : 'Classifiche nazionali' },
 };
-const state = { metric: 'pts', range: 0, x: 'date', proj: true, ana: null, profile: null, mv: 'last', h2h: null, touchZoom: false,
+const state = { metric: 'pts', range: 0, x: 'date', proj: true, ana: null, profile: null, mv: 'last', h2h: null, zoomMode: null,
   sort: 'pts', dir: -1, shown: PAGE, selected: new Set(),
   f: Object.fromEntries(Object.keys(FILTERS).map(k => [k, new Set()])) };
 const colorOf = new Map();
@@ -397,20 +405,40 @@ const ptsHere = withinSeason => state.metric === 'pts' && withinSeason;
 const PTS_NOTE = 'In Punti qui si usa la posizione: il periodo va oltre la stagione in corso e i punti si azzerano ogni 1° luglio.';
 const alpha = (c, a) => c + Math.round(a * 255).toString(16).padStart(2, '0');  // #rrggbb + opacity
 
-// --- Zoom (chartjs-plugin-zoom): drag a box or Ctrl+wheel with a mouse, Shift+drag to pan, double click to reset.
-// On touch screens two-finger zoom would stop the page from scrolling over the charts, so it is behind a "Zoom" button.
+// --- Zoom and pan (chartjs-plugin-zoom), chosen with the Zoom / Sposta buttons (state.zoomMode: 'zoom', 'pan' or null):
+// - Zoom: drag a box (mouse) or pinch (touch); Ctrl+wheel also zooms; Shift+drag pans.
+// - Sposta: drag to pan; Ctrl+wheel or pinch still zoom.
+// - Neither: the charts do not react to dragging (on phones the page then scrolls normally over them).
+// Double click or "Reimposta zoom" resets. With a mouse the mode changes in place (the zoom is kept); on touch screens
+// the gesture handler is set up when a chart is created, so the charts are redrawn.
 if (window.ChartZoom) Chart.register(window.ChartZoom);
 const coarse = matchMedia('(pointer: coarse)').matches;
-const zoomOpts = mode => ({
-  zoom: { mode, drag: { enabled: !coarse, backgroundColor: 'rgba(37,99,235,.12)' }, wheel: { enabled: !coarse, modifierKey: 'ctrl' },
-          pinch: { enabled: coarse && state.touchZoom }, onZoomComplete: updZoomBtn },
-  pan: { enabled: !coarse || state.touchZoom, mode, modifierKey: coarse ? null : 'shift', onPanComplete: updZoomBtn },
-});
+state.zoomMode = coarse ? null : 'zoom';
+const zoomOpts = mode => {
+  const z = state.zoomMode;
+  return coarse ? {
+    zoom: { mode, pinch: { enabled: !!z }, onZoomComplete: updZoomBtn },
+    pan: { enabled: z === 'pan', mode, onPanComplete: updZoomBtn },
+  } : {
+    zoom: { mode, drag: { enabled: z === 'zoom', backgroundColor: 'rgba(37,99,235,.12)' }, wheel: { enabled: !!z, modifierKey: 'ctrl' },
+            onZoomComplete: updZoomBtn },
+    // Always enabled so the plugin sets up its drag handler; whether a drag pans is decided when it starts.
+    pan: { enabled: true, mode, modifierKey: z === 'pan' ? null : 'shift', onPanStart: () => !!state.zoomMode, onPanComplete: updZoomBtn },
+  };
+};
 const allCharts = () => [chart, hist, barChart, avgChart];
 function updZoomBtn() { $('zoomreset').hidden = !allCharts().some(c => c?.isZoomedOrPanned?.()); }
-$('zoomhint').textContent = coarse ? 'Tocca "Zoom" per ingrandire i grafici con due dita.'
-  : 'Zoom: trascina un\'area del grafico o usa Ctrl+rotella · Maiusc+trascina per spostarti · doppio clic per tornare indietro.';
-$('zoomtouch').hidden = !coarse;
+function showZoomMode() {
+  for (const b of document.querySelectorAll('.zmodes button')) {
+    b.classList.toggle('on', b.dataset.z === state.zoomMode); b.setAttribute('aria-pressed', b.dataset.z === state.zoomMode);
+  }
+  const cursor = { zoom: 'crosshair', pan: 'grab' }[state.zoomMode] || '';
+  for (const id of ['cv', 'hv', 'mv', 'av']) $(id).style.cursor = cursor;
+  $('zoomhint').textContent = state.zoomMode === 'zoom' ? (coarse ? 'Zoom: allarga o stringi con due dita.' : 'Zoom: trascina un\'area del grafico (o Ctrl+rotella); Maiusc+trascina per spostarti.')
+    : state.zoomMode === 'pan' ? (coarse ? 'Sposta: trascina con un dito, allarga o stringi con due dita.' : 'Sposta: trascina il grafico; Ctrl+rotella per lo zoom.')
+    : 'Scegli Zoom o Sposta per interagire con i grafici.';
+  $('zoomhint').textContent += ' Doppio clic o "Reimposta zoom" per tornare indietro.';
+}
 
 // Saves a Blob as a file.
 function download(blob, name) {
@@ -1307,12 +1335,18 @@ $('profile').addEventListener('change', e => {
 $('csv').addEventListener('click', exportCsv);
 $('png').addEventListener('click', () => exportPng(chart, `fitet-grafico-${DATA.rankDate || 'dati'}.png`));
 $('zoomreset').addEventListener('click', () => { allCharts().forEach(c => c?.resetZoom?.()); updZoomBtn(); });
-$('zoomtouch').addEventListener('click', () => {
-  state.touchZoom = !state.touchZoom;
-  $('zoomtouch').classList.toggle('on', state.touchZoom);
-  $('zoomtouch').textContent = state.touchZoom ? 'Zoom attivo' : 'Zoom';
-  renderChart(); renderAnalysis(); renderHist();
+document.querySelector('.zmodes').addEventListener('click', e => {
+  const b = e.target.closest('button[data-z]'); if (!b) return;
+  state.zoomMode = state.zoomMode === b.dataset.z ? null : b.dataset.z;  // clicking the active tool turns it off
+  showZoomMode();
+  if (coarse) { renderChart(); renderAnalysis(); renderHist(); return; }
+  for (const c of allCharts()) {
+    if (!c) continue;
+    c.options.plugins.zoom = zoomOpts(c.options.plugins.zoom.zoom.mode);
+    c.update('none');
+  }
 });
+showZoomMode();
 for (const id of ['cv', 'hv', 'mv', 'av']) $(id).addEventListener('dblclick', () => { Chart.getChart($(id))?.resetZoom?.(); updZoomBtn(); });
 $('profile').addEventListener('click', async e => {
   const opp = e.target.closest('[data-info]');

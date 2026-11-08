@@ -40,9 +40,11 @@ and women's table tennis rankings (about 8,900 men and 900 women), with data fro
 - **Range of the projection:** with Proiezione 12 mesi, the position chart also shows a shaded band: where athletes
   of the same sex, age band and position band actually were after 1–12 months, over the last 5 seasons (darker 25–75%
   of cases, lighter 10–90%). The analysis's Previsione box gives the same figures for 12 months.
-- **Zoom:** on every chart drag a box (or Ctrl+wheel) to zoom, Shift+drag to pan, double click or
-  **Reimposta zoom** to go back. On phones, tap **Zoom** to enable two-finger zoom (while it is on the page does not
-  scroll over the charts).
+- **Zoom / Sposta** (buttons with icons above the chart, for all charts): with **Zoom** drag a box to zoom in
+  (Shift+drag pans), with **Sposta** drag to move around; Ctrl+wheel zooms in both. Click the active button again to
+  turn it off. Double click or **Reimposta zoom** to go back. With a mouse Zoom is on by default and switching keeps
+  the current zoom. On phones both start off, so the page scrolls normally: Zoom enables two-finger zoom, Sposta also
+  one-finger dragging (switching redraws the charts).
 - **Downloads:** **Scarica PNG** saves the main chart as an image; **Scarica CSV** (under the table) saves all the
   filtered athletes in the table's order, for Excel (semicolons, decimal commas).
 - **Punti / Posizione**: the chart metric, points or position in the national ranking (the men's or the women's one).

@@ -43,9 +43,12 @@ nazionali maschile e femminile di tennistavolo (circa 8.900 uomini e 900 donne),
 - **Fascia della proiezione:** con Proiezione 12 mesi il grafico Posizione mostra anche una fascia colorata: dove sono
   arrivati dopo 1–12 mesi gli atleti dello stesso sesso, fascia d'età e livello, nelle ultime 5 stagioni (più scura
   25–75% dei casi, più chiara 10–90%). Il riquadro Previsione dell'analisi riporta gli stessi valori a 12 mesi.
-- **Zoom:** su tutti i grafici trascina un'area (o Ctrl+rotella) per ingrandire, Maiusc+trascina per spostarti, doppio
-  clic o **Reimposta zoom** per tornare indietro. Sul telefono tocca **Zoom** per ingrandire con due dita (finché è
-  attivo la pagina non scorre sopra i grafici).
+- **Zoom / Sposta** (pulsanti con icona sopra il grafico, per tutti i grafici): con **Zoom** trascina un'area per
+  ingrandire (Maiusc+trascina per spostarti), con **Sposta** trascina per spostarti; Ctrl+rotella ingrandisce in
+  entrambi i casi. Clicca di nuovo il pulsante attivo per spegnerlo. Doppio clic o **Reimposta zoom** per tornare
+  indietro. Con il mouse Zoom è attivo all'inizio e cambiando strumento lo zoom resta. Sul telefono partono spenti,
+  così la pagina scorre normalmente: Zoom attiva lo zoom con due dita, Sposta anche il trascinamento con un dito
+  (cambiando strumento i grafici vengono ridisegnati).
 - **Download:** **Scarica PNG** salva il grafico principale come immagine; **Scarica CSV** (sotto la tabella) salva
   tutti gli atleti filtrati nell'ordine della tabella, per Excel (punto e virgola, virgola decimale).
 - **Punti / Posizione**: metrica del grafico (la posizione è quella nella classifica nazionale, maschile o femminile).
