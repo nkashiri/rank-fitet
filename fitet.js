@@ -256,6 +256,34 @@ function estimatePositions(list, histories) {
   }
 }
 
+// Change since the previous ranking (the latest date before rankDate in any history): [dPts, dPos] per athlete,
+// null when they were not in it. Positive dPos = climbed. Uses the estimated position of foreign athletes.
+function sinceLast(list, histories, rankDate) {
+  let prevDate = '';
+  for (const h of histories.values()) for (const x of h) if (x[0] < rankDate && x[0] > prevDate) prevDate = x[0];
+  for (const p of list) {
+    const h = histories.get(p.id) || [];
+    const a = h.find(x => x[0] === prevDate), b = h.find(x => x[0] === rankDate);
+    const pos = x => x[1] ?? x[4] ?? null;
+    p.last = a && b ? [a[2] != null && b[2] != null ? Math.round((b[2] - a[2]) * 100) / 100 : null,
+      pos(a) != null && pos(b) != null ? pos(a) - pos(b) : null] : null;
+  }
+  return prevDate;
+}
+
+// Refuses to publish a scrape that looks broken (portal down or changed): far fewer athletes than the
+// previous page in the repository, or many failed detail pages. The workflow then fails and GitHub
+// emails the owner, and the previous page stays online. FORCE=1 skips the check.
+function checkScrape(list, failed) {
+  if (process.env.FORCE === '1' || LIMIT !== Infinity) return;
+  const prevFile = path.join(__dirname, 'index.html');
+  const prev = fs.existsSync(prevFile) ? (fs.readFileSync(prevFile, 'utf8').match(/"id":"\d+"/g) || []).length : 0;
+  const problems = [];
+  if (prev && list.length < prev * 0.9) problems.push(`${list.length} athletes, previous page had ${prev}`);
+  if (failed.length > Math.max(50, list.length * 0.02)) problems.push(`${failed.length} detail pages failed`);
+  if (problems.length) throw new Error(`Scrape looks broken, not publishing: ${problems.join('; ')}. Run with FORCE=1 to publish anyway.`);
+}
+
 // --- main ---
 
 (async () => {
@@ -315,23 +343,30 @@ function estimatePositions(list, histories) {
     if (++done % 500 === 0) console.log(`  ${done}/${list.length}`);
   });
   if (failed.length) console.log(`Failed (${failed.length}): ${failed.slice(0, 50).join(', ')}${failed.length > 50 ? ', ...' : ''}`);
+  checkScrape(list, failed);
 
   estimatePositions(list, histories);
+  const prevDate = sinceLast(list, histories, rankDate);
   for (const p of list) {
     const h = histories.get(p.id);
     if (p.estPos != null) p.delta = deltas(h.map(x => [x[0], x[1] ?? x[4] ?? null, x[2]]), ranges);
     if (h) fs.writeFileSync(path.join(dir, `${p.id}.json`), JSON.stringify(h));
   }
 
+  const repo = process.env.GITHUB_REPOSITORY || '';
   const data = {
     generated: new Date().toISOString(),
-    repo: process.env.GITHUB_REPOSITORY || '',
-    rankId, rankDate, ranges,
+    repo, rankId, rankDate, prevDate, ranges,
     cats: { M: catLimits(list, 'M'), F: catLimits(list, 'F') },
     players: list,
   };
   const json = JSON.stringify(data).replace(/</g, '\\u003c');
+  // Absolute page address for the link previews (WhatsApp, Facebook, ...), which need a full URL for the image.
+  const [owner, name] = repo.split('/');
+  const site = repo ? `https://${owner.toLowerCase()}.github.io/${name}/` : '';
   const template = fs.readFileSync(path.join(__dirname, 'template.html'), 'utf8');
-  fs.writeFileSync(OUT, template.replace('/*__DATA__*/null', json));
+  fs.writeFileSync(OUT, template.replace('/*__DATA__*/null', json).replaceAll('__SITE__', site));
+  const outDir = path.dirname(path.resolve(OUT));
+  if (outDir !== __dirname && fs.existsSync(path.join(__dirname, 'og.png'))) fs.copyFileSync(path.join(__dirname, 'og.png'), path.join(outDir, 'og.png'));
   console.log(`Wrote ${OUT} and ${list.length - failed.length} histories in ${dir}`);
 })().catch(err => { console.error(err); process.exit(1); });

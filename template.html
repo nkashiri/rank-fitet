@@ -4,6 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FITET Ranking Progress</title>
+<meta name="description" content="Andamento in classifica di tutti gli atleti FITET di tennistavolo: punti, posizione, confronti per età e previsioni. Aggiornato ogni settimana.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="FITET: andamento classifica atleti">
+<meta property="og:description" content="Punti, posizione e progressi di tutti gli atleti delle classifiche nazionali FITET di tennistavolo, aggiornati ogni settimana.">
+<meta property="og:url" content="__SITE__">
+<meta property="og:image" content="__SITE__og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="it_IT">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#2563eb">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232563eb'/%3E%3Cpolyline points='6,23 12,17 17,20 26,9' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='26' cy='9' r='3' fill='%23fbbf24'/%3E%3C/svg%3E">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
@@ -110,12 +122,72 @@
   .ana ul { margin: 4px 0 0; padding-left: 18px; font-size: 13px; }
   .ana table { width: auto; min-width: 100%; }
   .ana th { cursor: default; }
+  header.top { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  header.top .logo { flex: none; width: 36px; height: 36px; }
+  header.top .sub { margin: 0; }
+  footer { margin-top: 28px; padding-top: 14px; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+  footer p { margin: 4px 0; }
+  footer a { color: var(--accent); }
+  tbody tr:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  button.info { border: 0; background: none; padding: 0 2px; margin-left: 4px; color: var(--accent); font-size: 13px; line-height: 1; vertical-align: middle; }
+  button.info:hover { color: var(--text); }
+  .profile { margin-bottom: 16px; }
+  .profile[hidden] { display: none; }
+  .prohead { display: flex; align-items: flex-start; gap: 8px 12px; flex-wrap: wrap; }
+  .prohead h2 { font-size: 18px; margin: 0; flex: 1 1 auto; }
+  .prohead .meta { flex-basis: 100%; color: var(--muted); font-size: 13px; }
+  .prohead button.x { border: 0; background: none; font-size: 20px; line-height: 1; padding: 0 4px; color: var(--muted); }
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin: 12px 0; }
+  .tile { background: var(--hover); border-radius: 8px; padding: 8px 10px; }
+  .tile .k { color: var(--muted); font-size: 12px; }
+  .tile .v { font-size: 20px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .tile .d { font-size: 12px; }
+  .procols { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 4px 24px; }
+  .procols h3 { font-size: 13px; margin: 8px 0 4px; }
+  .procols ul { margin: 0; padding-left: 18px; font-size: 13px; }
+  .movers { margin-bottom: 16px; }
+  .movers[hidden] { display: none; }
+  .movers h2 { font-size: 14px; margin: 0 0 2px; }
+  .movers ol { margin: 4px 0 0; padding-left: 22px; font-size: 13px; }
+  .movers li { padding: 2px 0; cursor: pointer; }
+  .movers li:hover .nm2 { text-decoration: underline; }
+  .movers li small { color: var(--muted); }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--text); color: var(--bg);
+           padding: 8px 14px; border-radius: 8px; font-size: 13px; z-index: 20; }
+  .toast[hidden] { display: none; }
+
+  /* Phones and narrow windows: filters two per row, scrollable button groups, shorter chart, fewer table columns. */
+  @media (max-width: 700px) {
+    main { padding: 14px 12px 32px; }
+    h1 { font-size: 17px; }
+    header.top .logo { width: 30px; height: 30px; }
+    #filters .ms { flex: 1 1 calc(50% - 4px); min-width: 0; }
+    #filters .ms summary { max-width: none; }
+    #q { flex-basis: 100%; }
+    .seg { max-width: 100%; overflow-x: auto; }
+    .seg button { white-space: nowrap; }
+    .chart { height: 340px; }
+    .dist .plot { height: 180px; }
+    .sm { display: none; }
+    .athlete .nm { max-width: 150px; }
+    .club { max-width: 120px; }
+    th, td { padding: 6px 4px; }
+  }
+  @media (max-width: 480px) {
+    .xs { display: none; }
+    .chart { height: 300px; }
+    .tile .v { font-size: 17px; }
+  }
 </style>
 </head>
 <body>
 <main>
-  <h1>FITET: andamento classifica atleti</h1>
-  <div class="sub" id="sub"></div>
+  <header class="top">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#2563eb"/>
+      <polyline points="6,23 12,17 17,20 26,9" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="26" cy="9" r="3" fill="#fbbf24"/></svg>
+    <div><h1>FITET: andamento classifica atleti</h1><div class="sub" id="sub"></div></div>
+  </header>
 
   <div class="controls" id="filters">
     <details class="ms" data-f="sex"><summary></summary><div class="panel"><div class="opts"></div></div></details>
@@ -142,6 +214,8 @@
     <button id="top">Top 8</button>
     <button id="clear">Deseleziona</button>
   </div>
+
+  <section class="card profile" id="profile" hidden aria-live="polite"></section>
 
   <div class="banner" id="agebanner" hidden>
     <span id="agetext"></span><button id="toage">Confronta per età</button>
@@ -184,6 +258,15 @@
       In caso di omonimi aggiungi la data di nascita, es. ROSSI MARIO 01/02/2010.</div>
   </form>
 
+  <div class="card movers" id="movers" hidden>
+    <h2>Chi sale e chi scende</h2>
+    <div class="hint" id="moverssub"></div>
+    <div class="procols">
+      <div><h3 class="up">▲ Migliori progressi</h3><ol id="mvup"></ol></div>
+      <div><h3 class="down">▼ Maggiori cali</h3><ol id="mvdown"></ol></div>
+    </div>
+  </div>
+
   <div class="card dist">
     <h2>Distribuzione dei punti</h2>
     <div class="hint" id="distsub"></div>
@@ -191,7 +274,7 @@
     <ul id="distsel"></ul>
   </div>
 
-  <div class="hint">Clicca su una riga per aggiungere/rimuovere l'atleta dal grafico. Δ = variazione nel periodo selezionato.
+  <div class="hint">Clicca su una riga per aggiungere/rimuovere l'atleta dal grafico, su ⓘ per la sua scheda. Δ = variazione nel periodo selezionato.
     Posizione = classifica nazionale maschile o femminile.
     % vitt. = partite vinte nella stagione in corso (vinte e perse nel tooltip). Miglior pos. = record in classifica, con l'anno.
     # = posizione tra gli atleti filtrati, nell'ordine della tabella.
@@ -199,11 +282,11 @@
   <div class="card tablewrap">
     <table>
       <thead><tr>
-        <th class="num">#</th><th data-k="name">Atleta</th><th data-k="year" class="num">Anno</th><th data-k="sex" title="Sesso">M/F</th><th data-k="sett">Settore</th>
-        <th data-k="club">Società</th><th data-k="reg">Regione</th><th data-k="cat" class="num">Cat.</th>
+        <th class="num">#</th><th data-k="name">Atleta</th><th data-k="year" class="num">Anno</th><th data-k="sex" title="Sesso" class="sm">M/F</th><th data-k="sett" class="sm">Settore</th>
+        <th data-k="club" class="xs">Società</th><th data-k="reg" class="sm">Regione</th><th data-k="cat" class="num">Cat.</th>
         <th data-k="pts" class="num">Punti</th><th data-k="pos" class="num">Pos.</th>
-        <th data-k="dPts" class="num">Δ Punti</th><th data-k="dPos" class="num">Δ Pos.</th>
-        <th data-k="pct" class="num">% vitt.</th><th data-k="best" class="num">Miglior pos.</th>
+        <th data-k="dPts" class="num xs">Δ Punti</th><th data-k="dPos" class="num">Δ Pos.</th>
+        <th data-k="pct" class="num sm">% vitt.</th><th data-k="best" class="num sm">Miglior pos.</th>
       </tr></thead>
       <tbody id="rows"></tbody>
     </table>
@@ -214,7 +297,14 @@
     <span id="dlmsg"></span><br>
     Per aggiornare i dati: estrai lo zip ed esegui <code>node fitet.js</code> (Node 18+).
   </div>
+  <footer>
+    <p>Dati dal <a href="https://portale.fitet.org" target="_blank" rel="noopener">portale FITET</a>, aggiornati ogni lunedì.
+      Le soglie di categoria e le previsioni sono stime calcolate da questa pagina, non dati ufficiali.</p>
+    <p>Sito non ufficiale, non affiliato alla Federazione Italiana Tennistavolo.
+      <span id="repolinks"></span></p>
+  </footer>
 </main>
+<div class="toast" id="toast" role="status" hidden></div>
 
 <script>
 const DATA = /*__DATA__*/null;
@@ -233,7 +323,7 @@ const FILTERS = {
   list: { label: 'Elenco', all: 'tutti', get: p => [p.extra ? 'Extra' : 'Classifica'],
           show: v => v === 'Extra' ? 'Atleti extra' : 'Classifiche nazionali' },
 };
-const state = { metric: 'pts', range: 0, x: 'date', proj: true, ana: null, sort: 'pts', dir: -1, shown: PAGE, selected: new Set(),
+const state = { metric: 'pts', range: 0, x: 'date', proj: true, ana: null, profile: null, sort: 'pts', dir: -1, shown: PAGE, selected: new Set(),
   f: Object.fromEntries(Object.keys(FILTERS).map(k => [k, new Set()])) };
 const colorOf = new Map();
 const YEAR = 365.2425 * 864e5, MONTH = YEAR / 12;
@@ -315,6 +405,7 @@ function saveHash() {
   if (!state.proj) h.set('p', '0');
   if (state.ana && state.selected.has(state.ana)) h.set('a', state.ana);
   if ($('target').value !== '10') h.set('t', $('target').value);
+  if (state.profile) h.set('pr', state.profile);
   history.replaceState(null, '', '#' + (h.toString() || 'tutti'));  // not empty, or the Liguria default comes back
 }
 
@@ -330,6 +421,10 @@ function loadHash() {
   state.proj = $('proj').checked = h.get('p') !== '0';
   if (byId.has(h.get('a'))) state.ana = h.get('a');
   if (+h.get('t') >= 1) $('target').value = +h.get('t');
+  if (byId.has(h.get('pr'))) {  // a shared profile link: show the athlete in the chart too
+    state.profile = h.get('pr');
+    if (!state.selected.has(state.profile)) { state.selected.add(state.profile); pickColor(state.profile); }
+  }
   for (const [id, v] of [['metric', state.metric], ['range', String(state.range)], ['xmode', state.x]]) {
     $(id).querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === v));
   }
@@ -382,16 +477,16 @@ function renderTable() {
     if (va == null || va === '') return 1; if (vb == null || vb === '') return -1;
     return (text ? va.localeCompare(vb) : va - vb) * state.dir;
   });
-  $('rows').innerHTML = rows.slice(0, state.shown).map(({ p, s }, i) => `<tr data-k="${p.id}">
-    <td class="num rank">${i + 1}</td><td class="athlete" title="${esc(p.name)}"><span class="swatch" style="background:${state.selected.has(p.id) ? colorOf.get(p.id) : 'transparent'}"></span><span class="nm">${esc(p.name)}</span>${p.extra ? '<span class="tag">extra</span>' +
+  $('rows').innerHTML = rows.slice(0, state.shown).map(({ p, s }, i) => `<tr data-k="${p.id}" tabindex="0" aria-selected="${state.selected.has(p.id)}">
+    <td class="num rank">${i + 1}</td><td class="athlete" title="${esc(p.name)}"><span class="swatch" style="background:${state.selected.has(p.id) ? colorOf.get(p.id) : 'transparent'}"></span><span class="nm">${esc(p.name)}</span><button class="info" type="button" data-info="${p.id}" title="Scheda dell'atleta" aria-label="Scheda di ${esc(p.name)}">ⓘ</button>${p.extra ? '<span class="tag">extra</span>' +
       (DATA.repo ? `<a class="rm" href="${issueUrl('Rimuovi', p.name)}" target="_blank" rel="noopener" title="Rimuovi dagli atleti extra">×</a>` : '') : ''}</td>
-    <td class="num">${p.year ?? '–'}</td><td>${p.sex}</td><td title="${esc(p.sett)}">${esc(shortSett(p.sett))}</td>
-    <td class="club" title="${esc(p.club)}">${esc(p.club)}</td><td class="region" title="${esc(p.reg)}">${esc(p.reg)}</td><td class="num">${esc(p.cat)}</td>
+    <td class="num">${p.year ?? '–'}</td><td class="sm">${p.sex}</td><td class="sm" title="${esc(p.sett)}">${esc(shortSett(p.sett))}</td>
+    <td class="club xs" title="${esc(p.club)}">${esc(p.club)}</td><td class="region sm" title="${esc(p.reg)}">${esc(p.reg)}</td><td class="num">${esc(p.cat)}</td>
     <td class="num">${s.pts ?? '–'}</td>${p.pos == null && s.pos != null
       ? `<td class="num est" title="${EST_NOTE}">≈${s.pos}</td>` : `<td class="num">${s.pos ?? '–'}</td>`}
-    <td class="num">${signed(s.dPts)}</td><td class="num">${signed(s.dPos)}</td>
-    <td class="num" title="${p.won} vinte, ${p.lost} perse">${p.pct ?? '–'}</td>
-    <td class="num" title="${p.bestDate ? new Date(p.bestDate).toLocaleDateString('it-IT') : ''}">${p.best ?? '–'}${p.bestDate
+    <td class="num xs">${signed(s.dPts)}</td><td class="num">${signed(s.dPos)}</td>
+    <td class="num sm" title="${p.won} vinte, ${p.lost} perse">${p.pct ?? '–'}</td>
+    <td class="num sm" title="${p.bestDate ? new Date(p.bestDate).toLocaleDateString('it-IT') : ''}">${p.best ?? '–'}${p.bestDate
       ? ` <small class="muted">'${p.bestDate.slice(2, 4)}</small>` : ''}</td></tr>`).join('');
   $('count').textContent = rows.length > state.shown ? `${state.shown} di ${rows.length} atleti` : `${rows.length} atleti`;
   $('more').hidden = rows.length <= state.shown;
@@ -525,7 +620,8 @@ async function renderChart() {
       maintainAspectRatio: false, animation: false,
       interaction: { mode: 'nearest', intersect: false },
       plugins: {
-        legend: { labels: { color: muted, boxWidth: 12, filter: (it, d) => !d.datasets[it.datasetIndex].proj } },
+        legend: { labels: { color: muted, boxWidth: innerWidth < 700 ? 8 : 12, padding: innerWidth < 700 ? 6 : 10,
+          font: { size: innerWidth < 700 ? 10 : 12 }, filter: (it, d) => !d.datasets[it.datasetIndex].proj } },
         catLines: { color: muted, lines: pos ? catLineList([...new Set(ids.map(id => byId.get(id).sex))].sort().reverse()) : [] },
         tooltip: { callbacks: {
           title: items => { const r = items[0].raw;
@@ -700,8 +796,88 @@ function renderHist() {
   });
 }
 
-function render() { renderSummaries(); renderTable(); renderBanner(); renderChart(); renderAnalysis(); renderHist(); saveHash(); }
-function refilter() { state.shown = PAGE; renderSummaries(); renderTable(); renderHist(); saveHash(); }
+// --- Athlete profile ("scheda"): summary, comparison with peers, distance from the category thresholds ---
+
+const day = d => new Date(d).toLocaleDateString('it-IT');
+// Rank by points within a group of athletes: "3° su 41".
+const rankIn = (p, group) => `<b>${1 + group.filter(q => q.pts > p.pts).length}°</b> su ${group.length}`;
+
+function renderProfile() {
+  const el = $('profile'), p = byId.get(state.profile);
+  el.hidden = !p;
+  if (!p) { el.innerHTML = ''; return; }
+  const s = stats(p), est = p.pos == null && s.pos != null, period = DATA.ranges[state.range].label;
+  const age = p.born != null ? Math.floor((Date.parse(DATA.rankDate || DATA.generated) - p.born) / YEAR) : null;
+  const tile = (k, v, d = '') => `<div class="tile"><div class="k">${k}</div><div class="v">${v}</div><div class="d">${d}</div></div>`;
+  const sameSex = players.filter(q => q.sex === p.sex && q.pts != null);
+  const peers = [
+    p.year && [`Nati nel ${p.year} (${p.sex === 'F' ? 'femminile' : 'maschile'})`, sameSex.filter(q => q.year === p.year)],
+    p.clubs.length && [`Nella società (${esc(p.clubs[p.clubs.length - 1])})`, sameSex.filter(q => q.clubs.some(c => p.clubs.includes(c)))],
+    p.reg && [`In ${esc(p.reg)}`, sameSex.filter(q => q.reg === p.reg)],
+    p.cat && [`In ${p.cat}ª categoria`, sameSex.filter(q => q.cat === p.cat)],
+    p.sett && [`Nel settore ${esc(p.sett)}`, sameSex.filter(q => q.sett === p.sett)],
+  ].filter(Boolean).filter(([, g]) => g.length > 1);
+  // Category thresholds (estimated, see catLimits in fitet.js): the one above and the one below.
+  const lim = DATA.cats?.[p.sex] || [], c = +p.cat, P = v => est ? `≈${v}°` : `${v}°`, cats = [];
+  if (s.pos != null && c) {
+    if (c > 1 && lim[c - 2]) { const need = s.pos - lim[c - 2];
+      cats.push(`Soglia della ${c - 1}ª: ${lim[c - 2]}° · ${need > 0 ? `mancano <b>${need}</b> posizioni` : `già oltre la soglia di ${-need} posizioni`}`); }
+    if (lim[c - 1]) { const margin = lim[c - 1] - s.pos;
+      cats.push(`Soglia della ${c + 1}ª: ${lim[c - 1]}° · ${margin >= 0 ? `margine di <b>${margin}</b> posizioni` : `sotto la soglia di ${-margin} posizioni`}`); }
+  }
+  el.innerHTML = `<div class="prohead">
+      <h2><span class="swatch" style="background:${colorOf.get(p.id) || 'transparent'}"></span>${esc(p.name)}${p.extra ? ' <span class="tag">extra</span>' : ''}</h2>
+      <button type="button" id="share">Condividi</button>
+      <button type="button" class="x" id="proclose" aria-label="Chiudi la scheda" title="Chiudi">×</button>
+      <div class="meta">${[p.year && `${p.year}${age != null ? ` (${age} anni)` : ''}`, p.sex === 'F' ? 'Femminile' : 'Maschile', esc(p.sett || ''),
+        esc(p.club), esc(p.reg)].filter(Boolean).join(' · ')}</div>
+    </div>
+    <div class="tiles">
+      ${tile('Punti', s.pts ?? '–', s.dPts != null ? `${signed(s.dPts)} · ${esc(period)}` : '')}
+      ${tile('Posizione', s.pos != null ? (est ? estPos(s.pos) : `${s.pos}°`) : '–', s.dPos != null ? `${signed(s.dPos)} · ${esc(period)}` : '')}
+      ${tile('Categoria', c ? `${c}ª` : '–')}
+      ${tile('Ultima classifica', p.last?.[1] != null ? signed(p.last[1]) : '–', p.last ? `pos. dal ${day(DATA.prevDate)}${p.last[0] != null ? ` · ${signed(p.last[0])} pt` : ''}` : '')}
+      ${tile('Vittorie', p.pct != null ? `${p.pct}%` : '–', p.won + p.lost ? `${p.won} vinte, ${p.lost} perse · stagione` : '')}
+      ${tile('Miglior posizione', p.best != null ? `${p.best}°` : '–', p.bestDate ? day(p.bestDate) : '')}
+    </div>
+    <div class="procols">
+      <div><h3>Confronti (per punti, ${p.sex === 'F' ? 'femminile' : 'maschile'})</h3><ul>${peers.map(([k, g]) =>
+        `<li>${k}: ${rankIn(p, g)}</li>`).join('') || '<li class="muted">Nessun confronto disponibile.</li>'}</ul></div>
+      <div><h3>Categoria</h3><ul>${cats.map(t => `<li>${t}</li>`).join('') || '<li class="muted">Nessuna soglia disponibile.</li>'}
+        <li class="muted">Soglie stimate dalla classifica attuale (${P(s.pos ?? '–')} oggi); le categorie si riassegnano a inizio stagione, il 1° luglio.</li></ul></div>
+    </div>`;
+}
+
+function openProfile(id) {
+  state.profile = id; state.ana = id;
+  if (!state.selected.has(id)) { state.selected.add(id); pickColor(id); }
+  render();
+  $('profile').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function toast(msg) {
+  $('toast').textContent = msg; $('toast').hidden = false;
+  clearTimeout(toast.t); toast.t = setTimeout(() => { $('toast').hidden = true; }, 2500);
+}
+
+// --- Movers: biggest climbs and falls since the previous ranking, among the filtered athletes ---
+
+function renderMovers() {
+  const rows = visible().filter(p => p.last?.[1] != null && (p.pos ?? p.estPos) != null)
+    .map(p => { const now = p.pos ?? p.estPos, before = now + p.last[1]; return { p, d: p.last[1], rate: p.last[1] / before * 100 }; });
+  $('movers').hidden = !DATA.prevDate || !rows.length;
+  if ($('movers').hidden) return;
+  $('moverssub').textContent = `Dalla classifica del ${day(DATA.prevDate)} a quella del ${day(DATA.rankDate)}, tra i ${rows.length} atleti filtrati. ` +
+    `Ordinati per migl. % = (pos. precedente − pos. attuale) / pos. precedente, così un salto in alto conta quanto uno più lungo in basso.`;
+  const item = ({ p, d, rate }) => `<li data-info="${p.id}"><span class="nm2">${esc(p.name)}</span> <small>${esc(p.clubs[p.clubs.length - 1] || '')}</small> · ` +
+    `${signed(d)} pos. <small>(${p.pos == null ? '≈' : ''}${p.pos ?? p.estPos}°, ${pct(rate)})</small></li>`;
+  const by = rows.sort((a, b) => b.rate - a.rate);
+  $('mvup').innerHTML = by.filter(r => r.d > 0).slice(0, 5).map(item).join('') || '<li class="muted">Nessuno.</li>';
+  $('mvdown').innerHTML = by.filter(r => r.d < 0).reverse().slice(0, 5).map(item).join('') || '<li class="muted">Nessuno.</li>';
+}
+
+function render() { renderSummaries(); renderTable(); renderProfile(); renderBanner(); renderChart(); renderAnalysis(); renderMovers(); renderHist(); saveHash(); }
+function refilter() { state.shown = PAGE; renderSummaries(); renderTable(); renderMovers(); renderHist(); saveHash(); }
 
 document.querySelectorAll('.ms').forEach(el => {
   const k = el.dataset.f;
@@ -733,8 +909,27 @@ $('more').addEventListener('click', () => { state.shown += PAGE; renderTable(); 
 
 $('rows').addEventListener('click', e => {
   if (e.target.closest('a')) return;
+  const info = e.target.closest('[data-info]');
+  if (info) { openProfile(info.dataset.info); return; }
   const tr = e.target.closest('tr'); if (tr) toggle(byId.get(tr.dataset.k));
 });
+$('rows').addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('tr')) { e.preventDefault(); toggle(byId.get(e.target.dataset.k)); }
+});
+for (const id of ['mvup', 'mvdown']) $(id).addEventListener('click', e => {
+  const li = e.target.closest('[data-info]'); if (li) openProfile(li.dataset.info);
+});
+$('profile').addEventListener('click', async e => {
+  if (e.target.id === 'proclose') { state.profile = null; renderProfile(); saveHash(); }
+  if (e.target.id === 'share') {
+    const p = byId.get(state.profile), url = location.href;
+    try {
+      if (navigator.share) await navigator.share({ title: `${p.name} · classifica FITET`, url });
+      else { await navigator.clipboard.writeText(url); toast('Link copiato'); }
+    } catch (err) { if (err.name !== 'AbortError') toast('Copia il link dalla barra degli indirizzi'); }
+  }
+});
+if (DATA.repo) $('repolinks').innerHTML = `<a href="https://github.com/${esc(DATA.repo)}#readme" target="_blank" rel="noopener">Come funziona e codice sorgente</a>.`;
 document.querySelectorAll('th[data-k]').forEach(th => th.addEventListener('click', () => {
   const k = th.dataset.k;
   state.dir = state.sort === k ? -state.dir : (['name', 'sex', 'sett', 'club', 'reg', 'cat', 'pos', 'best'].includes(k) ? 1 : -1);
@@ -760,8 +955,10 @@ $('anasel').addEventListener('change', e => { state.ana = e.target.value; render
 $('target').addEventListener('input', () => { renderForecast(); saveHash(); });
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { renderChart(); renderAnalysis(); renderHist(); });
 
+const firstVisit = !location.hash;
 loadHash();
-render();
+// First visit: show the region's top 8 instead of an empty chart.
+if (firstVisit) topN(); else render();
 
 // Download button, only when hosted on claude.ai (the zip is published next to the page).
 (async () => {

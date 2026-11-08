@@ -6,7 +6,7 @@ on:
   workflow_dispatch:       # "Run workflow" button for manual updates
   push:                    # and when the script or the page change
     branches: [main]
-    paths: [fitet.js, template.html, atleti_extra.txt, .github/workflows/update.yml]
+    paths: [fitet.js, template.html, atleti_extra.txt, og.png, .github/workflows/update.yml]
 
 permissions:
   contents: write

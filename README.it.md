@@ -17,8 +17,17 @@ nazionali maschile e femminile di tennistavolo (circa 8.900 uomini e 900 donne),
 - Alla prima visita la pagina si apre su Regione = Liguria; **Azzera filtri** toglie tutti i filtri.
 - Filtri, atleti selezionati, metrica e periodo restano nell'indirizzo della pagina:
   salvalo tra i preferiti o condividilo per ritrovare la stessa vista.
-- Il grafico parte vuoto: clicca sulle righe della tabella per aggiungere o togliere atleti,
-  oppure usa **Top 8** per i primi 8 per punti tra quelli filtrati.
+- Clicca sulle righe della tabella (o seleziona una riga con Tab e premi Invio) per aggiungere o togliere atleti
+  dal grafico, oppure usa **Top 8** per i primi 8 per punti tra quelli filtrati. Alla prima visita il grafico
+  mostra i primi 8 della regione predefinita.
+- **Scheda dell'atleta (ⓘ accanto al nome):** punti, posizione e variazione nel periodo scelto, categoria,
+  variazione dall'ultima classifica, % vittorie, miglior posizione; la posizione per punti tra i nati nello stesso
+  anno, nella società, in regione, in categoria e nel settore (stesso sesso); la distanza dalle soglie stimate della
+  categoria superiore e inferiore. **Condividi** condivide il link (o lo copia), che riapre la scheda con l'atleta
+  nel grafico.
+- **Chi sale e chi scende:** i 5 maggiori progressi e i 5 maggiori cali dall'ultima classifica tra gli atleti
+  filtrati, ordinati per miglioramento percentuale, (pos. precedente − pos. attuale) / pos. precedente, così un salto
+  in alto conta quanto uno più lungo in basso. Clicca su un nome per la scheda.
 - **Punti / Posizione**: metrica del grafico (la posizione è quella nella classifica nazionale, maschile o femminile).
 - **Periodo** (stagione in corso, dalla stagione scorsa, da tre stagioni fa, tutto): le colonne Δ
   indicano la variazione in quel periodo. I pulsanti seguono la stagione (dal 1° luglio) da soli.
@@ -54,9 +63,21 @@ nazionali maschile e femminile di tennistavolo (circa 8.900 uomini e 900 donne),
 - **Automatico:** ogni lunedì alle 06:00 UTC (07:00 o 08:00 in Italia).
 - **Manuale:** scheda [Actions](https://github.com/nkashiri/rank-fitet/actions) →
   **Aggiorna classifica** → **Run workflow**. La pagina è aggiornata in circa 3 minuti.
-- **Modifiche al codice:** anche un push che modifica `fitet.js`, `template.html` o `atleti_extra.txt` aggiorna la pagina.
+- **Modifiche al codice:** anche un push che modifica `fitet.js`, `template.html`, `atleti_extra.txt` o `og.png` aggiorna la pagina.
 - Ogni aggiornamento salva anche `index.html` (l'elenco degli atleti, senza gli storici) nel
   repository: la cronologia dei commit "Aggiorna dati ..." conserva le versioni precedenti.
+- **Controllo di sicurezza:** l'aggiornamento non pubblica se il nuovo scaricamento ha meno del 90% degli atleti
+  del precedente `index.html`, o se è fallito più del 2% (almeno 50) delle pagine di dettaglio. Il workflow
+  allora fallisce, GitHub manda un'email al proprietario del repository e resta online la pagina precedente. Per
+  pubblicare comunque, esegui lo script con `FORCE=1` (nel workflow: aggiungi `FORCE: 1` all'`env` del passo
+  "Scarica i dati", avvia, poi toglilo).
+
+## Telefoni e anteprime dei link
+
+- La pagina si adatta ai telefoni: filtri due per riga, gruppi di pulsanti scorrevoli, grafico più basso e meno
+  colonne in tabella (i dati completi sono nella scheda dell'atleta).
+- I link condivisi su WhatsApp, Facebook, Telegram ecc. mostrano un'anteprima con `og.png` (1200×630). Per
+  cambiare l'immagine, sostituisci `og.png` nel repository: il prossimo aggiornamento la pubblica.
 
 ## Atleti extra (non presenti nelle classifiche nazionali)
 
@@ -81,6 +102,7 @@ e l'analisi la usano, segnalata come stimata.
 - `fitet.js`: scarica i dati e genera la pagina.
 - `template.html`: la pagina (grafico e tabella) in cui vengono inseriti i dati.
 - `atleti_extra.txt`: atleti aggiuntivi.
+- `og.png`: l'immagine delle anteprime dei link.
 - `.github/workflows/extra.yml`: gestisce le richieste "Aggiungi:" / "Rimuovi:" aperte dalla pagina.
 - `.github/workflows/update.yml`: aggiornamento settimanale e pubblicazione su GitHub Pages.
 - `index.html`: l'ultima pagina generata (scritta dal workflow, non modificarla a mano).

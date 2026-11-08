@@ -16,8 +16,17 @@ and women's table tennis rankings (about 8,900 men and 900 women), with data fro
 - On the first visit the page opens on Regione = Liguria; **Azzera filtri** clears all filters.
 - The filters, the selected athletes, the metric and the period are kept in the page address:
   bookmark or share it to come back to the same view.
-- The chart starts empty: click rows in the table to add or remove athletes,
-  or use **Top 8** for the 8 athletes with the most points among those filtered.
+- Click rows in the table (or focus a row and press Enter) to add or remove athletes from the chart,
+  or use **Top 8** for the 8 athletes with the most points among those filtered. On the first visit the chart
+  shows the top 8 of the default region.
+- **Athlete profile (ⓘ next to the name):** points, position and their change in the selected period, category,
+  change since the previous ranking, win %, best position; the athlete's rank by points among those born the same
+  year, in their club, region, category and sector (same gender); and the distance from the estimated category
+  thresholds above and below. **Condividi** shares the link (or copies it), which reopens the profile with the athlete
+  in the chart.
+- **Chi sale e chi scende** (movers): the 5 biggest climbs and falls since the previous ranking among the filtered
+  athletes, ordered by percentage improvement, (previous position − position) / previous position, so a jump near
+  the top counts as much as a longer one further down. Click a name for the profile.
 - **Punti / Posizione**: the chart metric, points or position in the national ranking (the men's or the women's one).
 - **Period** (this season, since last season, since three seasons ago, everything): the Δ columns
   show the change over that period. The buttons follow the season (from July 1) automatically.
@@ -52,9 +61,20 @@ and women's table tennis rankings (about 8,900 men and 900 women), with data fro
 - **Automatic:** every Monday at 06:00 UTC (07:00 or 08:00 in Italy).
 - **Manual:** [Actions](https://github.com/nkashiri/rank-fitet/actions) tab →
   **Aggiorna classifica** → **Run workflow**. The page is updated in about 3 minutes.
-- **On code changes:** pushing a change to `fitet.js`, `template.html` or `atleti_extra.txt` also updates the page.
+- **On code changes:** pushing a change to `fitet.js`, `template.html`, `atleti_extra.txt` or `og.png` also updates the page.
 - Each update also saves `index.html` (the athlete list, without the histories) in the repository:
   the "Aggiorna dati ..." commit history keeps the previous versions.
+- **Safety check:** the update refuses to publish if the scrape has fewer than 90% of the athletes of the
+  previous `index.html`, or if more than 2% (at least 50) of the detail pages failed. The workflow then fails,
+  GitHub emails the repository owner, and the previous page stays online. To publish anyway, run the script with
+  `FORCE=1` (in the workflow: add `FORCE: 1` to the `env` of the "Scarica i dati" step, run, then remove it).
+
+## Phones and link previews
+
+- The page adapts to phones: filters two per row, scrollable button groups, a shorter chart and fewer table
+  columns (the full data is in the athlete profile).
+- Links shared on WhatsApp, Facebook, Telegram etc. show a preview card with `og.png` (1200×630). To change the
+  image, replace `og.png` in the repository: the next update publishes it.
 
 ## Extra athletes (not in the national rankings)
 
@@ -79,6 +99,7 @@ analysis use it too, marked as estimated.
 - `fitet.js`: downloads the data and generates the page.
 - `template.html`: the page (chart and table) the data is inserted into.
 - `atleti_extra.txt`: extra athletes.
+- `og.png`: the image of the link previews.
 - `.github/workflows/update.yml`: weekly update (and on code changes) and publishing to GitHub Pages.
 - `.github/workflows/extra.yml`: handles the "Aggiungi:" / "Rimuovi:" requests opened from the page.
 - `index.html`: the latest generated page (written by the workflow, don't edit it by hand).
