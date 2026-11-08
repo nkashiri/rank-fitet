@@ -257,21 +257,23 @@
     <button id="zoomreset" type="button" hidden>Reimposta zoom</button>
     <button id="png" type="button" title="Scarica il grafico come immagine">Scarica PNG</button>
   </div>
+  <div class="hint" id="projnote" hidden>Proiezione 12 mesi e fascia degli atleti simili: solo in Posizione, perché 12 mesi vanno
+    oltre la stagione in corso e i punti si azzerano ogni 1° luglio.</div>
   <div class="card chart">
     <div class="empty" id="empty">Seleziona uno o più atleti dalla tabella qui sotto, oppure usa "Top 8".</div>
     <canvas id="cv"></canvas>
   </div>
 
   <div class="card ana" id="ana" hidden>
-    <div class="anahead"><h2>Analisi della posizione</h2><select id="anasel" aria-label="Atleta"></select></div>
+    <div class="anahead"><h2 id="anatitle">Analisi della posizione</h2><select id="anasel" aria-label="Atleta"></select></div>
     <div class="hint" id="anasub"></div>
+    <div class="hint" id="ananote" hidden></div>
     <div class="fc">
       <strong>Previsione</strong> · obiettivo <input type="number" id="target" min="1" value="10" aria-label="Posizione obiettivo">°
       <div id="fc"></div>
     </div>
-    <h3>Miglioramento % mese per mese</h3>
-    <div class="hint">migl. % = (pos. precedente − pos. attuale) / pos. precedente × 100, con l'ultima classifica di ogni mese
-      (se mancano dei mesi, la variazione è divisa in parti uguali tra i mesi).</div>
+    <h3 id="mvtitle">Miglioramento % mese per mese</h3>
+    <div class="hint" id="mvhint"></div>
     <div class="plot"><canvas id="mv"></canvas></div>
     <h3>Medie mobili</h3>
     <div class="plot"><canvas id="av"></canvas></div>
@@ -388,6 +390,11 @@ const estPos = v => `<span class="est" title="${EST_NOTE}">≈${v}°</span>`;
 const posOf = x => x[1] ?? x[4] ?? null;
 const day = d => new Date(d).toLocaleDateString('it-IT');
 const yy = n => String(n % 100).padStart(2, '0');
+// Points restart every July 1, so they are only compared within the current season (since DATA.ranges[0].since).
+// With "Punti" selected, an analysis over a longer span uses the position instead, and says so with this note.
+const SEASON = DATA.ranges[0].since;
+const ptsHere = withinSeason => state.metric === 'pts' && withinSeason;
+const PTS_NOTE = 'In Punti qui si usa la posizione: il periodo va oltre la stagione in corso e i punti si azzerano ogni 1° luglio.';
 const alpha = (c, a) => c + Math.round(a * 255).toString(16).padStart(2, '0');  // #rrggbb + opacity
 
 // --- Zoom (chartjs-plugin-zoom): drag a box or Ctrl+wheel with a mouse, Shift+drag to pan, double click to reset.
@@ -661,6 +668,18 @@ function analyze(h) {
   return { months, rated, last, slope, r2, avg6: avgTo(last.i, 6), avg12: avgTo(last.i, 12), avgAll: mean(rated.map(x => x.rate)) };
 }
 
+// Points of the current season, month by month (last ranking of each month): {start, end, months: [{m, pts, gain, rate}]};
+// the first month's gain is measured from the season's first ranking (July 1, when the points restart).
+function seasonPoints(h) {
+  const xs = h.filter(x => x[0] >= SEASON && x[2] != null);
+  if (!xs.length) return null;
+  const byMonth = new Map();
+  for (const x of xs) byMonth.set(x[0].slice(0, 7), x[2]);
+  let prev = xs[0][2];
+  const months = [...byMonth].map(([m, pts]) => { const r = { m, pts, gain: pts - prev, rate: prev ? (pts - prev) / prev * 100 : null }; prev = pts; return r; });
+  return { start: xs[0][2], end: xs[xs.length - 1][2], months };
+}
+
 // The next 12 months at the average rate of the last 12: [months from now, position], never above 1st.
 function projection(a) {
   if (!a || a.avg12 == null) return [];
@@ -715,6 +734,7 @@ async function renderChart() {
   const css = getComputedStyle(document.documentElement), color = v => css.getPropertyValue(v).trim();
   const muted = color('--muted'), grid = color('--border');
   const pos = state.metric === 'pos', since = state.x === 'date' ? DATA.ranges[state.range].since : '';
+  $('projnote').hidden = pos || !state.proj || state.x === 'stag' || !ids.length;
   const datasets = [];
   const season = state.x === 'stag';
   // "Per stagione": one line per season of one athlete (the one of the analysis), x = days since July 1.
@@ -831,10 +851,21 @@ async function renderAnalysis() {
   const a = analyze(h), est = h.some(x => x[1] == null && x[4] != null);
   anaData = a && { p, a };
   const limits = DATA.cats?.[p.sex] || [];
-  $('anasub').textContent = !a ? 'Nessuna posizione in classifica per questo atleta.'
+  // With "Punti": the month-by-month chart shows the points of the current season; everything else in this card spans
+  // several seasons, so it stays in positions (see PTS_NOTE).
+  const sp = state.metric === 'pts' ? seasonPoints(h) : null;
+  $('anatitle').textContent = sp ? 'Analisi' : 'Analisi della posizione';
+  $('ananote').hidden = !sp;
+  $('ananote').textContent = 'In Punti: il grafico mese per mese mostra i punti della stagione in corso. Previsione, medie mobili e ' +
+    'anno per anno restano in posizione, perché vanno oltre la stagione e i punti si azzerano ogni 1° luglio.';
+  $('anasub').textContent = (sp ? `Stagione in corso: da ${sp.start} a ${sp.end} punti (${sp.end - sp.start >= 0 ? '+' : ''}${Math.round(sp.end - sp.start)}) dal ${day(SEASON)}. ` : '') +
+    (!a ? 'Nessuna posizione in classifica per questo atleta.'
     : `Posizione nella classifica nazionale ${p.sex === 'F' ? 'femminile' : 'maschile'}${est
       ? ' STIMATA: è uno straniero, non è in classifica; la posizione è fittizia, quella di un italiano con gli stessi punti' : ''}` +
-      ` · ${a.months.length} mesi di dati, da ${monthLabel(a.months[0].m)} · tutto lo storico.`;
+      ` · ${a.months.length} mesi di dati, da ${monthLabel(a.months[0].m)} · tutto lo storico.`);
+  $('mvtitle').textContent = sp ? 'Punti guadagnati mese per mese (stagione in corso)' : 'Miglioramento % mese per mese';
+  $('mvhint').textContent = sp ? `Punti alla fine di ogni mese meno quelli alla fine del mese precedente (per il primo mese: meno i punti del ${day(SEASON)}), con l'ultima classifica di ogni mese.`
+    : 'migl. % = (pos. precedente − pos. attuale) / pos. precedente × 100, con l\'ultima classifica di ogni mese (se mancano dei mesi, la variazione è divisa in parti uguali tra i mesi).';
   renderForecast();
   const catList = catChanges(h).reverse();
   $('catchg').innerHTML = (catList.length ? catList.map(c => `<li class="${c.up ? 'up' : 'down'}">${c.up ? '▲' : '▼'} ` +
@@ -863,7 +894,18 @@ async function renderAnalysis() {
   const labels = a.rated.map(x => monthLabel(x.m));
   const scales = { x: { ticks: { color: muted, maxTicksLimit: 12 }, grid: { display: false } },
                    y: { ticks: { color: muted, callback: v => `${v}%` }, grid: { color: grid } } };
-  barChart = new Chart($('mv'), {
+  if (sp) barChart = new Chart($('mv'), {
+    type: 'bar',
+    data: { labels: sp.months.map(x => monthLabel(x.m)), datasets: [{ data: sp.months.map(x => Math.round(x.gain)),
+      backgroundColor: sp.months.map(x => x.gain >= 0 ? up : down) }] },
+    options: { maintainAspectRatio: false, animation: false,
+      scales: { x: scales.x, y: { ticks: { color: muted, callback: v => `${v > 0 ? '+' : ''}${v}` }, grid: { color: grid },
+                                  title: { display: true, color: muted, text: 'Punti guadagnati' } } },
+      plugins: { legend: { display: false }, zoom: zoomOpts('x'),
+        tooltip: { callbacks: { label: i => { const x = sp.months[i.dataIndex];
+          return `${x.gain >= 0 ? '+' : ''}${Math.round(x.gain)} pt (${pct(x.rate)}) · ${Math.round(x.pts)} pt a fine mese`; } } } } },
+  });
+  else barChart = new Chart($('mv'), {
     type: 'bar',
     data: { labels, datasets: [{ data: a.rated.map(x => x.rate),
       backgroundColor: a.rated.map(x => est ? greyish(x.rate >= 0 ? up : down) : x.rate >= 0 ? up : down) }] },
@@ -1086,7 +1128,9 @@ function renderH2h(p, ms) {
       ${row('Punti', sp.pts ?? '–', so.pts ?? '–', cmp(sp.pts, so.pts))}
       ${row('Posizione', sp.pos != null ? `${sp.pos}°` : '–', so.pos != null ? `${so.pos}°` : '–', p.sex === o.sex ? cmp(sp.pos, so.pos, true) : 0)}
       ${row('Categoria', p.cat ? `${p.cat}ª` : '–', o.cat ? `${o.cat}ª` : '–', cmp(+p.cat || null, +o.cat || null, true))}
-      ${row(`Δ Pos. (${esc(DATA.ranges[state.range].label)})`, signed(sp.dPos), signed(so.dPos), cmp(sp.dPos, so.dPos))}
+      ${ptsHere(state.range === 0)
+        ? row(`Δ Punti (${esc(DATA.ranges[state.range].label)})`, signed(sp.dPts), signed(so.dPts), cmp(sp.dPts, so.dPts))
+        : row(`Δ Pos. (${esc(DATA.ranges[state.range].label)})`, signed(sp.dPos), signed(so.dPos), cmp(sp.dPos, so.dPos))}
       ${row('Miglior posizione', p.best != null ? `${p.best}°` : '–', o.best != null ? `${o.best}°` : '–', p.sex === o.sex ? cmp(p.best, o.best, true) : 0)}
       ${row('% vittorie (stagione)', p.pct ?? '–', o.pct ?? '–', cmp(p.pct, o.pct))}
       ${row('Età', age(p), age(o), 0)}
@@ -1122,18 +1166,26 @@ $('mvrange').innerHTML = (DATA.prevDate ? [['last', 'Ultima classifica']] : []).
 
 function renderMovers() {
   if (state.mv === 'last' && !DATA.prevDate) state.mv = '0';
-  const dPos = p => state.mv === 'last' ? p.last?.[1] : p.delta?.[+state.mv]?.[1];
-  const rows = visible().filter(p => dPos(p) != null && (p.pos ?? p.estPos) != null)
-    .map(p => { const d = dPos(p), before = (p.pos ?? p.estPos) + d; return { p, d, rate: before > 0 ? d / before * 100 : 0 }; });
+  // Points only within the current season: "Stagione", or "Ultima classifica" when the previous ranking is after July 1.
+  const byPts = ptsHere(state.mv === 'last' ? DATA.prevDate >= SEASON : state.mv === '0'), j = byPts ? 0 : 1;
+  const delta = p => state.mv === 'last' ? p.last?.[j] : p.delta?.[+state.mv]?.[j];
+  const now = p => byPts ? p.pts : p.pos ?? p.estPos;
+  const rows = visible().filter(p => delta(p) != null && now(p) != null).map(p => {
+    const d = delta(p), before = byPts ? now(p) - d : now(p) + d;  // position: lower is better, so it was now + d
+    return { p, d, rate: before > 0 ? d / before * 100 : 0 };
+  });
   $('mvrange').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === state.mv));
   $('movers').hidden = !rows.length;
   if (!rows.length) return;
   const since = state.mv === 'last' ? `Dalla classifica del ${day(DATA.prevDate)}` : DATA.ranges[+state.mv].since
     ? `Dal ${day(DATA.ranges[+state.mv].since)}` : 'Da inizio storico (luglio 2011)';
-  $('moverssub').textContent = `${since} alla classifica del ${day(DATA.rankDate)}, tra i ${rows.length} atleti filtrati. ` +
-    `Ordinati per migl. % = (pos. iniziale − pos. attuale) / pos. iniziale, così un salto in alto conta quanto uno più lungo in basso.`;
+  $('moverssub').textContent = `${since} alla classifica del ${day(DATA.rankDate)}, tra i ${rows.length} atleti filtrati. ` + (byPts
+    ? 'In punti, ordinati per variazione % = (punti attuali − punti iniziali) / punti iniziali.'
+    : `In posizione, ordinati per migl. % = (pos. iniziale − pos. attuale) / pos. iniziale, così un salto in alto conta quanto uno più lungo in basso.` +
+      (state.metric === 'pts' ? ' ' + PTS_NOTE : ''));
   const item = ({ p, d, rate }) => `<li data-info="${p.id}"><span class="nm2">${esc(p.name)}</span> <small>${esc(p.clubs[p.clubs.length - 1] || '')}</small> · ` +
-    `${signed(d)} pos. <small>(${p.pos == null ? '≈' : ''}${p.pos ?? p.estPos}°, ${pct(rate)})</small></li>`;
+    (byPts ? `${signed(Math.round(d))} pt <small>(${p.pts} pt, ${pct(rate)})</small></li>`
+      : `${signed(d)} pos. <small>(${p.pos == null ? '≈' : ''}${p.pos ?? p.estPos}°, ${pct(rate)})</small></li>`);
   const by = rows.sort((a, b) => b.rate - a.rate);
   $('mvup').innerHTML = by.filter(r => r.d > 0).slice(0, MOVERS).map(item).join('') || '<li class="muted">Nessuno.</li>';
   $('mvdown').innerHTML = by.filter(r => r.d < 0).reverse().slice(0, MOVERS).map(item).join('') || '<li class="muted">Nessuno.</li>';
@@ -1154,25 +1206,29 @@ function renderGroup() {
   const m = g.filter(p => p.sex === 'M').length, f = g.length - m;
   const ages = g.filter(p => p.born != null).map(p => (now - p.born) / YEAR);
   const won = g.reduce((s, p) => s + p.won, 0), lost = g.reduce((s, p) => s + p.lost, 0);
-  const dPos = g.map(p => stats(p).dPos).filter(v => v != null);
+  // Changes over the selected period: in points only for the current season (see ptsHere), otherwise in positions.
+  const gPts = ptsHere(state.range === 0), dKey = gPts ? 'dPts' : 'dPos', dUnit = gPts ? ' pt' : '';
+  const dPos = g.map(p => stats(p)[dKey]).filter(v => v != null);
   const counts = key => [...g.reduce((mp, p) => mp.set(key(p), (mp.get(key(p)) || 0) + 1), new Map())].filter(([k]) => k)
     .sort((a, b) => String(a[0]).localeCompare(String(b[0]), 'it', { numeric: true }));
   const person = p => `<li data-info="${p.id}">${esc(p.name)} <small class="muted">${p.pts ?? '–'} pt · ${p.pos != null ? `${p.pos}°` : p.estPos != null ? `≈${p.estPos}°` : '–'} ${p.sex}</small></li>`;
   const top = [...g].sort((a, b) => (b.pts ?? -1) - (a.pts ?? -1)).slice(0, 5);
-  const risers = g.map(p => ({ p, d: stats(p).dPos, now: p.pos ?? p.estPos })).filter(r => r.d > 0 && r.now != null)
-    .sort((a, b) => b.d / (b.now + b.d) - a.d / (a.now + a.d)).slice(0, 5);
+  // Biggest relative improvement: points gained / starting points, or positions gained / starting position.
+  const risers = g.map(p => ({ p, d: stats(p)[dKey], now: gPts ? p.pts : p.pos ?? p.estPos })).filter(r => r.d > 0 && r.now != null)
+    .map(r => ({ ...r, rate: r.d / (gPts ? r.now - r.d : r.now + r.d) })).filter(r => r.rate > 0)
+    .sort((a, b) => b.rate - a.rate).slice(0, 5);
   const head = `<h2>${club ? 'Società' : 'Regione'}: ${esc(club || reg)}</h2>
-    <div class="meta">${club ? esc([...new Set(g.map(p => p.reg).filter(Boolean))].join(', ')) + ' · ' : ''}atleti che rispettano i filtri attuali${state.f.sex.size === 1 ? '' : ' (maschile e femminile)'}</div>
+    <div class="meta">${club ? esc([...new Set(g.map(p => p.reg).filter(Boolean))].join(', ')) + ' · ' : ''}atleti che rispettano i filtri attuali${state.f.sex.size === 1 ? '' : ' (maschile e femminile)'}${state.metric === 'pts' && !gPts ? `<br>${PTS_NOTE}` : ''}</div>
     <div class="tiles">
       ${tile('Atleti', g.length, `${m} M · ${f} F`)}
       ${tile('Punti medi', avg(g.map(p => p.pts).filter(v => v != null)), `mediana ${g.map(p => p.pts).filter(v => v != null).sort((a, b) => a - b)[Math.floor(g.length / 2)] ?? '–'}`)}
       ${tile('Età media', ages.length ? Math.round(mean(ages)) : '–', ages.length ? `da ${Math.floor(Math.min(...ages))} a ${Math.floor(Math.max(...ages))} anni` : '')}
       ${tile('Vittorie', won + lost ? `${Math.round(won / (won + lost) * 100)}%` : '–', won + lost ? `${won} vinte, ${lost} perse · stagione` : '')}
-      ${tile('Δ Pos. medio', dPos.length ? signed(Math.round(mean(dPos))) : '–', esc(period))}
+      ${tile(gPts ? 'Δ Punti medio' : 'Δ Pos. medio', dPos.length ? signed(Math.round(mean(dPos))) : '–', esc(period))}
     </div>
     <div class="procols">
       <div><h3>I migliori per punti</h3><ul>${top.map(person).join('')}</ul></div>
-      <div><h3>Più in crescita (${esc(period)})</h3><ul>${risers.map(r => person(r.p).replace('</small>', ` · ${signed(r.d)}</small>`)).join('') || '<li class="muted">Nessuno.</li>'}</ul></div>
+      <div><h3>Più in crescita (${esc(period)}, ${gPts ? 'punti' : 'posizione'})</h3><ul>${risers.map(r => person(r.p).replace('</small>', ` · ${signed(Math.round(r.d))}${dUnit}</small>`)).join('') || '<li class="muted">Nessuno.</li>'}</ul></div>
       <div><h3>Per categoria</h3><ul>${counts(p => p.cat).map(([k, n]) => `<li>${k}ª: ${n}</li>`).join('')}</ul></div>
       <div><h3>Per settore</h3><ul>${counts(p => p.sett).map(([k, n]) => `<li>${esc(k)}: ${n}</li>`).join('')}</ul></div>
     </div>`;
@@ -1181,13 +1237,13 @@ function renderGroup() {
   const clubs = new Map();
   for (const p of g) for (const c of p.clubs) { if (!clubs.has(c)) clubs.set(c, []); clubs.get(c).push(p); }
   const rows = [...clubs].map(([c, ps]) => {
-    const pts = ps.map(p => p.pts ?? 0).sort((a, b) => b - a), d = ps.map(p => stats(p).dPos).filter(v => v != null);
+    const pts = ps.map(p => p.pts ?? 0).sort((a, b) => b - a), d = ps.map(p => stats(p)[dKey]).filter(v => v != null);
     return { c, n: ps.length, force: Math.round(pts.slice(0, 4).reduce((s, v) => s + v, 0)), best: [...ps].sort((a, b) => (b.pts ?? 0) - (a.pts ?? 0))[0], d: d.length ? Math.round(mean(d)) : null };
   }).sort((a, b) => b.force - a.force);
   el.innerHTML = head + `<h3 style="font-size:13px;margin:12px 0 0">Società della regione (${rows.length})</h3>
     <div class="hint">Forza = somma dei punti dei 4 atleti migliori. Clicca su una società per la sua scheda.</div>
     <div class="clubs tablewrap"><table><thead><tr><th class="num">#</th><th>Società</th><th class="num">Atleti</th><th class="num">Forza</th>
-      <th>Migliore</th><th class="num">Δ Pos. medio</th></tr></thead><tbody>${rows.map((r, i) => `<tr data-club="${esc(r.c)}">
+      <th>Migliore</th><th class="num">${gPts ? 'Δ Punti medio' : 'Δ Pos. medio'}</th></tr></thead><tbody>${rows.map((r, i) => `<tr data-club="${esc(r.c)}">
       <td class="num rank">${i + 1}</td><td class="club" title="${esc(r.c)}">${esc(r.c)}</td><td class="num">${r.n}</td><td class="num">${r.force}</td>
       <td>${esc(r.best.name)} <small class="muted">${r.best.pts ?? '–'} pt</small></td><td class="num">${signed(r.d)}</td></tr>`).join('')}</tbody></table></div>`;
 }

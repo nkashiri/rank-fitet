@@ -49,6 +49,10 @@ nazionali maschile e femminile di tennistavolo (circa 8.900 uomini e 900 donne),
 - **Download:** **Scarica PNG** salva il grafico principale come immagine; **Scarica CSV** (sotto la tabella) salva
   tutti gli atleti filtrati nell'ordine della tabella, per Excel (punto e virgola, virgola decimale).
 - **Punti / Posizione**: metrica del grafico (la posizione è quella nella classifica nazionale, maschile o femminile).
+  La seguono anche le analisi (Chi sale e chi scende, schede società e regione, confronto diretto, grafico mese per mese
+  dell'analisi), ma i punti si azzerano ogni 1° luglio, quindi usano i punti solo nella stagione in corso: sui periodi
+  più lunghi, e per proiezione a 12 mesi, medie mobili, anno per anno e previsione, usano la posizione, e la pagina lo
+  segnala.
 - **Periodo** (stagione in corso, dalla stagione scorsa, da tre stagioni fa, tutto): le colonne Δ
   indicano la variazione in quel periodo. I pulsanti seguono la stagione (dal 1° luglio) da soli.
   I punti si azzerano ogni 1° luglio, quindi Δ Punti su più stagioni mescola scale diverse;

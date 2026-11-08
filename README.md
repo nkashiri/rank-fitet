@@ -46,6 +46,10 @@ and women's table tennis rankings (about 8,900 men and 900 women), with data fro
 - **Downloads:** **Scarica PNG** saves the main chart as an image; **Scarica CSV** (under the table) saves all the
   filtered athletes in the table's order, for Excel (semicolons, decimal commas).
 - **Punti / Posizione**: the chart metric, points or position in the national ranking (the men's or the women's one).
+  The analyses follow it too (Chi sale e chi scende, club and region cards, head-to-head, the analysis's month-by-month
+  chart), but points restart every July 1, so they use points only within the current season: over longer periods,
+  and for the 12-month projection, moving averages, year by year and the forecast, they use the position, and the page
+  says so.
 - **Period** (this season, since last season, since three seasons ago, everything): the Δ columns
   show the change over that period. The buttons follow the season (from July 1) automatically.
   Points are reset every July 1, so Δ Punti over more than one season mixes different seasons' scales;
