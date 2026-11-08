@@ -30,8 +30,9 @@ nazionali maschile e femminile di tennistavolo (circa 8.900 uomini e 900 donne),
   diretto** con un atleta selezionato o un avversario della stagione: i dati principali affiancati e gli scontri della
   stagione.
 - **Chi sale e chi scende:** i 10 maggiori progressi e i 10 maggiori cali tra gli atleti filtrati, dall'ultima
-  classifica o in uno dei periodi (pulsanti nel riquadro), ordinati per miglioramento percentuale,
-  (pos. iniziale − pos. attuale) / pos. iniziale, così un salto in alto conta quanto uno più lungo in basso.
+  classifica o in uno dei periodi (pulsanti nel riquadro). Di base sono ordinati per variazione assoluta (punti o
+  posizioni guadagnati o persi); **Percentuale** li ordina invece per variazione percentuale,
+  (iniziale − attuale) / iniziale, così un salto in alto conta quanto uno più lungo in basso.
   Clicca su un nome per la scheda.
 - **Scheda società e regione:** scegli una sola società in Società (o una sola regione in Regione) per un riquadro con
   numero di atleti, punti medi, età media, % vittorie, i migliori e i più in crescita, e i conteggi per categoria e

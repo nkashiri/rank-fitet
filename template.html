@@ -306,7 +306,10 @@
   </form>
 
   <div class="card movers" id="movers" hidden>
-    <div class="movhead"><h2>Chi sale e chi scende</h2><div class="seg small" id="mvrange"></div></div>
+    <div class="movhead"><h2>Chi sale e chi scende</h2>
+      <div class="controls" style="margin:0"><div class="seg small" id="mvsort" title="Ordine delle liste">
+        <button type="button" data-v="abs">Valore assoluto</button><button type="button" data-v="pct">Percentuale</button></div>
+        <div class="seg small" id="mvrange"></div></div></div>
     <div class="hint" id="moverssub"></div>
     <div class="procols">
       <div><h3 class="up">▲ Migliori progressi</h3><ol id="mvup"></ol></div>
@@ -374,7 +377,7 @@ const FILTERS = {
   list: { label: 'Elenco', all: 'tutti', get: p => [p.extra ? 'Extra' : 'Classifica'],
           show: v => v === 'Extra' ? 'Atleti extra' : 'Classifiche nazionali' },
 };
-const state = { metric: 'pts', range: 0, x: 'date', proj: true, ana: null, profile: null, mv: 'last', h2h: null, zoomMode: null,
+const state = { metric: 'pts', range: 0, x: 'date', proj: true, ana: null, profile: null, mv: 'last', mvSort: 'abs', h2h: null, zoomMode: null,
   sort: 'pts', dir: -1, shown: PAGE, selected: new Set(),
   f: Object.fromEntries(Object.keys(FILTERS).map(k => [k, new Set()])) };
 const colorOf = new Map();
@@ -546,6 +549,7 @@ function saveHash() {
   if ($('target').value !== '10') h.set('t', $('target').value);
   if (state.profile) h.set('pr', state.profile);
   if (state.mv !== 'last') h.set('mv', state.mv);
+  if (state.mvSort !== 'abs') h.set('ms', state.mvSort);
   history.replaceState(null, '', '#' + (h.toString() || 'tutti'));  // not empty, or the Liguria default comes back
 }
 
@@ -559,6 +563,7 @@ function loadHash() {
   state.range = Math.min(+h.get('r') || 0, DATA.ranges.length - 1);
   if (['eta', 'anni', 'stag'].includes(h.get('x'))) state.x = h.get('x');
   if (/^\d+$/.test(h.get('mv') || '') && +h.get('mv') < DATA.ranges.length) state.mv = h.get('mv');
+  if (h.get('ms') === 'pct') state.mvSort = 'pct';
   state.proj = $('proj').checked = h.get('p') !== '0';
   if (byId.has(h.get('a'))) state.ana = h.get('a');
   if (+h.get('t') >= 1) $('target').value = +h.get('t');
@@ -1203,18 +1208,20 @@ function renderMovers() {
     return { p, d, rate: before > 0 ? d / before * 100 : 0 };
   });
   $('mvrange').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === state.mv));
+  $('mvsort').querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.v === state.mvSort));
   $('movers').hidden = !rows.length;
   if (!rows.length) return;
   const since = state.mv === 'last' ? `Dalla classifica del ${day(DATA.prevDate)}` : DATA.ranges[+state.mv].since
     ? `Dal ${day(DATA.ranges[+state.mv].since)}` : 'Da inizio storico (luglio 2011)';
+  const pctSort = state.mvSort === 'pct';
   $('moverssub').textContent = `${since} alla classifica del ${day(DATA.rankDate)}, tra i ${rows.length} atleti filtrati. ` + (byPts
-    ? 'In punti, ordinati per variazione % = (punti attuali − punti iniziali) / punti iniziali.'
-    : `In posizione, ordinati per migl. % = (pos. iniziale − pos. attuale) / pos. iniziale, così un salto in alto conta quanto uno più lungo in basso.` +
-      (state.metric === 'pts' ? ' ' + PTS_NOTE : ''));
+    ? (pctSort ? 'In punti, ordinati per variazione % = (punti attuali − punti iniziali) / punti iniziali.' : 'In punti, ordinati per punti guadagnati o persi.')
+    : (pctSort ? 'In posizione, ordinati per migl. % = (pos. iniziale − pos. attuale) / pos. iniziale, così un salto in alto conta quanto uno più lungo in basso.'
+      : 'In posizione, ordinati per posizioni guadagnate o perse.') + (state.metric === 'pts' ? ' ' + PTS_NOTE : ''));
   const item = ({ p, d, rate }) => `<li data-info="${p.id}"><span class="nm2">${esc(p.name)}</span> <small>${esc(p.clubs[p.clubs.length - 1] || '')}</small> · ` +
     (byPts ? `${signed(Math.round(d))} pt <small>(${p.pts} pt, ${pct(rate)})</small></li>`
       : `${signed(d)} pos. <small>(${p.pos == null ? '≈' : ''}${p.pos ?? p.estPos}°, ${pct(rate)})</small></li>`);
-  const by = rows.sort((a, b) => b.rate - a.rate);
+  const key = pctSort ? 'rate' : 'd', by = rows.sort((a, b) => b[key] - a[key] || b.rate - a.rate);
   $('mvup').innerHTML = by.filter(r => r.d > 0).slice(0, MOVERS).map(item).join('') || '<li class="muted">Nessuno.</li>';
   $('mvdown').innerHTML = by.filter(r => r.d < 0).reverse().slice(0, MOVERS).map(item).join('') || '<li class="muted">Nessuno.</li>';
 }
@@ -1322,6 +1329,10 @@ for (const id of ['mvup', 'mvdown']) $(id).addEventListener('click', e => {
 $('mvrange').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b) return;
   state.mv = b.dataset.v; renderMovers(); saveHash();
+});
+$('mvsort').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  state.mvSort = b.dataset.v; renderMovers(); saveHash();
 });
 $('group').addEventListener('click', e => {
   const info = e.target.closest('[data-info]');

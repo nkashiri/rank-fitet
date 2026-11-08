@@ -28,9 +28,10 @@ and women's table tennis rankings (about 8,900 men and 900 women), with data fro
   the heaviest losses (by the opponent's points at the ranking before the match), and a **Confronto diretto**
   (head-to-head) with any selected athlete or season opponent: key figures side by side and their matches this season.
 - **Chi sale e chi scende** (movers): the 10 biggest climbs and falls among the filtered athletes, since the previous
-  ranking or over one of the periods (buttons in the card), ordered by percentage improvement,
-  (starting position − position) / starting position, so a jump near the top counts as much as a longer one further
-  down. Click a name for the profile.
+  ranking or over one of the periods (buttons in the card). By default they are ordered by the absolute change
+  (points or positions gained or lost); **Percentuale** orders them by the percentage change instead,
+  (starting − current) / starting, so a jump near the top counts as much as a longer one further down.
+  Click a name for the profile.
 - **Club and region card:** choose exactly one club in Società (or one region in Regione) to see a card with the
   number of athletes, average points, average age, win %, the best athletes and the biggest improvers, and the counts
   by category and sector. The region card also ranks its clubs by strength (sum of the points of their 4 best
