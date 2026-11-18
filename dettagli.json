@@ -1,0 +1,6826 @@
+{
+ "rubber": {
+  "donic-bluestorm-pro-am": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "tibhar-hybrid-k1-european-version": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-hurricane-3-national-blue-sponge": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "victas-triple-double-extra": {
+   "speed": "108",
+   "spin": "118",
+   "control": "95",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-hammond-z2": {
+   "speed": "15 / 15",
+   "spin": "13 / 15",
+   "control": "10 / 15",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-hybrid-mk": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-gold-arc-9": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "donic-bluefire-m1-turbo": {
+   "speed": "98 / 100",
+   "spin": "98 / 100",
+   "control": "66 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "donic-acuda-blue-p2": {
+   "speed": "10",
+   "spin": "10",
+   "control": "7.0",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "victas-v-22-double-extra": {
+   "speed": "120 / 100",
+   "spin": "118 / 100",
+   "control": "84 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "victas-v--gt-20-double-extra": {
+   "speed": "9.0 / 10",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "yasaka-rakza-9": {
+   "speed": "102",
+   "spin": "105",
+   "control": "60",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-1q-xd": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-rhyzm-p": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-rasanter-r50": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-evolution-mx-s": {
+   "speed": "10",
+   "spin": "9.0",
+   "control": "8.0",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "gewo-nanoflex-ft48": {
+   "speed": "120 / 120",
+   "spin": "115 / 120",
+   "control": "91 / 120",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "xiom-omega-v-asia": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-dynaryz-agr": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-hexer-powergrip": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-rasant": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "gewo-flexxon": {
+   "speed": "117",
+   "spin": "88",
+   "control": "111",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "adidas-p7": {
+   "speed": "90",
+   "spin": "110",
+   "control": "93",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-hurricane-3-provincial-22-blue-sponge": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-valmo": {
+   "speed": "10 / 10",
+   "spin": "10 / 10",
+   "control": "7.0 / 10",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "butterfly-tenergy-25-fx": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "xiom-jekyll-hyde-c550": {
+   "speed": "8.0",
+   "spin": "9.0",
+   "control": "8.0",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "xiom-omega-iv-asia": {
+   "speed": "130",
+   "spin": "120",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-nianmor": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "tsp-super-ventus": {
+   "speed": "113",
+   "spin": "111",
+   "control": "91",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "joola-maxxx-p": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-rasant-grip": {
+   "speed": "113",
+   "spin": "116",
+   "control": "82",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "tibhar-genius-sound": {
+   "speed": "9.0 / 10",
+   "spin": "9.0 / 10",
+   "control": "6.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-neo-hurricane-3-national-blue-sponge": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "victas-vj--gt-07-stiff": {
+   "speed": "106",
+   "spin": "104",
+   "control": "99",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-rasant-powergrip": {
+   "speed": "117",
+   "spin": "116",
+   "control": "73",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "dhs-gold-arc-8": {
+   "speed": "10 / 10",
+   "spin": "10 / 10",
+   "control": "9.0 / 10",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "tsp-ventus-spin": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "butterfly-tenergy-80": {
+   "speed": "132",
+   "spin": "112",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-rakza-z-extra-hard": {
+   "speed": "12 / 15",
+   "spin": "14 / 15",
+   "control": "9.0 / 15",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "donic-bluestar-a1": {
+   "speed": "11",
+   "spin": "11",
+   "control": "5.0",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-sigma-europe": {
+   "speed": "110",
+   "spin": "112",
+   "control": "89",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "victas-ventus-extra": {
+   "speed": "121",
+   "spin": "136",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-5q": {
+   "speed": "99 / 100",
+   "spin": "95 / 100",
+   "control": "50 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-rasanter-c48": {
+   "speed": "121",
+   "spin": "132",
+   "control": "92",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "729-battle-ii-provincial": {
+   "speed": "13 / 10",
+   "spin": "12 / 10",
+   "control": "13 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-rigan-spin": {
+   "speed": "89 / 100",
+   "spin": "95 / 100",
+   "control": "91 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tsp-ventus-soft": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "dhs-skyline-2-provincial-blue-sponge": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-rakza-z": {
+   "speed": "11 / 12",
+   "spin": "14 / 12",
+   "control": "9.0 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-rasanter-r53": {
+   "speed": "130 / 127",
+   "spin": "126 / 127",
+   "control": "125 / 127",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-nuzn-55": {
+   "speed": "98 / 100",
+   "spin": "98 / 100",
+   "control": "69 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-jo-waldner": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-5q-update": {
+   "speed": "9.0 / 9",
+   "spin": "9.0 / 9",
+   "control": "9.0 / 9",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-grip-s": {
+   "speed": "9.2 / 10",
+   "spin": "9.8 / 10",
+   "control": "6.5 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-sigma-europe-ii": {
+   "speed": "80 / 100",
+   "spin": "100 / 100",
+   "control": "100 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-rasant-turbo": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "tibhar-rapid-x-press": {
+   "speed": "96",
+   "spin": "100",
+   "control": "95",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "haifu-white-shark-2-tuned": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-evolution-mx-p-50": {
+   "speed": "102",
+   "spin": "99",
+   "control": "65",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-tronix-acc": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "gewo-nanoflex-ft45": {
+   "speed": "113",
+   "spin": "115",
+   "control": "95",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-rising-dragon": {
+   "speed": "10 / 11",
+   "spin": "11 / 11",
+   "control": "9.0 / 11",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-maxxx-500": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-xtend-hs": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "gewo-proton-neo-325": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "gewo-nanoflex-ft40": {
+   "speed": "108 / 100",
+   "spin": "115 / 100",
+   "control": "99 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "nittaku-fastarc-g-1": {
+   "speed": "97 / 100",
+   "spin": "99 / 100",
+   "control": "66 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-omega-iv-europe": {
+   "speed": "80",
+   "spin": "100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-evolution-mx-p": {
+   "speed": "98 / 100",
+   "spin": "96 / 100",
+   "control": "67 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "gewo-hype-xt-pro-500": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "adidas-tenzone-ultra": {
+   "speed": "107",
+   "spin": "107",
+   "control": "102",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "victas-v-01-limber": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-rakza-xx": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-renanos-hold": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-sieger-pk50": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "gewo-proton-neo-450": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-tenergy-25": {
+   "speed": "13",
+   "spin": "11",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-rakza-7": {
+   "speed": "94 / 100",
+   "spin": "95 / 100",
+   "control": "67 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "sanwei-target-national-new": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-quantum-s": {
+   "speed": "9.0 / 10",
+   "spin": "9.0 / 10",
+   "control": "9.0 / 10",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-rasanter-r47": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "tibhar-evolution-el-p": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-magna-tx": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-omega-iv-pro": {
+   "speed": "138",
+   "spin": "120",
+   "control": "83",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tsp-regalis-blue": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "victas-vs-402-double-extra": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-dynaryz-zgr": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-mark-v-hps": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-goriki-kaisoku": {
+   "speed": "9.0 / 10",
+   "spin": "9.0 / 10",
+   "control": "9.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-tenergy-64": {
+   "speed": "135",
+   "spin": "105",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-gold-arc-3": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "gewo-hype-kr-pro-475": {
+   "speed": "124",
+   "spin": "121",
+   "control": "92",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-sigma-pro-ii": {
+   "speed": "80 / 100",
+   "spin": "100 / 100",
+   "control": "100 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "gewo-nexxus-el-pro-43": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "adidas-tenzone-ultra-sf": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-rasant-powersponge": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "butterfly-zyre-03": {
+   "speed": "88",
+   "spin": "100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-mark-v-gps-soft": {
+   "speed": "0.0",
+   "spin": "0.0",
+   "control": "0.0",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-boost-tx": {
+   "speed": "94 / 100",
+   "spin": "91 / 100",
+   "control": "71 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "tsp-agrit-speed": {
+   "speed": "109",
+   "spin": "103",
+   "control": "91",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "gewo-neoflexx-eft-48": {
+   "speed": "98",
+   "spin": "112",
+   "control": "94",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-rasanter-r45": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "donic-bluefire-jp-03": {
+   "speed": "95",
+   "spin": "105",
+   "control": "65",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-dignics-80": {
+   "speed": "13 / 9",
+   "spin": "11 / 9",
+   "control": "70 / 9",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "donic-bluegrip-c2": {
+   "speed": "10 / 10",
+   "spin": "11 / 10",
+   "control": "6.0 / 10",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "tibhar-genius": {
+   "speed": "91 / 100",
+   "spin": "87 / 100",
+   "control": "73 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-rasanter-r48": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "gewo-proton-neo-475": {
+   "speed": "113",
+   "spin": "104",
+   "control": "95",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "nittaku-flyatt-spin": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "nittaku-fastarc-p-1": {
+   "speed": "98 / 100",
+   "spin": "98 / 100",
+   "control": "75 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "gewo-neoflexx-eft-40": {
+   "speed": "93",
+   "spin": "108",
+   "control": "100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "nittaku-narucross-ex-hard": {
+   "speed": "9.6 / 10",
+   "spin": "9.3 / 10",
+   "control": "7.3 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-tenergy-19": {
+   "speed": "132",
+   "spin": "117",
+   "control": "36",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "killerspin-fortissimo": {
+   "speed": "106",
+   "spin": "94",
+   "control": "94",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "loki-rxton-3-pro": {
+   "speed": "8.0 / 10",
+   "spin": "8.0 / 10",
+   "control": "9.0 / 10",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "dhs-neo-hurricane-3-provincial-orange-sponge": {
+   "speed": "12 / 13",
+   "spin": "12 / 13",
+   "control": "12 / 13",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-omega-3-asian": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "donic-baracuda": {
+   "speed": "91 / 100",
+   "spin": "98 / 100",
+   "control": "71 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-fastarc-s-1": {
+   "speed": "99 / 100",
+   "spin": "97 / 100",
+   "control": "65 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-omega-v-tour": {
+   "speed": "9.0 / 10",
+   "spin": "10 / 10",
+   "control": "10 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-dignics-64": {
+   "speed": "140",
+   "spin": "110",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tsp-ventus-speed": {
+   "speed": "15 / 15",
+   "spin": "11 / 15",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "victas-v-15-limber": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-coppa-x1-turbo-platin": {
+   "speed": "10 / 10",
+   "spin": "10 / 10",
+   "control": "5.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-hexer-powergrip-sfx": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "tibhar-aurus-prime": {
+   "speed": "120",
+   "spin": "118",
+   "control": "80",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "xiom-omega-v-europe": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "yinhe-galaxy-venus-2": {
+   "speed": "120",
+   "spin": "90",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-traction-ms-pro": {
+   "speed": "10 / 11",
+   "spin": "10 / 11",
+   "control": "5.0 / 11",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "donic-acuda-s1-turbo": {
+   "speed": "10 / 10",
+   "spin": "10 / 10",
+   "control": "6.0 / 10",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "xiom-vega-x": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "butterfly-tenergy-05": {
+   "speed": "13",
+   "spin": "11",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-bryce-high-speed": {
+   "speed": "145",
+   "spin": "103",
+   "control": "35",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-hurricane-pro-iii-turbo-blue": {
+   "speed": "14",
+   "spin": "15",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "gewo-nexxus-xt-pro-48": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "butterfly-dignics-09c": {
+   "speed": "130",
+   "spin": "130",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-dignics-05": {
+   "speed": "135",
+   "spin": "120",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "victas-v-01-stiff": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-spin-art": {
+   "speed": "11 / 12",
+   "spin": "11 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-bluestorm-z1": {
+   "speed": "10",
+   "spin": "10",
+   "control": "6.0",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-hybrid-k3": {
+   "speed": "8.0 / 9",
+   "spin": "9.0 / 9",
+   "control": "9.0 / 9",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "victas-vs-401": {
+   "speed": "8.0",
+   "spin": "9.0",
+   "control": "9.0",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "gewo-flexxon-fx": {
+   "speed": "110",
+   "spin": "111",
+   "control": "94",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "galaxy-yinhe-apollo-5": {
+   "speed": "10 / 10",
+   "spin": "9.0 / 10",
+   "control": "9.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "globe-999-national": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-galze": {
+   "speed": "98 / 100",
+   "spin": "94 / 100",
+   "control": "70 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "tibhar-grip-s-europe-soft": {
+   "speed": "108",
+   "spin": "113",
+   "control": "90",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "gewo-flexxon-soft": {
+   "speed": "105",
+   "spin": "114",
+   "control": "98",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-hexer-hd": {
+   "speed": "113",
+   "spin": "110",
+   "control": "80",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "yasaka-rakza-x": {
+   "speed": "10",
+   "spin": "10",
+   "control": "8.0",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "galaxy-9000-3-star": {
+   "speed": "12",
+   "spin": "10",
+   "control": "8.5",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-5q-vip": {
+   "speed": "109",
+   "spin": "115",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-calibra-lt": {
+   "speed": "96 / 100",
+   "spin": "91 / 100",
+   "control": "70 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-anti-power": {
+   "tensor": "No",
+   "anti": "Yes"
+  },
+  "butterfly-tenergy-05-fx": {
+   "speed": "130",
+   "spin": "115",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-rasant-beat": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-hammond-pro-beta": {
+   "speed": "12",
+   "spin": "11",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-omega-v-pro": {
+   "speed": "85 / 100",
+   "spin": "85 / 100",
+   "control": "95 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "dhs-hurricane-8-hard": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-hammond-cr": {
+   "speed": "14 / 15",
+   "spin": "12 / 15",
+   "control": "12 / 15",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "gewo-nexxus-el-pro-38": {
+   "speed": "109 / 9",
+   "spin": "127 / 9",
+   "control": "101 / 9",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-omega-vii-tour": {
+   "speed": "97 / 100",
+   "spin": "98 / 100",
+   "control": "67 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-alhelg-sr": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "victas-v-11-extra": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-acuda-blue-p1": {
+   "speed": "10",
+   "spin": "10",
+   "control": "7.0",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "gewo-proton-neo-375": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-calibra-lt-spin": {
+   "speed": "95 / 100",
+   "spin": "92 / 100",
+   "control": "70 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-bluefire-jp-01-turbo": {
+   "speed": "97 / 100",
+   "spin": "98 / 100",
+   "control": "67 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "nittaku-fastarc-c-1": {
+   "speed": "97 / 100",
+   "spin": "97 / 100",
+   "control": "67 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-evolution-fx-s": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-bluefire-m1": {
+   "speed": "107",
+   "spin": "107",
+   "control": "60",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-plasma-women": {
+   "speed": "93 / 120",
+   "spin": "103 / 120",
+   "control": "93 / 120",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "xiom-vega-pro": {
+   "speed": "80 / 100",
+   "spin": "90 / 100",
+   "control": "80 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "palio-aeolus": {
+   "speed": "95 / 100",
+   "spin": "96 / 100",
+   "control": "95 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "gewo-codexx-el-pro-52": {
+   "speed": "135",
+   "spin": "128",
+   "control": "81",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-calibra-lt-plus": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "gewo-hype-el-pro-400": {
+   "speed": "110",
+   "spin": "122",
+   "control": "102",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-quattro-aconda-soft": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "palio-macro-era": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "tsp-triple-spin-chop": {
+   "speed": "0.0",
+   "spin": "0.0",
+   "control": "0.0",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-express-one": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "tsp-agrit": {
+   "speed": "107",
+   "spin": "102",
+   "control": "92",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-aurus": {
+   "speed": "109",
+   "spin": "110",
+   "control": "90",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "victas-vs-402-limber": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-bluegrip-s2": {
+   "speed": "9.0 / 9",
+   "spin": "9.0 / 9",
+   "control": "10 / 9",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-impuls-powersponge": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-rasanter-r42": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "victas-vjc--gt-07-sticky-extra": {
+   "speed": "98",
+   "spin": "109",
+   "control": "100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "gewo-nexxus-el-pro-50-hard": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "tibhar-1q": {
+   "speed": "115",
+   "spin": "105",
+   "control": "65",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-mantra-h": {
+   "speed": "158 / 9",
+   "spin": "132 / 9",
+   "control": "77 / 9",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "tibhar-evolution-mx-d": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "cornilleau-target-pro-gt-x51": {
+   "speed": "160",
+   "spin": "170",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "dhs-hurricane-3-provincial": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-rhyzm": {
+   "speed": "116 / 120",
+   "spin": "107 / 120",
+   "control": "66 / 120",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-rasanter-r37": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "tibhar-5q-sound": {
+   "speed": "107",
+   "spin": "95",
+   "control": "117",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-grip-s-europe": {
+   "speed": "112",
+   "spin": "110",
+   "control": "84",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "729-battle-ii-provincial-gold": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "double-fish-volant-phoenix": {
+   "speed": "9.0 / 10",
+   "spin": "9.0 / 10",
+   "control": "9.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-golden-tango-ps": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-hexer-plus": {
+   "speed": "109",
+   "spin": "108",
+   "control": "79",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-xtend": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "gewo-hype-xt-pro-400": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-sigma-pro": {
+   "speed": "112",
+   "spin": "111",
+   "control": "85",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "gewo-nexxus-el-pro-53-hard": {
+   "speed": "133",
+   "spin": "124",
+   "control": "83",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "darker-vlon-s-blue-v": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "dhs-gold-arc-5": {
+   "speed": "9.0 / 10",
+   "spin": "9.0 / 10",
+   "control": "10 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-hexer-grip": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "nittaku-hurricane-pro-iii-turbo-orange": {
+   "speed": "14",
+   "spin": "15",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-bluestorm-z1-turbo": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "galaxy-yinhe-moon-pro": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-vega-europe": {
+   "speed": "75",
+   "spin": "85",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "donic-coppa-x1-gold": {
+   "speed": "9.0 / 10",
+   "spin": "10 / 10",
+   "control": "6.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-evolution-fx-p": {
+   "speed": "94 / 100",
+   "spin": "98 / 100",
+   "control": "68 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-v-stage": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-genius-plus-optimum": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "adidas-p5": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-rakza-7-soft": {
+   "speed": "20",
+   "spin": "23",
+   "control": "17",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "donic-bluegrip-v1": {
+   "speed": "10",
+   "spin": "11",
+   "control": "6.0",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "gewo-mega-flex-control": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-coppa-x2-platin-soft": {
+   "speed": "105",
+   "spin": "98",
+   "control": "68",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "cornilleau-target-pro-gt-h47": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-coppa-speed": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "729-battle-3": {
+   "speed": "13 / 15",
+   "spin": "14 / 15",
+   "control": "13 / 15",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-battle-ii": {
+   "speed": "11",
+   "spin": "12",
+   "control": "12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "victas-v-15-extra": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "galaxy-yinhe-mercury-iii-euro": {
+   "speed": "10",
+   "spin": "10",
+   "control": "9.0",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "gewo-nexxus-xt-pro-50-hard": {
+   "speed": "132",
+   "spin": "121",
+   "control": "85",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-acuda-s2": {
+   "speed": "92 / 100",
+   "spin": "98 / 100",
+   "control": "69 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-dynaryz-acc": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "dhs-hurricane-8": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-omega-vii-euro": {
+   "speed": "9.0 / 10",
+   "spin": "9.0 / 10",
+   "control": "9.0 / 10",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "dhs-neo-hurricane-3-provincial-blue-sponge": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tsp-regalis-red": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-skyline-3-60-mid-hard": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-hexer-grip-sfx": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "tibhar-sinus": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-rasanter-v42": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "stiga-almana": {
+   "speed": "160",
+   "spin": "115",
+   "control": "80",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "palio-cj8000-biotech-42-44-japanese-sponge": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-good": {
+   "speed": "110",
+   "spin": "105",
+   "control": "92",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-omega-vii-guang-china": {
+   "speed": "9.0 / 9",
+   "spin": "9.0 / 9",
+   "control": "9.0 / 9",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "stiga-mantra-m": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "gewo-hype-el-pro-425": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "victas-v--gt-15-stiff": {
+   "speed": "9.0 / 9",
+   "spin": "9.0 / 9",
+   "control": "9.0 / 9",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "donic-coppa-x3-silver": {
+   "speed": "8.0 / 9",
+   "spin": "9.0 / 9",
+   "control": "9.0 / 9",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-aibiss": {
+   "speed": "105",
+   "spin": "110",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-acuda-s1": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-primus": {
+   "speed": "100",
+   "spin": "110",
+   "control": "95",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-phenix-phoenix": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "palio-blitz": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "tuttle-beijing-2": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-sinus-alpha": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-rhyzer-pro-50": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "lkt-pro-xt-silver-dragon": {
+   "speed": "11 / 12",
+   "spin": "12 / 12",
+   "control": "11 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-memo": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-battle-ii-provincial-battle-2-provincial": {
+   "speed": "11",
+   "spin": "12",
+   "control": "12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-omega-vii-pro": {
+   "speed": "93 / 100",
+   "spin": "87 / 100",
+   "control": "90 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-729-08-pro": {
+   "speed": "12",
+   "spin": "13",
+   "control": "12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-bluefire-jp-02": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-narucross-ex-soft": {
+   "speed": "9.1 / 10",
+   "spin": "9.6 / 10",
+   "control": "7.5 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-tenergy-05-hard": {
+   "speed": "130",
+   "spin": "115",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "stiga-airoc-s": {
+   "speed": "141",
+   "spin": "128",
+   "control": "86",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-hexer-duro": {
+   "speed": "103",
+   "spin": "107",
+   "control": "85",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "butterfly-tenergy-64-fx": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "butterfly-bryce-speed-fx": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-x-plode-sensitive": {
+   "speed": "95",
+   "spin": "110",
+   "control": "95",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "gewo-neoflexx-eft-45": {
+   "speed": "96",
+   "spin": "110",
+   "control": "97",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "yasaka-mark-v-hps-soft": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "air-illumina-x88": {
+   "speed": "19 / 20",
+   "spin": "18 / 20",
+   "control": "19 / 20",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-hurricane-3-national-orange-sponge": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-express-two": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "double-fish-volant-phoenix-2": {
+   "speed": "8.0",
+   "spin": "9.0",
+   "control": "9.0",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "adidas-tenzone": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-carbo-sound": {
+   "speed": "142",
+   "spin": "110",
+   "control": "85",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-flyatt-hard": {
+   "speed": "12 / 14",
+   "spin": "11 / 14",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-hurricane-3-neo": {
+   "speed": "11",
+   "spin": "12",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "stiga-airoc-astro-s": {
+   "speed": "144 / 10",
+   "spin": "128 / 10",
+   "control": "84 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-omega-vii-asia": {
+   "speed": "12",
+   "spin": "12",
+   "control": "10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "lkt-red-diamond": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "loki-gtx-pro": {
+   "speed": "11 / 7",
+   "spin": "11 / 7",
+   "control": "12 / 7",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-bryce-speed": {
+   "speed": "14 / 15",
+   "spin": "9.8 / 15",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yinhe-big-dipper-5": {
+   "speed": "9.0 / 9",
+   "spin": "9.0 / 9",
+   "control": "9.0 / 9",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "juic-neo-anti": {
+   "speed": "0.0",
+   "spin": "0.0",
+   "control": "0.0",
+   "tensor": "No",
+   "anti": "Yes"
+  },
+  "palio-thors": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "yasaka-rigan": {
+   "speed": "8.0 / 10",
+   "spin": "8.0 / 10",
+   "control": "9.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-plaxon-400": {
+   "speed": "105",
+   "spin": "103",
+   "control": "80",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-tackifire-c-soft": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-factive": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "palio-hidden-dragon-biotech": {
+   "speed": "9.0",
+   "spin": "11",
+   "control": "11",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-hexer": {
+   "speed": "107",
+   "spin": "109",
+   "control": "78",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "yasaka-shining-dragon": {
+   "speed": "21",
+   "spin": "23",
+   "control": "20",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-skyline-tg3-21-blue-sponge": {
+   "speed": "11",
+   "spin": "11",
+   "control": "11",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-energy-green-power-xtra": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-plasma-470": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "victas-v-01": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "palio-hadou-40-plus": {
+   "speed": "8.0 / 10",
+   "spin": "8.0 / 10",
+   "control": "9.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-power-lt": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-bluegrip-c1": {
+   "speed": "11 / 10",
+   "spin": "11 / 10",
+   "control": "5.0 / 10",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "stiga-almana-sound-synergytech": {
+   "speed": "166",
+   "spin": "115",
+   "control": "85",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-energy-green-power": {
+   "speed": "100 / 100",
+   "spin": "98 / 100",
+   "control": "80 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-aurus-sound": {
+   "speed": "100 / 120",
+   "spin": "114 / 120",
+   "control": "105 / 120",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "xiom-omega-2-asian": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "bomb-mopha": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-vega-tour": {
+   "speed": "12",
+   "spin": "12",
+   "control": "11",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "xiom-vega-pro-hybrid": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-mantra-s": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-neo-skyline-2-tg2": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-acuda-s3": {
+   "speed": "100 / 100",
+   "spin": "100 / 100",
+   "control": "60 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "joola-express-x-plode": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-tin-arc-5": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-neo-hurricane-3": {
+   "speed": "12 / 12",
+   "spin": "11 / 12",
+   "control": "11 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-neo-skyline-3-tg3": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "giant-dragon-superspin-g3-soft": {
+   "speed": "13",
+   "spin": "10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "reactor-thunder": {
+   "speed": "11 / 12",
+   "spin": "11 / 12",
+   "control": "11 / 12",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "donic-acuda-blue-p1-turbo": {
+   "speed": "10 / 10",
+   "spin": "10 / 10",
+   "control": "7.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-omega-iv-elite": {
+   "speed": "70 / 100",
+   "spin": "85 / 100",
+   "control": "100 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "donic-bluefire-jp-01": {
+   "speed": "102",
+   "spin": "105",
+   "control": "70",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "donic-coppa": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-bluefire-m3": {
+   "speed": "90",
+   "spin": "107",
+   "control": "77",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-hurricane-3": {
+   "speed": "10",
+   "spin": "11",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-nimbus-vip": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "spin-lord-tiger": {
+   "speed": "85 / 100",
+   "spin": "85 / 100",
+   "control": "90 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-rapid": {
+   "speed": "95",
+   "spin": "95",
+   "control": "95",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-neos-tacky": {
+   "speed": "0.0",
+   "spin": "0.0",
+   "control": "0.0",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-tau": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "dhs-hurricane-3-pro-tuned": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-dhs-hurricane-3": {
+   "speed": "10",
+   "spin": "11",
+   "control": "11",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-rasanter-v47": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "loki-arthur-asia": {
+   "speed": "8.0 / 8",
+   "spin": "8.0 / 8",
+   "control": "8.0 / 8",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-aurus-soft": {
+   "speed": "104",
+   "spin": "112",
+   "control": "95",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-cermet": {
+   "speed": "11",
+   "spin": "9.2",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "galaxy-yinhe-big-dipper": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "nittaku-alhelg": {
+   "speed": "15",
+   "spin": "13",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-magna-tc-ii-2": {
+   "speed": "9.0 / 10",
+   "spin": "9.0 / 10",
+   "control": "6.0 / 10",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "donic-bluestorm-z2": {
+   "speed": "10",
+   "spin": "10",
+   "control": "7.0",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-maxxx-450": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dawei-inspirit": {
+   "speed": "9.0 / 10",
+   "spin": "9.5 / 10",
+   "control": "9.5 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-sriver-g3-fx": {
+   "speed": "13",
+   "spin": "10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-desto-f3-big-slam": {
+   "speed": "8.0 / 10",
+   "spin": "10 / 10",
+   "control": "7.5 / 10",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "donic-desto-f2": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "butterfly-glayzer-09c": {
+   "speed": "75 / 100",
+   "spin": "87 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-hurricane-3-50": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "gewo-nexxus-el-pro-48": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "kokutaku-868-training-rubber": {
+   "speed": "10",
+   "spin": "10",
+   "control": "9.0",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-bloom-power": {
+   "speed": "11",
+   "spin": "11",
+   "control": "8.0",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tuttle-beijing-4": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "xushaofa-999-zcd": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-calibra-tour-m": {
+   "speed": "148",
+   "spin": "127",
+   "control": "80",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-sinus-sound": {
+   "speed": "96 / 100",
+   "spin": "97 / 100",
+   "control": "68 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "stiga-boost-ts": {
+   "speed": "89 / 100",
+   "spin": "96 / 100",
+   "control": "73 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "palio-ak-47-blue": {
+   "speed": "11 / 12",
+   "spin": "8.0 / 12",
+   "control": "7.0 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yinhe-jupiter-3-asia": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-skyline-tg3": {
+   "speed": "11 / 12",
+   "spin": "11 / 12",
+   "control": "11 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "sanwei-target-national": {
+   "speed": "160",
+   "spin": "140",
+   "control": "120",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-boost-tp": {
+   "speed": "168",
+   "spin": "116",
+   "control": "81",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "palio-cj8000-biotech-40-42": {
+   "speed": "8.0 / 10",
+   "spin": "9.0 / 10",
+   "control": "9.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-dynaryz-zgx": {
+   "speed": "10 / 12",
+   "spin": "10 / 12",
+   "control": "10 / 12",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "donic-desto-f1": {
+   "speed": "10 / 10",
+   "spin": "10 / 10",
+   "control": "7.0 / 10",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "yasaka-mark-v-xs": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-g666": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "gewo-hype-el-pro-475": {
+   "speed": "122",
+   "spin": "120",
+   "control": "92",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-729-08": {
+   "speed": "11",
+   "spin": "12",
+   "control": "11",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-origin": {
+   "speed": "11 / 12",
+   "spin": "12 / 12",
+   "control": "10 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-faster-3": {
+   "speed": "12 / 12",
+   "spin": "12 / 12",
+   "control": "12 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yinhe-galaxy-sun": {
+   "speed": "120",
+   "spin": "90",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-mambo-h": {
+   "speed": "9.0",
+   "spin": "9.4",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-tackifire-special-soft": {
+   "speed": "9.5 / 15",
+   "spin": "9.8 / 15",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-presto-spin-max": {
+   "speed": "13",
+   "spin": "13",
+   "control": "13",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-vega-asia": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-dna-pro-m": {
+   "speed": "156",
+   "spin": "134",
+   "control": "78",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "palio-hk1997-biotech": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-evolution-el-s": {
+   "speed": "123",
+   "spin": "122",
+   "control": "85",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "donic-coppa-jo-gold": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-airoc-m": {
+   "speed": "149 / 127",
+   "spin": "128 / 127",
+   "control": "80 / 127",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-hurricane-8-80": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-bluefire-m2": {
+   "speed": "97",
+   "spin": "107",
+   "control": "70",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dawei-inspirit-quattro-ultralight-40": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-baracuda-big-slam": {
+   "speed": "90 / 100",
+   "spin": "100 / 100",
+   "control": "73 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-tin-arc": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-vega-japan": {
+   "speed": "90 / 100",
+   "spin": "100 / 100",
+   "control": "100 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-tenergy-80-fx": {
+   "speed": "132",
+   "spin": "112",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "palio-hk1997-gold": {
+   "speed": "9.0 / 9",
+   "spin": "9.0 / 9",
+   "control": "9.0 / 9",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-sonex-jp-gold": {
+   "speed": "10 / 10",
+   "spin": "10 / 10",
+   "control": "6.0 / 10",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "butterfly-solcion": {
+   "speed": "10 / 12",
+   "spin": "8.5 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-tango-extrem": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "palio-cj8000-biotech-36-38": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "729-729-5": {
+   "speed": "12 / 12",
+   "spin": "11 / 12",
+   "control": "12 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-rhyzer-48": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "focus-3-snipe": {
+   "speed": "12 / 12",
+   "spin": "11 / 12",
+   "control": "11 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-roundell-soft": {
+   "speed": "12",
+   "spin": "10",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "palio-cj8000-extreme-spin": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-quantum-x-pro": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-tin-arc-3": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-mark-v-m2": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-legend-destroyer": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dawei-saviga": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-729-08-es": {
+   "speed": "11 / 12",
+   "spin": "12 / 12",
+   "control": "12 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-729-oem": {
+   "speed": "9.0",
+   "spin": "11",
+   "control": "12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-quantum": {
+   "speed": "9.0 / 10",
+   "spin": "9.0 / 10",
+   "control": "9.0 / 10",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "dhs-hurricane-2-19-sponge": {
+   "speed": "12 / 12",
+   "spin": "12 / 12",
+   "control": "10 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-hammond": {
+   "speed": "9.6 / 10",
+   "spin": "8.7 / 10",
+   "control": "7.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "galaxy-yinhe-earth-2": {
+   "speed": "10 / 12",
+   "spin": "10 / 12",
+   "control": "10 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-hammond-x": {
+   "speed": "9.4",
+   "spin": "9.6",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-tackiness-chop-2": {
+   "speed": "7.5 / 15",
+   "spin": "10 / 15",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "loki-rxton-3": {
+   "speed": "8.0 / 8",
+   "spin": "8.0 / 8",
+   "control": "9.0 / 8",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-glayzer": {
+   "speed": "81 / 100",
+   "spin": "73 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "butterfly-rozena": {
+   "speed": "13",
+   "spin": "10",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-backside-20d": {
+   "speed": "85",
+   "spin": "103",
+   "control": "97",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tuttle-prevention-arc": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dawei-inspirit-quattro-ultralight-sv-35": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-super-defense-40": {
+   "speed": "64",
+   "spin": "105",
+   "control": "99",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "palio-cj8000-biotech-36-38-japanese-sponge": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "ritc-2000-tackspeed": {
+   "speed": "9.0 / 10",
+   "spin": "10 / 10",
+   "control": "9.5 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-vario-big-slam": {
+   "speed": "8.0 / 10",
+   "spin": "8.0 / 10",
+   "control": "10 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-coppa-jo-silver": {
+   "speed": "79 / 100",
+   "spin": "93 / 100",
+   "control": "70 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-aurus-select": {
+   "speed": "108",
+   "spin": "115",
+   "control": "90",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "dawei-sprungfeder-g3-a2": {
+   "speed": "6.5 / 10",
+   "spin": "8.0 / 10",
+   "control": "7.5 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-zap-40mm-biotech": {
+   "speed": "18",
+   "spin": "18",
+   "control": "17",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "729-729-2-sensor": {
+   "speed": "12 / 12",
+   "spin": "11 / 12",
+   "control": "10 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-boost-tc": {
+   "speed": "163",
+   "spin": "116",
+   "control": "86",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "xiom-jekyll-hyde-v475": {
+   "speed": "8.0 / 10",
+   "spin": "8.0 / 10",
+   "control": "9.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-hurricane-3-national": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "palio-ak-47-red": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "stiga-calibra-lt-sound": {
+   "speed": "94 / 100",
+   "spin": "93 / 100",
+   "control": "71 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-aurora": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "yasaka-mark-v": {
+   "speed": "90 / 100",
+   "spin": "90 / 100",
+   "control": "78 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "palio-ak-47-yellow-sponge": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-mark-v-30": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yinhe-galaxy-moon": {
+   "speed": "120",
+   "spin": "90",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-coppa-tagora": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "lkt-rapid-speed": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "galaxy-yinhe-saturn-pro": {
+   "speed": "8.0 / 9",
+   "spin": "9.0 / 9",
+   "control": "9.0 / 9",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-hurricane-2": {
+   "speed": "12 / 12",
+   "spin": "12 / 12",
+   "control": "10 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "galaxy-yinhe-jupiter-ii": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-sriver-g2": {
+   "speed": "11 / 15",
+   "spin": "9.5 / 15",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-hexer-powersponge": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-729": {
+   "speed": "9.3 / 10",
+   "spin": "9.3 / 10",
+   "control": "9.3 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "palio-cj8000-biotech-39-41": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-coppa-jo-platin": {
+   "speed": "98 / 100",
+   "spin": "90 / 100",
+   "control": "53 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "yasaka-new-era": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-faster": {
+   "speed": "12 / 12",
+   "spin": "11 / 12",
+   "control": "11 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-nimbus-sound": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "dhs-neo-hurricane-2": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-nimbus-soft": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "stiga-genesis-s": {
+   "speed": "144",
+   "spin": "131",
+   "control": "83",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-plasma-380": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "stiga-neos-sound-synergytech": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-genesis-m": {
+   "speed": "152",
+   "spin": "131",
+   "control": "77",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "andro-roxon-500-pro": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "dhs-hurricane-9-blue": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-gtt-45": {
+   "speed": "94 / 9",
+   "spin": "107 / 9",
+   "control": "97 / 9",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "tibhar-vari-spin": {
+   "speed": "8.0 / 10",
+   "spin": "10 / 10",
+   "control": "9.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "sanwei-gear-hyper": {
+   "speed": "9.0 / 10",
+   "spin": "10 / 10",
+   "control": "8.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "reactor-tornado-v5": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "galaxy-yinhe-moon-speed": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "nittaku-magic-carbon": {
+   "speed": "8.5",
+   "spin": "9.0",
+   "control": "7.0",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yinhe-galaxy-mercury-ii": {
+   "speed": "90 / 100",
+   "spin": "90 / 100",
+   "control": "80 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tsp-rise-speed": {
+   "speed": "105",
+   "spin": "102",
+   "control": "96",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-plasma-430": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "yasaka-pryde-40": {
+   "speed": "96 / 100",
+   "spin": "94 / 100",
+   "control": "70 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "729-higher-3": {
+   "speed": "11 / 12",
+   "spin": "12 / 12",
+   "control": "12 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-airoc-astro-m": {
+   "speed": "152 / 10",
+   "spin": "128 / 10",
+   "control": "78 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-roundell": {
+   "speed": "12",
+   "spin": "10",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "999-super-999t": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-roxon-330": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "butterfly-sriver-l": {
+   "speed": "80 / 100",
+   "spin": "80 / 100",
+   "control": "70 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-g555": {
+   "speed": "11",
+   "spin": "8.0",
+   "control": "10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-revo-fire": {
+   "speed": "101",
+   "spin": "102",
+   "control": "84",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "sanwei-gears": {
+   "speed": "7.0 / 10",
+   "spin": "10 / 10",
+   "control": "9.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "lkt-pro-xp": {
+   "speed": "12 / 12",
+   "spin": "11 / 12",
+   "control": "11 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "adidas-tenzone-sf": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-hurricane-3-19-sponge": {
+   "speed": "11 / 12",
+   "spin": "11 / 12",
+   "control": "12 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-roxon-450": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "stiga-magna": {
+   "speed": "7.8 / 10",
+   "spin": "9.2 / 10",
+   "control": "6.7 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-geospin-tacky": {
+   "speed": "9.0 / 10",
+   "spin": "10 / 10",
+   "control": "9.7 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-nimbus": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "galaxy-apollo": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-dna-platinum-m": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-dna-pro-s": {
+   "speed": "152",
+   "spin": "134",
+   "control": "80",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "adidas-p3": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "sauer-troger-secret-flow-chop": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dawei-inspirit-quattro": {
+   "speed": "10 / 10",
+   "spin": "8.5 / 10",
+   "control": "9.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-4-you": {
+   "speed": "78 / 100",
+   "spin": "78 / 100",
+   "control": "95 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-desto-f3": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "tibhar-genius-plus-optimum-sound": {
+   "speed": "9.0 / 10",
+   "spin": "9.0 / 10",
+   "control": "6.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "loki-rxton-5": {
+   "speed": "9.0 / 9",
+   "spin": "9.0 / 9",
+   "control": "9.0 / 9",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-flyatt-soft": {
+   "speed": "12 / 14",
+   "spin": "11 / 14",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "palio-cj8000-36-38": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-higher": {
+   "speed": "10 / 12",
+   "spin": "12 / 12",
+   "control": "12 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-sriver-fx": {
+   "speed": "10 / 15",
+   "spin": "8.0 / 15",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-sriver-el": {
+   "speed": "10 / 15",
+   "spin": "8.0 / 15",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "gambler-reflectoid": {
+   "speed": "30 / 100",
+   "spin": "70 / 100",
+   "control": "90 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-air-rosnet": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-sky-wing": {
+   "speed": "10 / 12",
+   "spin": "11 / 12",
+   "control": "12 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "galaxy-yinhe-apollo-iii": {
+   "speed": "12",
+   "spin": "9.0",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "spin-lord-marder": {
+   "speed": "60 / 100",
+   "spin": "100 / 100",
+   "control": "100 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-samba": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "haifu-blue-whale-3-tuned": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-sriver": {
+   "speed": "10 / 15",
+   "spin": "8.0 / 15",
+   "control": "0.0 / 15",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-hurricane-3": {
+   "speed": "12 / 12",
+   "spin": "11 / 12",
+   "control": "11 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-slice-40": {
+   "speed": "5.0 / 10",
+   "spin": "10 / 10",
+   "control": "10 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "giant-dragon-submarine": {
+   "speed": "7.0",
+   "spin": "10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-tackiness-drive": {
+   "speed": "8.5 / 15",
+   "spin": "9.0 / 15",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "globe-999": {
+   "speed": "9.0 / 10",
+   "spin": "9.0 / 10",
+   "control": "9.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-mark-v-gps": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "palio-hadou-biotech": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "spin-lord-marder-ii": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "giant-dragon-topenergy-soft": {
+   "speed": "13",
+   "spin": "10",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "yinhe-galaxy-mars-v2": {
+   "speed": "12",
+   "spin": "9.0",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-g888": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xushaofa-999-lsz": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "kokutaku-868": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-hurricane-3-50-soft": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-dna-pro-h": {
+   "speed": "160",
+   "spin": "134",
+   "control": "76",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "reactor-corbor": {
+   "speed": "7.0 / 10",
+   "spin": "8.0 / 10",
+   "control": "8.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-chop-and-drive": {
+   "speed": "65",
+   "spin": "95",
+   "control": "96",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-tackiness-chop": {
+   "speed": "6.5 / 15",
+   "spin": "10 / 15",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-mendo-mp": {
+   "speed": "7.6 / 10",
+   "spin": "7.5 / 10",
+   "control": "7.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-vega-china-vm": {
+   "speed": "90 / 100",
+   "spin": "100 / 100",
+   "control": "100 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "butterfly-sapphira": {
+   "speed": "8.8",
+   "spin": "8.5",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-sriver-g3": {
+   "speed": "13",
+   "spin": "10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "air-illumina": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-cream-transcend": {
+   "speed": "11 / 12",
+   "spin": "11 / 12",
+   "control": "11 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-musa": {
+   "speed": "90 / 100",
+   "spin": "100 / 100",
+   "control": "99 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "lkt-rapid-soft": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "haifu-blue-whale-2-tuned": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-topspin-c": {
+   "speed": "86",
+   "spin": "100",
+   "control": "92",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-acuda-blue-p3": {
+   "speed": "9.0",
+   "spin": "10",
+   "control": "8.0",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "sanwei-t88-i": {
+   "speed": "12 / 12",
+   "spin": "9.0 / 12",
+   "control": "9.0 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-sriver-g2-fx": {
+   "speed": "11 / 15",
+   "spin": "9.5 / 15",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-tackifire-drive": {
+   "speed": "9.0 / 15",
+   "spin": "9.3 / 15",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-optimum-mp": {
+   "speed": "16",
+   "spin": "11",
+   "control": "7.8",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "61-second-lightning-ds-lst": {
+   "speed": "12 / 12",
+   "spin": "11 / 12",
+   "control": "10 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "kokutaku-blutenkirsche-868-tokyo": {
+   "speed": "13",
+   "spin": "10",
+   "control": "10",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "butterfly-bryce-fx": {
+   "speed": "12 / 15",
+   "spin": "9.5 / 15",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "lkt-rapid-sound": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "donic-akkadi-taichi": {
+   "speed": "7.0 / 10",
+   "spin": "10 / 10",
+   "control": "8.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-vario": {
+   "speed": "8.0 / 10",
+   "spin": "9.0 / 10",
+   "control": "6.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-super-anti": {
+   "speed": "4.0 / 15",
+   "spin": "3.0 / 15",
+   "tensor": "No",
+   "anti": "Yes"
+  },
+  "dhs-memo-3": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-sp-transcend": {
+   "speed": "11 / 12",
+   "spin": "12 / 12",
+   "control": "12 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "reactor-ckylin-new-blue-sponge": {
+   "speed": "12 / 12",
+   "spin": "10 / 12",
+   "control": "11 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-innova-ultra-light": {
+   "speed": "120",
+   "spin": "100",
+   "control": "80",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-vega-elite": {
+   "speed": "70",
+   "spin": "85",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-best-anti": {
+   "speed": "4.4 / 10",
+   "spin": "0.0 / 10",
+   "control": "9.1 / 10",
+   "tensor": "No",
+   "anti": "Yes"
+  },
+  "stiga-calibra-tour-s": {
+   "speed": "140 / 127",
+   "spin": "127 / 127",
+   "control": "86 / 127",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "yasaka-rakza-x-soft": {
+   "speed": "8.0 / 100",
+   "spin": "9.0 / 100",
+   "control": "8.0 / 100",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "donic-quattro-formula": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-vega-intro": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "dhs-pf4-40-plus": {
+   "speed": "105 / 7",
+   "spin": "50 / 7",
+   "control": "102 / 7",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-xi-enting": {
+   "speed": "10",
+   "spin": "10",
+   "control": "10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "kokutaku-blutenkirsche-868-tokyo-super-tacky-ja": {
+   "speed": "10",
+   "spin": "13",
+   "control": "10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "loki-rxton-i": {
+   "speed": "9.0 / 10",
+   "spin": "7.0 / 10",
+   "control": "8.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "palio-cj8000-2-side-loop": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-rapid-soft": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yinhe-moon-12": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "palio-cj8000-38-41": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-coppa-jo-platin-soft": {
+   "speed": "100",
+   "spin": "103",
+   "control": "60",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "gambler-outlaw": {
+   "speed": "93 / 100",
+   "spin": "88 / 100",
+   "control": "84 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "donic-bluestorm-z3": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-pryde": {
+   "speed": "99",
+   "spin": "95",
+   "control": "72",
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "729-super-fx-blue-sponge": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "lkt-pro-xt": {
+   "speed": "10 / 12",
+   "spin": "12 / 12",
+   "control": "12 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-focus-1": {
+   "speed": "10 / 12",
+   "spin": "12 / 12",
+   "control": "12 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-mendo": {
+   "speed": "6.9 / 10",
+   "spin": "7.5 / 10",
+   "control": "7.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "lkt-black-power": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "gki-euro-xx": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-mendo-energy": {
+   "speed": "6.2 / 10",
+   "spin": "8.3 / 10",
+   "control": "8.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-innova-ultra-light-synergytech": {
+   "speed": "131",
+   "spin": "100",
+   "control": "80",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-vega-euro-df": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "ctt-national-strike": {
+   "speed": "10 / 12",
+   "spin": "10 / 12",
+   "control": "11 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "galaxy-yinhe-9000d": {
+   "speed": "8.0 / 10",
+   "spin": "7.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dawei-2008-xp": {
+   "speed": "7.0 / 10",
+   "spin": "6.0 / 10",
+   "control": "6.5 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-super-fx": {
+   "speed": "9.3 / 10",
+   "spin": "9.3 / 10",
+   "control": "9.3 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-fx-lightening": {
+   "speed": "9.0 / 12",
+   "spin": "11 / 12",
+   "control": "12 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "nittaku-hammond-pro-alpha": {
+   "speed": "11 / 12",
+   "spin": "10 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-pf4": {
+   "speed": "11 / 12",
+   "spin": "10 / 12",
+   "control": "10 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-evo": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "sanwei-t88-iii": {
+   "speed": "10",
+   "spin": "10",
+   "control": "11",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-mambo": {
+   "speed": "95 / 100",
+   "spin": "97 / 100",
+   "control": "82 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "xiom-yanus-df": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "globe-999t": {
+   "speed": "9.5 / 10",
+   "spin": "9.0 / 10",
+   "control": "9.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "joola-samba-plus": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "sanwei-ultraspin-t88": {
+   "speed": "115",
+   "spin": "115",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-40s": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "lkt-torrent": {
+   "speed": "12 / 12",
+   "spin": "11 / 12",
+   "control": "12 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-volcano": {
+   "speed": "78",
+   "spin": "96",
+   "control": "93",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-focus-3": {
+   "speed": "12 / 12",
+   "spin": "11 / 12",
+   "control": "11 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-general-cross-sponge": {
+   "speed": "9.0 / 9",
+   "spin": "10 / 9",
+   "control": "9.0 / 9",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-skyline-tg2-19-sponge": {
+   "speed": "9.0 / 12",
+   "spin": "11 / 12",
+   "control": "10 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "andro-impuls-speed": {
+   "tensor": "Yes",
+   "anti": "No"
+  },
+  "galaxy-venus": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "tibhar-torpedo": {
+   "speed": "102",
+   "spin": "99",
+   "control": "92",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dhs-skyline-tg2": {
+   "speed": "9.0 / 12",
+   "spin": "11 / 12",
+   "control": "10 / 12",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-804": {
+   "tensor": "No",
+   "anti": "Yes"
+  },
+  "donic-liga": {
+   "speed": "5.0 / 10",
+   "spin": "6.0 / 10",
+   "control": "9.0 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-flextra": {
+   "speed": "8.2",
+   "spin": "8.8",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-bryce": {
+   "speed": "12 / 15",
+   "spin": "9.5 / 15",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "yasaka-mark-v-ad": {
+   "speed": "17",
+   "spin": "17",
+   "control": "18",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "lkt-red-diamond-golden-cake-sponge": {
+   "speed": "10",
+   "spin": "11",
+   "control": "10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-tackifire-c": {
+   "speed": "8.5 / 15",
+   "spin": "11 / 15",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-yuki": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "729-fx-el-super-soft": {
+   "speed": "9.0 / 10",
+   "spin": "9.7 / 10",
+   "control": "9.5 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-china-extreme": {
+   "speed": "80",
+   "spin": "100",
+   "control": "85",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-neos-sound": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "dawei-2008": {
+   "speed": "6.5 / 10",
+   "spin": "5.0 / 10",
+   "control": "5.5 / 10",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-cobra-2000": {
+   "speed": "86 / 100",
+   "spin": "90 / 100",
+   "control": "96 / 100",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "stiga-drive": {
+   "speed": "7.0",
+   "spin": "8.0",
+   "control": "5.0",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-pan-asia": {
+   "speed": "8.0",
+   "spin": "8.2",
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-addoy": {
+   "tensor": "No",
+   "anti": "No"
+  },
+  "butterfly-wakaba": {
+   "tensor": "No",
+   "anti": "No"
+  }
+ },
+ "blade": {
+  "adidas-avenger-7": {
+   "speed": "95",
+   "control": "92",
+   "weight": "92g",
+   "plies": "7",
+   "thickness": "6.2mm"
+  },
+  "dhs-tg-506-plus": {
+   "speed": "9.0",
+   "control": "8.0",
+   "weight": "88g",
+   "plies": "7",
+   "materials": "Limba outer plies, Ayous within",
+   "thickness": "6.4mm"
+  },
+  "butterfly-harimoto-innerforce-super-alc": {
+   "plies": "7",
+   "materials": "Super ALC",
+   "thickness": "5.9mm"
+  },
+  "donic-persson-carbotec": {
+   "speed": "10 / 10",
+   "control": "6.0 / 10",
+   "weight": "90g",
+   "plies": "7",
+   "materials": "Carbon-glass-fiber"
+  },
+  "victas-koki-niwa-wood": {
+   "weight": "90g"
+  },
+  "joola-zhou-qihao-hyper-ary-c-90": {
+   "plies": "7"
+  },
+  "butterfly-lin-yun-ju-super-zlc": {
+   "plies": "7",
+   "thickness": "5.6mm"
+  },
+  "dhs-w968-hurricane-long-5-national": {
+   "speed": "9.0 / 9",
+   "control": "9.0 / 9",
+   "weight": "90g",
+   "plies": "7",
+   "thickness": "6.0mm"
+  },
+  "victas-koji-matsushita-offensive": {
+   "plies": "5"
+  },
+  "butterfly-liu-shiwen": {
+   "weight": "82g",
+   "plies": "7",
+   "materials": "ZL Fiber",
+   "thickness": "5.6mm"
+  },
+  "stiga-dynasty-carbon-xu-xin-edition": {
+   "speed": "96 / 100",
+   "control": "62 / 100"
+  },
+  "xiom-ice-cream-azxi": {
+   "speed": "9.0 / 9",
+   "control": "9.0 / 9",
+   "weight": "88g",
+   "plies": "5",
+   "materials": "limba - ??? - ALC - Kiri - ZLC - ??? - limba",
+   "thickness": "5.8mm"
+  },
+  "butterfly-tiago-apolonia-zlc": {
+   "speed": "93",
+   "control": "75",
+   "weight": "90g",
+   "plies": "7",
+   "materials": "Inner fibers ZL Carbon",
+   "thickness": "5.6mm"
+  },
+  "dhs-hurricane-king-acb": {},
+  "butterfly-franziska-innerforce-zlc": {
+   "weight": "88g",
+   "plies": "7",
+   "thickness": "5.7mm"
+  },
+  "nittaku-acoustic-carbon-inner-large-handle": {
+   "speed": "90 / 100",
+   "control": "75 / 100",
+   "weight": "92g",
+   "plies": "7",
+   "materials": "2 Thin Limba Outer Plies, FE Carbon Layer, Ayous Center Ply, FE Carbon Layer, 2 Thin Limba Outer Plies",
+   "thickness": "5.5mm"
+  },
+  "tsp-arsnova": {
+   "plies": "5"
+  },
+  "xiom-ajh-tmxi": {
+   "weight": "88g"
+  },
+  "stiga-maplewood-nct-v": {
+   "speed": "0.0",
+   "control": "0.0",
+   "weight": "84g",
+   "plies": "5",
+   "thickness": "0.0mm"
+  },
+  "andro-wanokiwami-ren-off": {
+   "weight": "83g",
+   "plies": "7",
+   "thickness": "6.4mm"
+  },
+  "tsp-black-balsa-70": {
+   "weight": "75g",
+   "materials": "Balsa, Fiberglass"
+  },
+  "nittaku-ma-long-five": {
+   "weight": "89g",
+   "plies": "5",
+   "thickness": "5.8mm"
+  },
+  "joola-vyzaryz-trinity": {},
+  "tsp-balsa-65-off": {
+   "speed": "88 / 100",
+   "control": "62 / 100",
+   "weight": "75g",
+   "plies": "5"
+  },
+  "yasaka-dynamix-17": {
+   "speed": "92",
+   "control": "78",
+   "weight": "90g",
+   "plies": "17"
+  },
+  "butterfly-harimoto-innerforce-super-zlc": {
+   "weight": "91g",
+   "plies": "7",
+   "materials": "Limba Limba Carbon Ayous Carbon Limba Limba",
+   "thickness": "6.2mm"
+  },
+  "nittaku-acoustic-carbon-outer-large-handle": {
+   "speed": "92 / 100",
+   "control": "70 / 100",
+   "weight": "92g",
+   "plies": "7",
+   "materials": "Limba Outer Ply, FE Carbon Layer, Limba Inner Ply, Ayous Center Ply, Limba Inner Ply, FE Carbon Layer, Limba Outer Ply",
+   "thickness": "5.5mm"
+  },
+  "nittaku-s-series-s-5": {
+   "weight": "87g"
+  },
+  "nittaku-acoustic": {
+   "speed": "86 / 100",
+   "control": "67 / 100",
+   "weight": "85g",
+   "plies": "5",
+   "thickness": "5.7mm"
+  },
+  "stiga-hybrid-wood": {
+   "speed": "9.2 / 10",
+   "control": "6.8 / 10",
+   "materials": "Wood",
+   "thickness": "6.4mm"
+  },
+  "dhs-hurricane-long-3": {},
+  "butterfly-harimoto-innerforce-zlc": {
+   "weight": "89g",
+   "plies": "7",
+   "thickness": "5.7mm"
+  },
+  "andro-ligna-off-plus": {
+   "plies": "5",
+   "thickness": "6.8mm"
+  },
+  "stiga-arctic-wood": {
+   "weight": "95g"
+  },
+  "tibhar-dynamic-jc-darko-jorgic": {
+   "speed": "9.0 / 10",
+   "control": "8.0 / 10",
+   "weight": "85g",
+   "plies": "5",
+   "materials": "Limba out, 5 wood, inner Dyneema carbon"
+  },
+  "tsp-swat": {
+   "weight": "85g",
+   "plies": "7",
+   "materials": "Limba, Ayous",
+   "thickness": "6.4mm"
+  },
+  "yasaka-alnade": {
+   "speed": "11",
+   "control": "8.0",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "5ply-wood + 2ply- PA carbon",
+   "thickness": "5.8mm"
+  },
+  "stiga-defensive-nct": {
+   "speed": "0.0",
+   "control": "0.0",
+   "plies": "0",
+   "thickness": "0.0mm"
+  },
+  "darker-speed-90": {},
+  "xiom-vega-tour": {
+   "weight": "85g",
+   "plies": "7",
+   "materials": "Hinoki Outer",
+   "thickness": "5.8mm"
+  },
+  "donic-waldner-off-world-champion-89": {
+   "speed": "8.0 / 10",
+   "control": "9.0 / 10",
+   "weight": "85g",
+   "plies": "5",
+   "materials": "Spruce, Spruce, Zylon, Kiri",
+   "thickness": "6.9mm"
+  },
+  "dhs-hurricane-hao-iii": {
+   "weight": "85g",
+   "plies": "5",
+   "materials": "4 plies of wood; 1 fiberglass-carbon",
+   "thickness": "5.8mm"
+  },
+  "andro-synteliac-vci-off": {
+   "weight": "85g",
+   "plies": "7",
+   "materials": "Limba-Ayous-Voltema-Ayous-Voltema-Ayous-Limba",
+   "thickness": "5.9mm"
+  },
+  "dhs-hurricane-301": {
+   "plies": "7",
+   "materials": "5 + 2 Arylate Carbon"
+  },
+  "butterfly-bazelart": {
+   "plies": "7",
+   "materials": "Arylate"
+  },
+  "nittaku-ma-long-carbon": {
+   "weight": "91g",
+   "plies": "7",
+   "thickness": "5.6mm"
+  },
+  "nittaku-lumilas": {
+   "weight": "85g",
+   "plies": "7",
+   "materials": "2 plies of Texalium, with Limba and Ayous"
+  },
+  "xiom-365-alx": {
+   "weight": "85g",
+   "plies": "7"
+  },
+  "nittaku-acoustic-carbon-inner": {
+   "speed": "9.0 / 10",
+   "control": "9.0 / 10",
+   "weight": "86g",
+   "plies": "7",
+   "materials": "2 Thin Limba Outer Plies, FE Carbon Layer, Ayous Center Ply, FE Carbon Layer, 2 Thin Limba Outer Plies",
+   "thickness": "5.5mm"
+  },
+  "nittaku-ludeack": {
+   "speed": "8.5",
+   "control": "7.8",
+   "weight": "85g",
+   "plies": "7"
+  },
+  "nittaku-violin-carbon-inner": {
+   "weight": "90g"
+  },
+  "butterfly-falcima": {
+   "weight": "87g",
+   "plies": "5",
+   "materials": "wood",
+   "thickness": "6.0mm"
+  },
+  "butterfly-marcos-freitas-alc": {
+   "speed": "88",
+   "control": "85",
+   "weight": "90g",
+   "plies": "5",
+   "materials": "Arylate Carbon",
+   "thickness": "5.9mm"
+  },
+  "dhs-hurricane-long-5x": {
+   "speed": "9.0 / 9",
+   "control": "9.0 / 9",
+   "weight": "89g",
+   "plies": "7",
+   "materials": "5 + 2 Arylate Carbon",
+   "thickness": "60.0mm"
+  },
+  "yasaka-goiabao-5": {
+   "speed": "92 / 100",
+   "control": "63 / 100",
+   "weight": "86g",
+   "plies": "5"
+  },
+  "yasaka-reinforce-lt": {
+   "weight": "82g",
+   "plies": "7",
+   "materials": "5 wood plies + 2 fleece carbon plies",
+   "thickness": "6.0mm"
+  },
+  "gewo-hybrid-carbon-a-speed-all-plus": {
+   "materials": "Carbon"
+  },
+  "nittaku-tenor": {
+   "speed": "11 / 12",
+   "control": "8.0 / 12",
+   "weight": "94g",
+   "thickness": "6.0mm"
+  },
+  "nittaku-goriki-super-drive": {
+   "weight": "91g",
+   "plies": "6",
+   "thickness": "6.8mm"
+  },
+  "nittaku-latika-carbon": {
+   "speed": "88 / 100",
+   "control": "77 / 100",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "2 plies of Carbon",
+   "thickness": "5.5mm"
+  },
+  "stiga-cc5": {
+   "speed": "89 / 100",
+   "control": "62 / 100",
+   "weight": "96g",
+   "plies": "7",
+   "materials": "2 plies of Carbon",
+   "thickness": "6.1mm"
+  },
+  "butterfly-zhang-jike-alc": {
+   "weight": "86g",
+   "plies": "7",
+   "materials": "5 plies wood, 2 plies arylate/carbon",
+   "thickness": "5.7mm"
+  },
+  "stiga-clipper-cc": {
+   "speed": "94 / 100",
+   "control": "61 / 100",
+   "weight": "92g",
+   "plies": "13",
+   "materials": "Carbon powder, limba outer, ayous inner",
+   "thickness": "6.8mm"
+  },
+  "butterfly-amultart-zl-carbon": {
+   "speed": "14",
+   "control": "8.0",
+   "weight": "88g",
+   "plies": "5",
+   "materials": "2 plies of Zylon Carbon, 2 plies of Hinoki, center is Kiri",
+   "thickness": "7.1mm"
+  },
+  "andro-ligna-tour-off": {
+   "speed": "96 / 100",
+   "control": "93 / 100",
+   "weight": "85g",
+   "plies": "5"
+  },
+  "butterfly-viscaria-light": {
+   "speed": "84",
+   "control": "73",
+   "weight": "82g",
+   "plies": "5",
+   "materials": "Carbon/Arylate, Koto outer plies"
+  },
+  "butterfly-photino": {
+   "speed": "94",
+   "control": "80",
+   "materials": "ZLF (Zylon Fiber), Hinoki/Cypress, Kiri",
+   "thickness": "7.0mm"
+  },
+  "tsp-euro-feeling": {
+   "speed": "7.0 / 9",
+   "control": "9.0 / 9",
+   "weight": "85g",
+   "plies": "5",
+   "thickness": "5.0mm"
+  },
+  "andro-temper-tech-off-plus": {
+   "speed": "99 / 100",
+   "control": "92 / 100",
+   "weight": "85g",
+   "materials": "Limba"
+  },
+  "butterfly-timo-boll-zlf": {
+   "speed": "9.0",
+   "control": "8.0",
+   "weight": "86g",
+   "plies": "5",
+   "materials": "ZL Fiber",
+   "thickness": "5.4mm"
+  },
+  "nittaku-acoustic--large-handle": {
+   "speed": "9.0 / 9",
+   "control": "9.0 / 9",
+   "weight": "85g",
+   "plies": "5",
+   "thickness": "5.7mm"
+  },
+  "andro-gauzy-sl-off": {
+   "weight": "92g"
+  },
+  "donic-extension-ac": {
+   "weight": "85g"
+  },
+  "xiom-hugo-calderano-hal": {
+   "weight": "85g",
+   "plies": "7"
+  },
+  "stiga-rosewood-nct-vii": {
+   "speed": "91 / 100",
+   "control": "60 / 100",
+   "weight": "97g",
+   "plies": "7",
+   "materials": "Rosewood",
+   "thickness": "6.9mm"
+  },
+  "andro-ligna-off": {
+   "plies": "7",
+   "thickness": "6.4mm"
+  },
+  "avalox-p700": {},
+  "nittaku-hinoblaze": {
+   "weight": "85g",
+   "plies": "5",
+   "materials": "Hinoki",
+   "thickness": "6.6mm"
+  },
+  "dhs-hurricane-long-5": {
+   "weight": "92g",
+   "plies": "7",
+   "materials": "aryl-carbon fiberboard with Pith-Film technology",
+   "thickness": "5.7mm"
+  },
+  "xiom-vega-euro": {
+   "weight": "86g",
+   "plies": "7",
+   "thickness": "5.8mm"
+  },
+  "donic-anders-lind-hexa-carbon": {
+   "speed": "93 / 100",
+   "control": "71 / 100"
+  },
+  "andro-wanokiwami-ao-off": {
+   "speed": "90 / 100",
+   "control": "94 / 100",
+   "weight": "86g",
+   "plies": "5"
+  },
+  "butterfly-fukuhara-ai-pro-zlf": {
+   "weight": "86g",
+   "plies": "5",
+   "thickness": "5.8mm"
+  },
+  "tsp-balsa-35-def-plus": {
+   "speed": "50 / 100",
+   "control": "90 / 100",
+   "weight": "75g",
+   "plies": "5"
+  },
+  "nittaku-latika-light": {
+   "weight": "78g",
+   "plies": "5",
+   "thickness": "5.8mm"
+  },
+  "nittaku-hino-722": {
+   "weight": "88g",
+   "plies": "11",
+   "thickness": "5.4mm"
+  },
+  "dhs-hurricane-king-iii": {
+   "weight": "90g",
+   "plies": "7",
+   "materials": "Koto, Spruce, Fiberglass, Carbon, Ayous"
+  },
+  "donic-crest-ar-plus": {
+   "speed": "80 / 100",
+   "control": "92 / 100",
+   "weight": "85g",
+   "plies": "9"
+  },
+  "victas-koji-matsushita-defensive": {
+   "weight": "85g",
+   "plies": "5"
+  },
+  "stiga-cc7": {
+   "speed": "94 / 100",
+   "control": "58 / 100",
+   "weight": "99g",
+   "plies": "7",
+   "materials": "2 plies of Carbon",
+   "thickness": "6.3mm"
+  },
+  "nittaku-clout": {
+   "speed": "85",
+   "control": "69",
+   "weight": "80g",
+   "materials": "Kiso Hinoki outer plies",
+   "thickness": "6.2mm"
+  },
+  "butterfly-jun-mizutani-super-zlc": {
+   "speed": "10 / 10",
+   "control": "8.0 / 10",
+   "weight": "90g",
+   "plies": "5",
+   "thickness": "5.8mm"
+  },
+  "nittaku-forestia": {
+   "weight": "74g",
+   "plies": "5"
+  },
+  "xiom-ignito": {
+   "weight": "84g",
+   "plies": "5",
+   "materials": "Kiso Hinoki, \"Energy Carbon\", Kiri",
+   "thickness": "6.2mm"
+  },
+  "donic-waldner-dotec-carbon": {
+   "speed": "9.0",
+   "control": "7.0",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "Carbon"
+  },
+  "tibhar-samsonov-force-pro": {},
+  "adidas-fibertec-extreme": {
+   "speed": "99",
+   "control": "85",
+   "weight": "88g",
+   "plies": "7",
+   "materials": "(Hinoki, Ayous, Carbon, Kiri, Carbon, Ayous, Hinoki)"
+  },
+  "andro-treiber-fi-off": {
+   "weight": "90g",
+   "plies": "5",
+   "thickness": "6.9mm"
+  },
+  "gewo-aruna-hinoki-carbon": {
+   "speed": "99",
+   "control": "88",
+   "weight": "90g",
+   "plies": "7"
+  },
+  "andro-flaxonite-driver-off": {
+   "speed": "94 / 100",
+   "control": "91 / 100",
+   "weight": "88g",
+   "plies": "7"
+  },
+  "nittaku-barwell": {
+   "speed": "9.0 / 10",
+   "control": "7.0 / 10",
+   "weight": "88g",
+   "plies": "7",
+   "materials": "Walnut outer plies",
+   "thickness": "6.6mm"
+  },
+  "butterfly-innerforce-zlc": {
+   "speed": "92 / 100",
+   "control": "75 / 100",
+   "plies": "7",
+   "materials": "ZL Fiber and Carbon",
+   "thickness": "0.0mm"
+  },
+  "nittaku-kasumi-basic": {
+   "speed": "86 / 100",
+   "control": "78 / 100",
+   "weight": "85g",
+   "plies": "5",
+   "thickness": "5.8mm"
+  },
+  "butterfly-omar-assar": {
+   "materials": "Kevlar Carbon"
+  },
+  "nittaku-adelie": {
+   "speed": "7.0 / 9",
+   "control": "8.0 / 9",
+   "weight": "85g",
+   "plies": "7",
+   "thickness": "6.2mm"
+  },
+  "nittaku-violin": {
+   "speed": "88 / 100",
+   "control": "65 / 100",
+   "weight": "85g",
+   "plies": "5",
+   "thickness": "5.4mm"
+  },
+  "nittaku-narcus": {
+   "speed": "9.5 / 10",
+   "control": "7.5 / 10",
+   "weight": "79g",
+   "plies": "5"
+  },
+  "tibhar-texo-c7": {
+   "speed": "8.0",
+   "control": "8.0",
+   "weight": "85g",
+   "plies": "7"
+  },
+  "dhs-fang-bo-b2x": {
+   "speed": "9.0 / 9",
+   "control": "9.0 / 9",
+   "weight": "90g",
+   "plies": "5",
+   "materials": "Ply: 5+2AC, Wood Material Arylate-Carbon",
+   "thickness": "6.0mm"
+  },
+  "nittaku-redshank": {
+   "speed": "8.9 / 10",
+   "control": "6.7 / 10",
+   "weight": "80g",
+   "plies": "5"
+  },
+  "nittaku-lialox": {
+   "thickness": "6.8mm"
+  },
+  "darker-esteem": {
+   "weight": "79g",
+   "plies": "7",
+   "materials": "5 layers of Cypress wood, 2 layers of carbon",
+   "thickness": "6.5mm"
+  },
+  "butterfly-jun-mizutani-zlc": {
+   "speed": "95 / 100",
+   "control": "68 / 100",
+   "weight": "90g",
+   "plies": "7",
+   "thickness": "5.7mm"
+  },
+  "avalox-blue-thunder-555": {
+   "speed": "8.5",
+   "control": "9.0",
+   "weight": "85g",
+   "plies": "5"
+  },
+  "xiom-vega-pro": {
+   "speed": "9.0",
+   "control": "9.0",
+   "weight": "90g",
+   "plies": "5",
+   "materials": "Limba outer plies-Zephylium Carbon-Ayous-Kiri",
+   "thickness": "5.8mm"
+  },
+  "yinhe-galaxy-venus-v-13": {
+   "speed": "90",
+   "control": "80",
+   "weight": "85g",
+   "plies": "5",
+   "thickness": "6.5mm"
+  },
+  "tibhar-karas-off": {
+   "speed": "93",
+   "control": "63",
+   "weight": "86g",
+   "plies": "9",
+   "materials": "Sandwich layer structure (Balsa, Carbon, Limba, Carbon, Balsa, Carbon, Limba, Carbon, Balsa)",
+   "thickness": "7.5mm"
+  },
+  "butterfly-jun-mizutani": {
+   "speed": "99",
+   "control": "77",
+   "plies": "5",
+   "materials": "2 plies of ZL Carbon, 3 plies of wood (Limba and Kiri)"
+  },
+  "dhs-506": {
+   "weight": "87g",
+   "plies": "7",
+   "thickness": "6.4mm"
+  },
+  "tsp-trinity-carbon": {
+   "speed": "99",
+   "control": "85",
+   "weight": "80g",
+   "plies": "7",
+   "materials": "2 plies of Carbon"
+  },
+  "osp-virtuoso-off-minus": {
+   "weight": "87g",
+   "plies": "5",
+   "thickness": "5.7mm"
+  },
+  "nittaku-barwell-fleet": {
+   "weight": "88g",
+   "plies": "9",
+   "materials": "Walnut outer plies, Glass fibre within",
+   "thickness": "6.1mm"
+  },
+  "victas-fire-fall-fc": {
+   "speed": "96",
+   "control": "92",
+   "weight": "92g"
+  },
+  "butterfly-kenta-matsudaira-alc": {
+   "plies": "5",
+   "thickness": "5.8mm"
+  },
+  "nittaku-septear-feel": {
+   "speed": "91 / 100",
+   "control": "68 / 100"
+  },
+  "xiom-offensive-s": {
+   "speed": "82 / 100",
+   "control": "74 / 100",
+   "weight": "87g",
+   "plies": "5",
+   "thickness": "6.1mm"
+  },
+  "andro-tp-ligna-ci-off": {
+   "speed": "94 / 10",
+   "control": "98 / 10",
+   "weight": "85g",
+   "plies": "5",
+   "thickness": "6.0mm"
+  },
+  "xiom-hugo-calderano-sal": {
+   "speed": "8.0",
+   "control": "10",
+   "weight": "88g",
+   "materials": "Super Arylate",
+   "thickness": "5.8mm"
+  },
+  "butterfly-garaydia-t5000": {
+   "speed": "93 / 100",
+   "control": "89 / 100",
+   "weight": "90g",
+   "plies": "5",
+   "thickness": "7.2mm"
+  },
+  "tsp-balsa-45-all": {
+   "speed": "80 / 100",
+   "control": "85 / 100",
+   "weight": "75g",
+   "plies": "0",
+   "thickness": "0.0mm"
+  },
+  "yasaka-extra-offensive-7-power": {
+   "speed": "99",
+   "control": "75",
+   "weight": "90g",
+   "plies": "7",
+   "materials": "5 wood, 2 carbon"
+  },
+  "dhs-hurricane-bo-2-hurricane-b2": {
+   "speed": "9.0 / 9",
+   "control": "9.0 / 9",
+   "weight": "90g",
+   "plies": "7",
+   "materials": "Hurricane BO (Hurricane B) is with 7 ply pure wood; Hurricane BO 2 (Hurricane B2) is with 5 + 2 arylate carbon",
+   "thickness": "5.9mm"
+  },
+  "stiga-cybershape-carbon": {
+   "plies": "7"
+  },
+  "butterfly-innerforce-al": {
+   "speed": "8.0 / 10",
+   "control": "8.0 / 10",
+   "weight": "90g",
+   "plies": "7",
+   "materials": "2 plies of AL Carbon"
+  },
+  "butterfly-zhang-jike-super-zlc": {
+   "weight": "90g",
+   "plies": "7",
+   "materials": "5 plies wood, 2 plies super ZL fiber/carbon",
+   "thickness": "5.6mm"
+  },
+  "butterfly-innerforce-zlf": {
+   "speed": "90 / 100",
+   "control": "80 / 100",
+   "plies": "7",
+   "materials": "ZL Fiber",
+   "thickness": "0.0mm"
+  },
+  "xiom-solo": {
+   "speed": "8.0 / 10",
+   "control": "9.0 / 10",
+   "plies": "7",
+   "thickness": "6.4mm"
+  },
+  "stiga-carbonado-190": {},
+  "andro-treiber-fo-off-s": {
+   "speed": "97 / 100",
+   "control": "63 / 100",
+   "weight": "90g"
+  },
+  "tsp-euro-power-off": {
+   "speed": "99",
+   "control": "86",
+   "weight": "92g",
+   "plies": "7"
+  },
+  "pp-vispower-ii-fl-alc": {
+   "speed": "9.0 / 9",
+   "control": "9.0 / 9",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "KOTO+Arylate Carbon+Ayous+Kiri+Ayous+ Arylate Carbon+ KOTO",
+   "thickness": "5.8mm"
+  },
+  "donic-original-true-carbon-inner": {
+   "speed": "10",
+   "control": "8.0",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "7 ply: Kiri (inner), Hybrid Aramid Carbon (3+5), Ayous (2&6), Koto (1&7, outer)",
+   "thickness": "6.5mm"
+  },
+  "yinhe-galaxy-mc-2": {
+   "speed": "8.0",
+   "control": "10",
+   "weight": "88g",
+   "plies": "5",
+   "materials": "Carbon",
+   "thickness": "6.0mm"
+  },
+  "andro-treiber-fo-off": {
+   "weight": "90g",
+   "plies": "5"
+  },
+  "tsp-balsa-85-top-speed": {
+   "speed": "99 / 100",
+   "control": "70 / 100",
+   "weight": "80g",
+   "plies": "5",
+   "materials": "Balsa, Fiber glass"
+  },
+  "andro-novacell-all-s": {
+   "weight": "75g",
+   "plies": "5",
+   "thickness": "5.1mm"
+  },
+  "tibhar-stratus-power-wood": {
+   "speed": "9.0 / 10",
+   "control": "7.5 / 10",
+   "weight": "85g",
+   "plies": "5"
+  },
+  "butterfly-revoldia-cnf": {
+   "weight": "90g",
+   "plies": "7",
+   "thickness": "5.7mm"
+  },
+  "avalox-p500": {
+   "materials": "Koto, spruce, ayous"
+  },
+  "butterfly-viscaria": {
+   "speed": "8.7 / 12",
+   "control": "7.2 / 12",
+   "weight": "90g",
+   "plies": "7",
+   "materials": "5 wood plies; 2 Arylate-carbon"
+  },
+  "donic-ovtcharov-no-1-senso": {
+   "speed": "9.0 / 9",
+   "control": "8.0 / 9",
+   "weight": "86g",
+   "plies": "7",
+   "materials": "Premium Cabron",
+   "thickness": "5.8mm"
+  },
+  "joola-energon-super-pbo-c": {
+   "weight": "93g",
+   "plies": "7"
+  },
+  "victas-fire-fall-vc": {
+   "materials": "Carbon"
+  },
+  "andro-treiber-k": {
+   "speed": "98 / 100",
+   "control": "93 / 100",
+   "weight": "90g",
+   "materials": "Koto"
+  },
+  "butterfly-iolite-neo": {},
+  "andro-novacell-off-s": {
+   "weight": "80g",
+   "plies": "5",
+   "thickness": "5.7mm"
+  },
+  "donic-ovtcharov-senso-v2": {
+   "speed": "89 / 100",
+   "control": "72 / 100",
+   "weight": "85g",
+   "plies": "5"
+  },
+  "butterfly-timo-boll-alc": {
+   "speed": "85",
+   "control": "80",
+   "weight": "90g",
+   "plies": "7",
+   "materials": "2 plies of Arylate Carbon, 2 plies of Koto, 2 plies of Limba, center ply is Kiri",
+   "thickness": "5.7mm"
+  },
+  "nittaku-meister-basaltec-outer": {
+   "weight": "83g",
+   "plies": "7",
+   "thickness": "6.4mm"
+  },
+  "andro-treiber-ci-off": {
+   "weight": "90g",
+   "plies": "5",
+   "thickness": "5.9mm"
+  },
+  "galaxy-yinhe-uranus-u-3": {
+   "speed": "10 / 10",
+   "control": "7.0 / 10",
+   "weight": "88g",
+   "plies": "7",
+   "thickness": "6.8mm"
+  },
+  "nittaku-ma-long-seven": {
+   "weight": "90g",
+   "plies": "7"
+  },
+  "nittaku-alulass": {
+   "speed": "9.8 / 10",
+   "control": "8.8 / 10",
+   "weight": "87g",
+   "plies": "7",
+   "materials": "5ply wood + 2 Texalium",
+   "thickness": "5.3mm"
+  },
+  "andro-treiber-z": {
+   "speed": "96 / 100",
+   "control": "97 / 100",
+   "weight": "88g"
+  },
+  "stiga-emerald-vps-v": {
+   "plies": "5"
+  },
+  "victas-fire-fall-ac": {
+   "speed": "99",
+   "control": "87",
+   "weight": "88g"
+  },
+  "joola-aruna-off": {
+   "weight": "87g"
+  },
+  "stiga-carbonado-290": {
+   "speed": "9.0 / 7",
+   "control": "6.0 / 7",
+   "weight": "97g",
+   "plies": "7",
+   "materials": "wood x5 + carbon fibre x2",
+   "thickness": "6.0mm"
+  },
+  "andro-timber-5-all-s": {
+   "weight": "83g",
+   "plies": "5"
+  },
+  "butterfly-innerforce-alc": {
+   "speed": "8.0 / 10",
+   "control": "8.0 / 10",
+   "weight": "90g",
+   "plies": "7",
+   "materials": "2 plies of Arylate Carbon",
+   "thickness": "5.9mm"
+  },
+  "nittaku-s-series-s-cz": {
+   "weight": "82g"
+  },
+  "andro-novacell-off": {
+   "speed": "8.0 / 10",
+   "control": "10 / 10",
+   "weight": "85g",
+   "plies": "5",
+   "thickness": "5.7mm"
+  },
+  "darker-avantir": {},
+  "xiom-zetro-quad": {
+   "speed": "93 / 100",
+   "control": "63 / 100",
+   "weight": "92g",
+   "plies": "9",
+   "materials": "4 plies of Zylon Carbon",
+   "thickness": "7.0mm"
+  },
+  "tibhar-stratus-samsonov-carbon": {
+   "speed": "93 / 100",
+   "control": "57 / 100",
+   "weight": "80g",
+   "plies": "7",
+   "thickness": "5.5mm"
+  },
+  "butterfly-schlager-carbon-light": {
+   "materials": "Wood, Carbon"
+  },
+  "andro-ligna-fr-off": {
+   "speed": "92 / 100",
+   "control": "94 / 100",
+   "weight": "85g",
+   "plies": "7"
+  },
+  "tibhar-samsonov-force-pro-black-edition": {
+   "speed": "9.0",
+   "control": "7.0",
+   "weight": "89g",
+   "plies": "7",
+   "materials": "limba-ayous-ayous-ayous-ayous-ayous-limba",
+   "thickness": "6.7mm"
+  },
+  "nittaku-ludeack-power": {
+   "speed": "92 / 100",
+   "control": "63 / 100",
+   "weight": "90g",
+   "plies": "7",
+   "thickness": "6.6mm"
+  },
+  "joola-vyzaryz-freeze-hrd": {
+   "weight": "85g",
+   "plies": "7"
+  },
+  "joola-kool": {
+   "speed": "99 / 100",
+   "control": "78 / 100",
+   "weight": "80g",
+   "plies": "7",
+   "materials": "Hard pine, Limba, Texalium, Balsa core",
+   "thickness": "10.0mm"
+  },
+  "donic-waldner-legend-carbon": {
+   "speed": "99",
+   "control": "65",
+   "weight": "85g",
+   "plies": "5",
+   "materials": "Carbon"
+  },
+  "galaxy-yinhe-t-10-plus": {
+   "speed": "99 / 100",
+   "control": "70 / 100",
+   "weight": "70g",
+   "plies": "7",
+   "materials": "Carbon, American Cypress, Balsa",
+   "thickness": "10.0mm"
+  },
+  "yinhe-galaxy-ec-14": {
+   "speed": "90 / 100",
+   "control": "80 / 100",
+   "weight": "86g",
+   "plies": "7",
+   "materials": "2 plies of Carbon",
+   "thickness": "6.8mm"
+  },
+  "butterfly-innerforce-layer-alc": {
+   "weight": "90g",
+   "plies": "7",
+   "thickness": "6.0mm"
+  },
+  "galaxy-t4": {
+   "speed": "10",
+   "control": "6.0",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "Cypress Outer Carbon",
+   "thickness": "6.0mm"
+  },
+  "stiga-rosewood-nct-v": {
+   "speed": "86 / 100",
+   "control": "69 / 100",
+   "weight": "93g",
+   "plies": "5",
+   "materials": "Rosewood",
+   "thickness": "6.2mm"
+  },
+  "nittaku-bloodwood": {
+   "weight": "88g",
+   "plies": "7"
+  },
+  "galaxy-yinhe-venus-v-14-pro": {
+   "speed": "9.0 / 10",
+   "control": "10 / 10",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "Limba,(outer), ALC, Limba, Kiri (core)",
+   "thickness": "5.0mm"
+  },
+  "andro-hiloom": {
+   "speed": "95 / 100",
+   "control": "94 / 100",
+   "weight": "88g",
+   "materials": "Nature Powered Fibre, Hinoki"
+  },
+  "xiom-hayabusa-zxi": {
+   "speed": "99 / 100",
+   "control": "88 / 100",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "Koto outer plies-Zephylium Carbon-Ayous-Kiri",
+   "thickness": "5.7mm"
+  },
+  "donic-persson-world-champion-89": {
+   "speed": "10 / 10",
+   "control": "7.0 / 10",
+   "weight": "85g"
+  },
+  "ariex-grampus-wisdom": {
+   "speed": "9.0 / 10",
+   "control": "10 / 10",
+   "weight": "88g",
+   "plies": "7",
+   "materials": "Hinoki, kiri, ALC",
+   "thickness": "6.0mm"
+  },
+  "andro-j-m-saive-kinetic-off-minus": {
+   "speed": "87 / 100",
+   "control": "95 / 100",
+   "weight": "80g",
+   "plies": "5"
+  },
+  "tibhar-cca-unlimited": {
+   "weight": "87g",
+   "plies": "7",
+   "thickness": "7.1mm"
+  },
+  "dhs-hurricane-h-wl": {
+   "weight": "87g",
+   "plies": "5"
+  },
+  "joola-rossi-emotion": {
+   "weight": "85g",
+   "plies": "7",
+   "materials": "Hinoki - Koto - Carbon - Kiri"
+  },
+  "donic-defplay-senso": {
+   "speed": "5.0 / 10",
+   "control": "10 / 10",
+   "weight": "85g",
+   "plies": "5"
+  },
+  "butterfly-timo-boll-zlc": {
+   "speed": "95 / 100",
+   "control": "75 / 100",
+   "plies": "7",
+   "materials": "2 plies of Zylon Carbon, 5 plies of Wood",
+   "thickness": "5.5mm"
+  },
+  "andro-csv-carbon-off-plus-plus": {
+   "speed": "99 / 100",
+   "control": "95 / 100",
+   "weight": "82g",
+   "plies": "5"
+  },
+  "nittaku-acoustic-carbon": {
+   "weight": "90g",
+   "plies": "7",
+   "materials": "5 plies of wood + 2 FE carbon layers",
+   "thickness": "5.5mm"
+  },
+  "joola-fever": {
+   "weight": "85g",
+   "plies": "7",
+   "materials": "5 plies of wood (Limba, Ayous, Kiri); 2 plies of Carbon Meliorate"
+  },
+  "joola-mc1": {
+   "speed": "99 / 100",
+   "control": "87 / 100",
+   "weight": "80g",
+   "materials": "Koto and Balsa wood"
+  },
+  "butterfly-viscaria-super-alc": {
+   "plies": "7",
+   "materials": "5-ply wood + 2 Super Arylate-Carbon"
+  },
+  "tibhar-drinkhall-power-spin-carbon": {
+   "weight": "85g",
+   "plies": "7",
+   "thickness": "5.6mm"
+  },
+  "xvt-hinoki-zl-carbon": {
+   "speed": "9.0 / 9",
+   "control": "9.0 / 9",
+   "weight": "90g",
+   "plies": "7",
+   "materials": "5 Hinoki + 2 ZL Carbon"
+  },
+  "butterfly-timo-boll-spirit": {
+   "speed": "8.3 / 12",
+   "control": "7.9 / 12",
+   "weight": "89g",
+   "plies": "7",
+   "materials": "5 wood plies (Koto, Limba, Kiri), 2 Arylate-carbon (ALC)",
+   "thickness": "0.0mm"
+  },
+  "nittaku-septear": {
+   "speed": "9.5",
+   "control": "8.5",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "Kiso Hinoki Wood",
+   "thickness": "6.7mm"
+  },
+  "dhs-power-g-pg5": {
+   "weight": "89g",
+   "plies": "7",
+   "materials": "Arylate carbon, wood",
+   "thickness": "5.9mm"
+  },
+  "stiga-eternity-vps-v": {
+   "weight": "92g",
+   "plies": "7"
+  },
+  "tibhar-zodiac-libra-zac": {
+   "weight": "85g",
+   "plies": "7",
+   "thickness": "5.8mm"
+  },
+  "xiom-strato": {
+   "speed": "99",
+   "weight": "88g",
+   "plies": "5",
+   "materials": "2 plies of Energy Carbon, 3 plies of Kiso Hinoki",
+   "thickness": "7.0mm"
+  },
+  "donic-defplay-classic-senso": {
+   "speed": "4.0 / 10",
+   "control": "10 / 10",
+   "weight": "70g",
+   "plies": "6",
+   "materials": "Koto and Ayous outer plies"
+  },
+  "yinhe-galaxy-uranus-u-2": {
+   "speed": "90 / 100",
+   "control": "70 / 100",
+   "weight": "86g",
+   "plies": "7",
+   "thickness": "6.0mm"
+  },
+  "butterfly-timo-boll-w5": {
+   "plies": "5",
+   "thickness": "5.8mm"
+  },
+  "victas-dynawood-power": {
+   "weight": "92g",
+   "thickness": "6.2mm"
+  },
+  "victas-zx-gear-in": {
+   "speed": "7.0 / 7",
+   "control": "7.0 / 7"
+  },
+  "butterfly-dimitrij-ovtcharov-innerforce-alc": {},
+  "joola-vyzaryz-hybrid": {},
+  "galaxy-yinhe-n11-s": {
+   "speed": "80 / 100",
+   "control": "80 / 100",
+   "weight": "84g",
+   "plies": "5",
+   "thickness": "6.4mm"
+  },
+  "dhs-hurricane-hao-656": {
+   "weight": "86g",
+   "plies": "5",
+   "thickness": "6.1mm"
+  },
+  "xiom-v1-quad": {
+   "speed": "95 / 100",
+   "control": "62 / 100",
+   "weight": "88g",
+   "plies": "9",
+   "materials": "2 layers of Energy Carbon",
+   "thickness": "5.6mm"
+  },
+  "andro-tp-ligna-co-off": {
+   "weight": "95g",
+   "plies": "7"
+  },
+  "yinhe-galaxy-y-3": {
+   "speed": "8.0",
+   "control": "8.0",
+   "weight": "82g",
+   "plies": "7",
+   "materials": "Carbon",
+   "thickness": "6.0mm"
+  },
+  "stiga-ebenholz-nct-vii": {
+   "plies": "7"
+  },
+  "tsp-black-balsa-50": {
+   "weight": "75g",
+   "plies": "5",
+   "materials": "Balsa, Fiberglass"
+  },
+  "galaxy-980": {
+   "speed": "6.0 / 10",
+   "control": "9.0 / 10",
+   "weight": "80g",
+   "plies": "5",
+   "thickness": "6.0mm"
+  },
+  "yasaka-max-carbon-3d": {
+   "speed": "99",
+   "control": "69",
+   "weight": "90g",
+   "plies": "9"
+  },
+  "darker-7p-2a": {},
+  "stiga-intensity-nct-carbon": {
+   "materials": "Carbon"
+  },
+  "tibhar-bernadette-szocs-signature-1": {
+   "weight": "85g",
+   "plies": "7"
+  },
+  "joola-rossi-force": {
+   "speed": "94 / 100",
+   "control": "97 / 100",
+   "weight": "90g",
+   "plies": "5",
+   "materials": "Hinoki, Kiri, Carbon"
+  },
+  "nittaku-flame-carbon": {
+   "speed": "96 / 10",
+   "control": "60 / 10",
+   "weight": "87g",
+   "plies": "5",
+   "materials": "Wood, Kevlar, Carbon",
+   "thickness": "5.9mm"
+  },
+  "andro-gauzy-hl-co-off": {
+   "weight": "90g"
+  },
+  "butterfly-maze-t-tec-off": {
+   "weight": "80g",
+   "plies": "5",
+   "materials": "Hinoki"
+  },
+  "andro-super-core-cell-off-plus": {
+   "speed": "94 / 100",
+   "control": "93 / 100",
+   "weight": "85g",
+   "plies": "7"
+  },
+  "butterfly-sk-carbon": {
+   "weight": "76g",
+   "plies": "5",
+   "thickness": "5.2mm"
+  },
+  "yinhe-galaxy-y-2": {
+   "speed": "9.0",
+   "control": "8.0",
+   "weight": "82g",
+   "plies": "7",
+   "materials": "wood carbon",
+   "thickness": "5.9mm"
+  },
+  "butterfly-garaydia-alc": {
+   "plies": "5",
+   "materials": "Hinoki, ALC, Kiri"
+  },
+  "galaxy-yinhe-t-8s": {
+   "speed": "9.0 / 10",
+   "control": "8.0 / 10",
+   "weight": "86g",
+   "plies": "7",
+   "materials": "Wood, carbokev",
+   "thickness": "6.8mm"
+  },
+  "andro-temper-tech-all-plus": {
+   "speed": "87 / 100",
+   "control": "97 / 100",
+   "weight": "70g"
+  },
+  "dhs-fang-bo-carbon": {
+   "weight": "90g",
+   "plies": "7",
+   "thickness": "5.9mm"
+  },
+  "kreanga-carbon": {
+   "speed": "9.8 / 10",
+   "control": "7.5 / 10",
+   "weight": "87g"
+  },
+  "butterfly-primorac-ex": {
+   "weight": "85g",
+   "plies": "5",
+   "thickness": "5.7mm"
+  },
+  "andro-temper-tech-off": {
+   "speed": "95 / 100",
+   "control": "94 / 100",
+   "weight": "80g",
+   "materials": "Kiri"
+  },
+  "galaxy-yinhe-t7s": {
+   "speed": "8.0 / 10",
+   "control": "8.0 / 10",
+   "weight": "85g",
+   "plies": "5",
+   "materials": "3 plywood + 2 carbokev (Carbon Kevlar)",
+   "thickness": "6.0mm"
+  },
+  "butterfly-innerforce-ulc": {
+   "speed": "92",
+   "control": "79",
+   "weight": "86g",
+   "plies": "7",
+   "materials": "2 plies of Uniaxial Light Carbon",
+   "thickness": "5.6mm"
+  },
+  "galaxy-t-11": {
+   "speed": "10 / 10",
+   "control": "10 / 10",
+   "weight": "70g",
+   "plies": "5",
+   "materials": "2 plies of Carbon, 3 plies of Balsa wood",
+   "thickness": "7.0mm"
+  },
+  "butterfly-keyshot": {
+   "weight": "91g",
+   "plies": "5",
+   "materials": "arylate"
+  },
+  "avalox-ma-wenge-c555-carbon": {
+   "speed": "10",
+   "control": "9.0",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "2 plies of Carbon, 5 plies of wood"
+  },
+  "galaxy-n-9": {
+   "speed": "7.0 / 10",
+   "control": "7.0 / 10",
+   "weight": "86g",
+   "plies": "5"
+  },
+  "butterfly-innerforce-layer-zlc": {
+   "weight": "85g",
+   "plies": "7",
+   "thickness": "5.7mm"
+  },
+  "osp-expert-all-plus": {
+   "weight": "88g",
+   "plies": "5",
+   "thickness": "5.5mm"
+  },
+  "xvt-zl-koto": {
+   "speed": "10 / 9",
+   "control": "9.0 / 9",
+   "weight": "87g",
+   "plies": "7",
+   "thickness": "5.9mm"
+  },
+  "yinhe-galaxy-t-10": {
+   "speed": "10",
+   "control": "7.0",
+   "weight": "70g",
+   "plies": "5",
+   "materials": "Carbon",
+   "thickness": "10.0mm"
+  },
+  "joola-wing-passion-extreme": {
+   "weight": "88g",
+   "materials": "Fineline, CS-Carbon, Kiri"
+  },
+  "butterfly-kong-linghui-special": {
+   "speed": "8.0 / 12",
+   "control": "8.0 / 12",
+   "weight": "81g",
+   "plies": "5",
+   "materials": "3 plies of wood; 2 plies of Arylate-carbon",
+   "thickness": "6.9mm"
+  },
+  "joola-toni-hold-white-spot": {
+   "speed": "65 / 100",
+   "control": "99 / 100",
+   "weight": "85g",
+   "plies": "5",
+   "materials": "Poplar"
+  },
+  "victas-koji-matsushita": {
+   "weight": "90g"
+  },
+  "gewo-hybrid-carbon-x-speed-off": {
+   "materials": "Carbon"
+  },
+  "butterfly-defence-2": {
+   "speed": "7.7 / 11",
+   "control": "7.9 / 11",
+   "weight": "96g",
+   "plies": "3",
+   "materials": "Willow outer plies",
+   "thickness": "6.4mm"
+  },
+  "tibhar-cedric-nuytinck": {
+   "speed": "9.0",
+   "control": "9.0",
+   "weight": "82g",
+   "plies": "7",
+   "materials": "Limba-zlc-Limba-Kiri-Limba-zlc-Limba",
+   "thickness": "5.7mm"
+  },
+  "yinhe-galaxy-venus-v-16": {
+   "speed": "93",
+   "control": "80",
+   "weight": "85g",
+   "plies": "7",
+   "thickness": "6.0mm"
+  },
+  "stiga-carbo-76-wrb": {
+   "speed": "8.6 / 10",
+   "control": "6.7 / 10",
+   "weight": "92g",
+   "plies": "13",
+   "materials": "7 plies of wood; 6 plies of Carbon"
+  },
+  "nittaku-latika": {
+   "speed": "86 / 100",
+   "control": "78 / 100",
+   "weight": "88g",
+   "plies": "5",
+   "thickness": "5.8mm"
+  },
+  "joola-flame-extreme": {
+   "speed": "99",
+   "control": "83",
+   "weight": "90g",
+   "plies": "5",
+   "materials": "Limba (0.8mm), Awan (1.0mm), Kiri (4.8mm)"
+  },
+  "andro-kinetic-supreme-zylon-kiso-hinoki-off-minus": {
+   "speed": "91 / 100",
+   "control": "97 / 100",
+   "weight": "85g",
+   "materials": "Kiso Hinoki, Zylon"
+  },
+  "stiga-carbonado-45": {
+   "speed": "47 / 9",
+   "control": "99 / 9",
+   "weight": "91g",
+   "plies": "5",
+   "materials": "TeXtreme Carbon",
+   "thickness": "5.7mm"
+  },
+  "ariex-excellent-hinoki": {
+   "weight": "92g",
+   "plies": "1",
+   "materials": "1-ply Japanese Kiso-Hinoki",
+   "thickness": "9.0mm"
+  },
+  "yasaka-ma-lin-extra-special": {
+   "weight": "90g"
+  },
+  "butterfly-hadraw-5": {
+   "weight": "87g",
+   "plies": "5"
+  },
+  "galaxy-yinhe-pro-feeling": {
+   "speed": "90 / 100",
+   "control": "99 / 100",
+   "weight": "87g",
+   "plies": "7",
+   "thickness": "5.7mm"
+  },
+  "darker-alba-sakura": {
+   "weight": "82g",
+   "plies": "7",
+   "thickness": "6.2mm"
+  },
+  "galaxy-yinhe-t-4s": {
+   "speed": "10 / 9",
+   "control": "7.0 / 9",
+   "weight": "85g",
+   "plies": "9",
+   "materials": "UNIAXIAL CARBON"
+  },
+  "andro-tp-ligna-all": {
+   "weight": "75g"
+  },
+  "yinhe-galaxy-venus-v-12": {
+   "speed": "90 / 100",
+   "control": "80 / 100",
+   "weight": "87g",
+   "plies": "5",
+   "materials": "2 plies of Carbon Kevlar",
+   "thickness": "6.0mm"
+  },
+  "tsp-hino-carbon-power": {
+   "weight": "85g",
+   "materials": "Carbon"
+  },
+  "galaxy-yinhe-def-5": {
+   "weight": "70g",
+   "plies": "5"
+  },
+  "donic-li-ping-kitex": {
+   "speed": "9.0 / 10",
+   "control": "7.0 / 10",
+   "weight": "90g",
+   "plies": "7",
+   "materials": "Texalium, Hinoki, Ayous, Kiri"
+  },
+  "donic-persson-power-carbon": {
+   "speed": "10 / 10",
+   "control": "6.0 / 10",
+   "weight": "90g",
+   "plies": "9",
+   "materials": "7 plies wood, 2 plies Carbon"
+  },
+  "butterfly-fan-zhendong-alc": {
+   "weight": "87g",
+   "plies": "7",
+   "materials": "Arylate Carbon",
+   "thickness": "5.8mm"
+  },
+  "andro-kinetic-cf-kevlar-carbon-off": {
+   "speed": "93 / 100",
+   "control": "95 / 100",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "Carbon-Kevlar"
+  },
+  "galaxy-t-8": {
+   "speed": "10",
+   "control": "8.0",
+   "weight": "86g",
+   "plies": "5",
+   "materials": "2 plies of Carbon, 3 plies of wood",
+   "thickness": "6.8mm"
+  },
+  "tsp-balsa-55-all-plus": {
+   "speed": "85 / 100",
+   "control": "80 / 100",
+   "weight": "75g",
+   "plies": "0",
+   "thickness": "0.0mm"
+  },
+  "stiga-tube-carbo-wrb": {
+   "speed": "9.1 / 10",
+   "control": "6.6 / 10",
+   "weight": "87g",
+   "plies": "7",
+   "materials": "Contains Carbon-fiber micro-channels"
+  },
+  "butterfly-photino-light": {
+   "speed": "92 / 100",
+   "control": "82 / 100",
+   "weight": "72g",
+   "materials": "ZL Fiber, Hinoki outer plies",
+   "thickness": "6.2mm"
+  },
+  "nittaku-rutis": {
+   "speed": "93 / 100",
+   "control": "63 / 100",
+   "weight": "85g",
+   "plies": "5",
+   "materials": "3 plywood, G-carbon 2 use",
+   "thickness": "5.5mm"
+  },
+  "tsp-altero": {
+   "speed": "98",
+   "control": "88",
+   "weight": "90g",
+   "plies": "7"
+  },
+  "galaxy-carbokev-k-4": {
+   "speed": "9.5 / 10",
+   "control": "8.0 / 10",
+   "weight": "83g",
+   "plies": "7",
+   "materials": "Wood, Carbon-Kevlar",
+   "thickness": "5.8mm"
+  },
+  "donic-ovtcharov-carbospeed": {
+   "speed": "99",
+   "control": "60",
+   "weight": "85g",
+   "plies": "5",
+   "materials": "Hinoki, Carbon"
+  },
+  "andro-super-core-cell-off": {
+   "speed": "91 / 100",
+   "control": "94 / 100",
+   "weight": "85g",
+   "plies": "7"
+  },
+  "donic-epox-carbotec": {
+   "speed": "92 / 100",
+   "control": "74 / 100",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "Carbon-Fleece"
+  },
+  "joola-flame-fast": {
+   "speed": "92 / 100",
+   "control": "87 / 100",
+   "weight": "87g",
+   "plies": "5",
+   "materials": "Hinoki 0.8mm, Awan 1.0mm, Kiri 3.2mm"
+  },
+  "sanwei-v5-pro": {
+   "weight": "90g"
+  },
+  "stiga-ebenholz-nct-v": {
+   "plies": "5"
+  },
+  "dhs-hurricane-long-2": {},
+  "yasaka-silverline-all-wood": {
+   "speed": "82 / 100",
+   "control": "85 / 100",
+   "weight": "87g",
+   "plies": "5"
+  },
+  "gewo-hybrid-carbon-m-speed-off-minus": {
+   "materials": "Carbon"
+  },
+  "stiga-dynasty-carbon": {
+   "speed": "46",
+   "control": "99",
+   "weight": "89g",
+   "plies": "7",
+   "materials": "5-ply wood + 2 layers of TeXtreme carbon",
+   "thickness": "5.9mm"
+  },
+  "joola-nobilis-pbo-c": {
+   "speed": "99 / 9",
+   "control": "90 / 9",
+   "plies": "7",
+   "materials": "Hinoki Outer",
+   "thickness": "7.1mm"
+  },
+  "donic-defplay-senso-v3": {
+   "speed": "59 / 100",
+   "control": "98 / 100",
+   "weight": "85g",
+   "plies": "5"
+  },
+  "tibhar-samsonov-premium-contact": {
+   "speed": "82 / 100",
+   "control": "69 / 100",
+   "weight": "80g"
+  },
+  "stiga-allround-nct": {
+   "speed": "79 / 100",
+   "control": "77 / 100",
+   "weight": "83g",
+   "plies": "5"
+  },
+  "donic-persson-power-carbon-senso-v1": {
+   "speed": "10 / 10",
+   "control": "6.0 / 10",
+   "weight": "90g",
+   "plies": "9",
+   "materials": "7 Wood, 2 Carbon Outer plies",
+   "thickness": "6.0mm"
+  },
+  "butterfly-gergely-21": {
+   "speed": "9.9 / 10",
+   "control": "6.8 / 10",
+   "weight": "90g",
+   "plies": "5",
+   "materials": "hinoki outer, carbon",
+   "thickness": "6.9mm"
+  },
+  "butterfly-taksim": {
+   "speed": "8.3 / 10",
+   "control": "8.8 / 10",
+   "weight": "85g",
+   "plies": "5"
+  },
+  "darker-7p-2acarbon": {},
+  "pp-agon-fl-super-zlc": {
+   "speed": "9.0 / 9",
+   "control": "8.0 / 9",
+   "weight": "92g",
+   "plies": "7",
+   "materials": "KOTO+Super ZLC+Ayous + Kiri +Ayous+ Super ZLC+ KOTO",
+   "thickness": "6.2mm"
+  },
+  "xiom-v1": {
+   "speed": "89 / 10",
+   "control": "87 / 10",
+   "weight": "84g",
+   "plies": "7",
+   "materials": "Energy carbon",
+   "thickness": "5.4mm"
+  },
+  "butterfly-diode-v": {
+   "weight": "97g",
+   "plies": "5",
+   "thickness": "5.7mm"
+  },
+  "sanwei-fextra-7": {
+   "speed": "10 / 10",
+   "control": "9.0 / 10",
+   "weight": "88g",
+   "plies": "7",
+   "materials": "limba (outer leyer)",
+   "thickness": "6.0mm"
+  },
+  "tibhar-triple-carbon": {
+   "speed": "10",
+   "control": "4.0",
+   "weight": "98g",
+   "plies": "8",
+   "thickness": "7.0mm"
+  },
+  "xiom-diva": {
+   "speed": "80",
+   "control": "0.0",
+   "plies": "5",
+   "thickness": "5.7mm"
+  },
+  "butterfly-michael-maze": {
+   "speed": "8.5 / 12",
+   "control": "8.0 / 12",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "5 plies of wood (Ayous center); 2 plies of Arylate-carbon",
+   "thickness": "5.9mm"
+  },
+  "tsp-reflex-50-award-off": {
+   "speed": "95 / 100",
+   "control": "92 / 100",
+   "weight": "85g",
+   "plies": "5"
+  },
+  "stiga-carbonado-245": {
+   "weight": "93g",
+   "plies": "7",
+   "materials": "carbon fiber - TeXtreme",
+   "thickness": "6.1mm"
+  },
+  "tibhar-stratus-power-defense": {
+   "plies": "5"
+  },
+  "xiom-axelo": {
+   "materials": "Energy Carbon",
+   "thickness": "7.3mm"
+  },
+  "nexy-arirang": {
+   "materials": "Arylate-Carbon"
+  },
+  "yasaka-extra": {
+   "speed": "15 / 20",
+   "control": "17 / 20",
+   "weight": "85g",
+   "plies": "5",
+   "thickness": "5.8mm"
+  },
+  "andro-treiber-h": {
+   "speed": "97 / 100",
+   "control": "96 / 100",
+   "weight": "90g",
+   "materials": "Koto, synthetic fiber"
+  },
+  "yinhe-galaxy-y-4": {
+   "plies": "5",
+   "materials": "Carbon"
+  },
+  "galaxy-yinhe-pro-01": {
+   "speed": "9.0 / 10",
+   "control": "10 / 10",
+   "weight": "90g",
+   "plies": "5",
+   "materials": "ALC, Limba, Samba, Kiri",
+   "thickness": "5.7mm"
+  },
+  "galaxy-yinhe-venus-v-4": {
+   "speed": "9.0 / 10",
+   "control": "8.0 / 10",
+   "weight": "90g",
+   "plies": "7",
+   "materials": "2 plies of Zylon Carbon",
+   "thickness": "5.8mm"
+  },
+  "stiga-clipper-cr-wrb": {
+   "speed": "8.1 / 10",
+   "control": "6.3 / 10",
+   "weight": "95g",
+   "plies": "7",
+   "materials": "Wood"
+  },
+  "avalox-blue-thunder-777": {
+   "speed": "10",
+   "control": "8.0",
+   "weight": "90g",
+   "plies": "7"
+  },
+  "nexy-calix": {
+   "weight": "85g",
+   "plies": "7",
+   "materials": "Burnt Mahogany Outer, Ayous, Ayous, Carbon, Kiri Core",
+   "thickness": "5.0mm"
+  },
+  "butterfly-zhang-jike-zlc": {
+   "weight": "86g",
+   "plies": "7",
+   "materials": "5 plies wood, 2 plies ZL fiber/carbon",
+   "thickness": "5.5mm"
+  },
+  "andro-super-core-cl-off-plus": {
+   "speed": "96 / 100",
+   "control": "90 / 100",
+   "weight": "70g",
+   "plies": "5"
+  },
+  "butterfly-andrzej-grubba-carbon": {
+   "speed": "85 / 100",
+   "control": "76 / 100",
+   "weight": "90g",
+   "plies": "5",
+   "materials": "3 plies of wood; 2 plies of Carbon",
+   "thickness": "5.0mm"
+  },
+  "dhs-hurricane-king-655": {
+   "weight": "86g",
+   "plies": "5",
+   "thickness": "6.0mm"
+  },
+  "avalox-j-power": {
+   "speed": "9.5",
+   "control": "9.8",
+   "plies": "7",
+   "materials": "Kiso hinoki, wooden within"
+  },
+  "nittaku-septear-lead": {
+   "weight": "80g",
+   "plies": "7",
+   "thickness": "6.2mm"
+  },
+  "andro-treiber-q": {
+   "weight": "88g"
+  },
+  "yasaka-silverline-carbon": {
+   "speed": "99 / 100",
+   "control": "70 / 100",
+   "weight": "90g",
+   "plies": "7",
+   "materials": "Carbon"
+  },
+  "galaxy-yinhe-galaxy-t2s": {
+   "speed": "9.0 / 9",
+   "control": "8.0 / 9",
+   "weight": "78g",
+   "plies": "5",
+   "materials": "UNIAXIAL CARBON",
+   "thickness": "6.4mm"
+  },
+  "dhs-power-g-pg7": {
+   "weight": "89g",
+   "plies": "7",
+   "materials": "7 plies of Wood",
+   "thickness": "6.3mm"
+  },
+  "andro-temper-tech-off-minus": {
+   "speed": "91 / 100",
+   "control": "95 / 100",
+   "weight": "80g",
+   "materials": "Mahogany"
+  },
+  "tsp-reflex-50-award-all": {
+   "speed": "82 / 100",
+   "control": "85 / 100",
+   "weight": "85g"
+  },
+  "victas-quartet-afc": {},
+  "butterfly-korbel-sk7": {
+   "speed": "80 / 100",
+   "control": "85 / 100",
+   "weight": "95g",
+   "plies": "7",
+   "materials": "Ayous/Abachi wood",
+   "thickness": "6.7mm"
+  },
+  "xvt-black-knight-7": {
+   "weight": "85g",
+   "plies": "7",
+   "materials": "5 ply wood + 2 carbon fibers"
+  },
+  "tibhar-h-1-9": {
+   "weight": "87g",
+   "plies": "1",
+   "materials": "Hinoki"
+  },
+  "yinhe-pro-05": {
+   "weight": "89g",
+   "plies": "7"
+  },
+  "osp-virtuoso-plus": {
+   "speed": "7.0",
+   "control": "8.0",
+   "weight": "85g",
+   "plies": "5",
+   "materials": "Limba-Limba-Samba-Limba-Limba",
+   "thickness": "5.8mm"
+  },
+  "stiga-infinity-vps-v-diamond-touch": {
+   "speed": "99",
+   "control": "70",
+   "plies": "5"
+  },
+  "tsp-balsa-25-defence": {
+   "speed": "40 / 100",
+   "control": "95 / 100",
+   "weight": "65g",
+   "plies": "5",
+   "materials": "Balsa, fiber glass"
+  },
+  "yinhe-galaxy-venus-v-14": {
+   "speed": "90",
+   "control": "80",
+   "weight": "87g",
+   "plies": "7",
+   "thickness": "5.8mm"
+  },
+  "dhs-power-g-pg5x": {
+   "weight": "89g",
+   "plies": "7",
+   "materials": "5 Plywood + 2 Arylate-Carbon",
+   "thickness": "6.0mm"
+  },
+  "xiom-extreme-s": {
+   "weight": "90g",
+   "plies": "7"
+  },
+  "stiga-carbonado-145": {},
+  "joola-tpe-perform": {
+   "weight": "87g",
+   "plies": "7",
+   "materials": "Hinoki, Koto, Carbon, Ayous"
+  },
+  "tsp-black-balsa-30": {
+   "speed": "71 / 100",
+   "control": "99 / 100",
+   "weight": "75g"
+  },
+  "yinhe-galaxy-988": {
+   "speed": "10",
+   "control": "7.0",
+   "weight": "86g",
+   "plies": "7",
+   "materials": "Carbon",
+   "thickness": "7.0mm"
+  },
+  "galaxy-yinhe-t11-plus": {
+   "speed": "10 / 10",
+   "control": "10 / 10",
+   "weight": "70g",
+   "plies": "7",
+   "materials": "Two wood outer plies, one carbon ply and a Balsa core",
+   "thickness": "7.0mm"
+  },
+  "butterfly-iolite": {
+   "speed": "9.6 / 12",
+   "control": "7.0 / 12",
+   "weight": "80g",
+   "plies": "5",
+   "materials": "3 plies of wood; 2 plies of Arylate-carbon"
+  },
+  "yinhe-t11s": {
+   "weight": "72g",
+   "plies": "7",
+   "materials": "5 Wood + 2 Carbon",
+   "thickness": "7.0mm"
+  },
+  "stiga-clipper-wrb": {
+   "speed": "7.7 / 10",
+   "control": "6.3 / 10",
+   "weight": "98g",
+   "plies": "7",
+   "materials": "Wood",
+   "thickness": "0.0mm"
+  },
+  "butterfly-innerforce-layer-alcs": {
+   "thickness": "5.5mm"
+  },
+  "dhs-hurricane-king": {
+   "weight": "85g",
+   "plies": "5",
+   "materials": "Koto, spruce, ayous"
+  },
+  "adidas-challenge-speed": {
+   "speed": "96",
+   "control": "90",
+   "weight": "88g",
+   "plies": "7",
+   "thickness": "6.7mm"
+  },
+  "joola-tpe-nature": {
+   "weight": "87g"
+  },
+  "andro-treiber-co-off": {
+   "weight": "90g",
+   "plies": "5",
+   "thickness": "5.8mm"
+  },
+  "galaxy-t-7": {
+   "materials": "Carbon-arylate"
+  },
+  "butterfly-vsg-2000": {
+   "speed": "9.0 / 12",
+   "control": "8.0 / 12",
+   "weight": "93g",
+   "plies": "7",
+   "materials": "7 wood plies"
+  },
+  "donic-waldner-senso-carbon": {
+   "speed": "85 / 100",
+   "control": "79 / 100",
+   "weight": "80g",
+   "plies": "7",
+   "materials": "5 plies of wood; 2 plies of Carbon"
+  },
+  "729-v-6": {
+   "speed": "92",
+   "control": "60",
+   "weight": "88g",
+   "plies": "7",
+   "thickness": "6.4mm"
+  },
+  "donic-appelgren-world-champion-89": {
+   "speed": "8.0 / 10",
+   "control": "9.0 / 10",
+   "weight": "80g",
+   "thickness": "6.0mm"
+  },
+  "yasaka-extra-special": {
+   "speed": "91",
+   "control": "66",
+   "weight": "88g",
+   "plies": "7"
+  },
+  "yasaka-ma-lin-extra-offensive": {
+   "weight": "86g",
+   "plies": "5"
+  },
+  "butterfly-primorac-carbon-tamca-5000": {
+   "speed": "9.5 / 12",
+   "control": "6.7 / 12",
+   "weight": "92g",
+   "plies": "5",
+   "materials": "3 plies of wood (Kiri center and Cypress/Hinoki outer plies), 2 plies of Tamca 5000 Carbon",
+   "thickness": "6.9mm"
+  },
+  "stiga-intensity-nct": {},
+  "donic-appelgren-allplay-senso-v2": {
+   "speed": "6.0 / 10",
+   "control": "9.0 / 10",
+   "weight": "80g",
+   "plies": "5"
+  },
+  "cornilleau-vision-soft-carbon-off-plus": {
+   "weight": "85g",
+   "plies": "7",
+   "materials": "Tiba Mahogany"
+  },
+  "729-blue-arylate-carbon": {
+   "speed": "9.0 / 10",
+   "control": "8.0 / 10",
+   "weight": "85g",
+   "plies": "7"
+  },
+  "joola-viva": {
+   "weight": "90g",
+   "plies": "7",
+   "materials": "Limba and Samba woods"
+  },
+  "stiga-offensive-cr-wrb": {
+   "speed": "80 / 127",
+   "control": "68 / 127",
+   "weight": "88g",
+   "plies": "5",
+   "materials": "wood"
+  },
+  "xiom-stradivarius": {
+   "speed": "90",
+   "control": "79",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "Aramid-Carbon",
+   "thickness": "5.7mm"
+  },
+  "nittaku-ludeack-fleet": {
+   "speed": "89 / 100",
+   "control": "74 / 100",
+   "weight": "90g",
+   "plies": "9",
+   "materials": "Glassfiber",
+   "thickness": "6.2mm"
+  },
+  "galaxy-yinhe-mercury-y-13": {
+   "speed": "9.0 / 10",
+   "control": "8.0 / 10",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "2 plies of Fiberglass",
+   "thickness": "5.8mm"
+  },
+  "donic-waldner-black-devil-carbon-balsa": {
+   "speed": "95 / 100",
+   "control": "79 / 100",
+   "weight": "80g",
+   "plies": "7",
+   "materials": "5 plies of wood (contains Balsa); 2 plies of Carbon"
+  },
+  "stiga-rosewood-xo": {
+   "speed": "94 / 100",
+   "control": "89 / 100",
+   "weight": "79g",
+   "plies": "5",
+   "materials": "Rosewood",
+   "thickness": "5.8mm"
+  },
+  "avalox-j-aramid": {
+   "speed": "10",
+   "control": "9.0",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "Kiso Hinoki outer, Aramid Carbon",
+   "thickness": "6.0mm"
+  },
+  "butterfly-boll-tricarbon": {
+   "speed": "11 / 12",
+   "control": "6.8 / 12",
+   "weight": "95g",
+   "plies": "9",
+   "materials": "6 plies of wood (outer plies are Paduk wood); 3 plies of carbon",
+   "thickness": "6.9mm"
+  },
+  "butterfly-keyshot-light": {
+   "speed": "8.4 / 10",
+   "control": "7.9 / 10",
+   "weight": "89g",
+   "plies": "5",
+   "materials": "3 wood, 2 arylate",
+   "thickness": "6.9mm"
+  },
+  "butterfly-schlager-carbon": {
+   "speed": "10 / 12",
+   "control": "6.5 / 12",
+   "weight": "95g",
+   "plies": "5",
+   "materials": "Three wood plies; 2 Carbon",
+   "thickness": "7.4mm"
+  },
+  "joola-bomb-extrem-mcd": {
+   "weight": "90g",
+   "plies": "7",
+   "materials": "Fir, Limba, MCD"
+  },
+  "donic-ovtcharov-senso-v1": {
+   "speed": "10 / 10",
+   "control": "6.0 / 10",
+   "weight": "90g",
+   "plies": "7"
+  },
+  "donic-appelgren-allplay-senso-v1": {
+   "speed": "73 / 100",
+   "control": "90 / 100",
+   "weight": "80g"
+  },
+  "stiga-carbonix-wrb": {
+   "speed": "99 / 127",
+   "control": "60 / 127",
+   "weight": "82g",
+   "plies": "7",
+   "materials": "5 plies of wood, 2 layers of soft carbon"
+  },
+  "nittaku-kcz": {
+   "speed": "11",
+   "control": "8.3",
+   "weight": "85g",
+   "thickness": "5.6mm"
+  },
+  "tibhar-e-lebesson": {
+   "speed": "8.0 / 10",
+   "control": "8.0 / 10",
+   "weight": "85g",
+   "plies": "5"
+  },
+  "stiga-clipper-cr": {
+   "speed": "99",
+   "control": "64",
+   "weight": "95g"
+  },
+  "yinhe-galaxy-earth-e-3": {
+   "speed": "80 / 100",
+   "control": "90 / 100",
+   "weight": "87g",
+   "plies": "5",
+   "thickness": "5.7mm"
+  },
+  "donic-ovtcharov-true-carbon": {
+   "speed": "99 / 100",
+   "control": "72 / 100",
+   "weight": "90g",
+   "plies": "7"
+  },
+  "dhs-power-g-pg13": {
+   "weight": "88g",
+   "plies": "7",
+   "thickness": "5.8mm"
+  },
+  "butterfly-garaydia-zlc": {
+   "speed": "12 / 10",
+   "control": "13 / 10",
+   "weight": "89g",
+   "plies": "5",
+   "materials": "Thick Hinoki Outer Ply, ZL Carbon, Thick Balsa Center Ply, ZL Carbon, Thick Hinoki Outer Ply",
+   "thickness": "7.1mm"
+  },
+  "donic-waldner-dicon": {
+   "speed": "78 / 100",
+   "control": "76 / 100",
+   "weight": "82g",
+   "plies": "5",
+   "materials": "Limba, Spruce, Ayous"
+  },
+  "donic-persson-powerplay": {
+   "speed": "88",
+   "control": "72",
+   "weight": "94g",
+   "plies": "7"
+  },
+  "butterfly-joo-se-hyuk": {
+   "speed": "7.2 / 12",
+   "control": "8.5 / 12",
+   "weight": "90g",
+   "plies": "5",
+   "materials": "5 plies of wood",
+   "thickness": "5.9mm"
+  },
+  "palio-energy-03": {
+   "weight": "91g",
+   "plies": "9",
+   "thickness": "6.7mm"
+  },
+  "butterfly-timo-boll-t5000": {
+   "speed": "10",
+   "control": "7.0",
+   "weight": "90g",
+   "plies": "7",
+   "materials": "Carbon",
+   "thickness": "5.5mm"
+  },
+  "yinhe-galaxy-t-1": {
+   "speed": "10",
+   "control": "7.0",
+   "weight": "86g",
+   "plies": "5",
+   "materials": "Carbon",
+   "thickness": "7.4mm"
+  },
+  "donic-baum-esprit": {
+   "speed": "95 / 100",
+   "control": "70 / 100",
+   "weight": "90g",
+   "plies": "7",
+   "materials": "Aramid-Carbon"
+  },
+  "butterfly-gergely-carbon": {
+   "speed": "9.9 / 12",
+   "control": "6.8 / 12",
+   "weight": "93g",
+   "plies": "5",
+   "materials": "3 plies of wood (outer layers are Cypress, center is Balsa); 2 plies of Carbon",
+   "thickness": "7.0mm"
+  },
+  "butterfly-petr-korbel": {
+   "speed": "8.0 / 12",
+   "control": "7.6 / 12",
+   "weight": "89g",
+   "plies": "5",
+   "materials": "4 plies of Limba, center ply is Ayous",
+   "thickness": "6.0mm"
+  },
+  "yasaka-sweden-extra": {
+   "speed": "82 / 100",
+   "control": "71 / 100",
+   "weight": "84g"
+  },
+  "dr-neubauer-firewall-plus": {
+   "speed": "82",
+   "control": "92",
+   "weight": "65g",
+   "plies": "5"
+  },
+  "butterfly-gergely-alpha": {
+   "materials": "Carbon"
+  },
+  "stiga-offensive-wood-nct": {
+   "speed": "87",
+   "control": "67",
+   "weight": "80g",
+   "plies": "5"
+  },
+  "butterfly-harimoto-tomokazu-innerforce-alc": {
+   "weight": "88g",
+   "plies": "7",
+   "thickness": "6.0mm"
+  },
+  "stiga-celero": {},
+  "donic-waldner-diablo-senso": {
+   "speed": "85",
+   "control": "73",
+   "weight": "85g",
+   "plies": "5",
+   "materials": "Wood, glassfibre",
+   "thickness": "5.5mm"
+  },
+  "andro-fibercomp-def": {
+   "speed": "75 / 100",
+   "control": "99 / 100",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "Balsa core, Glassfiber layers"
+  },
+  "tibhar-iv-s-sgs": {
+   "weight": "89g",
+   "plies": "5",
+   "materials": "Ayous"
+  },
+  "victas-quartet-vfc": {},
+  "stiga-offensive-classic-wrb": {
+   "speed": "77 / 100",
+   "control": "68 / 100",
+   "weight": "83g",
+   "plies": "5",
+   "materials": "Koto (rumored to have Limba in new version) - Spruce - Ayous"
+  },
+  "xienting-shark-686": {
+   "speed": "9.5 / 10",
+   "control": "9.7 / 10",
+   "weight": "88g",
+   "plies": "11",
+   "materials": "Titanium mesh + 2 layer Carbon + 2 layer Ceramic fibre + Honeycomb structure Wood",
+   "thickness": "6.5mm"
+  },
+  "donic-burn-aratox-rs": {
+   "speed": "9.0 / 10",
+   "control": "7.0 / 10",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "Mahogany, Kiri, Aratox"
+  },
+  "loki-violent-v9-ebony-carbon": {
+   "speed": "9.0 / 9",
+   "control": "9.0 / 9",
+   "weight": "91g",
+   "plies": "9",
+   "materials": "Ebony wood + carbon",
+   "thickness": "5.7mm"
+  },
+  "huaruite-clipper": {
+   "plies": "9"
+  },
+  "dhs-wind-sr-a": {
+   "weight": "89g",
+   "plies": "5",
+   "materials": "5 ply wood",
+   "thickness": "6.5mm"
+  },
+  "butterfly-innerforce-layer-zlf": {
+   "plies": "7"
+  },
+  "butterfly-peter-korbel-japan-version": {
+   "speed": "9.0 / 9",
+   "control": "9.0 / 9",
+   "weight": "95g",
+   "plies": "5",
+   "materials": "Limba limba ayous limba limba",
+   "thickness": "5.9mm"
+  },
+  "butterfly-sk7-classic": {
+   "weight": "90g",
+   "plies": "7",
+   "thickness": "6.8mm"
+  },
+  "stiga-titanium": {
+   "speed": "9.8 / 10",
+   "control": "4.6 / 10",
+   "weight": "98g",
+   "plies": "7",
+   "materials": "5 plies of wood; 2 plies of Titanium"
+  },
+  "galaxy-yinhe-mercury-y-15": {
+   "speed": "9.0 / 10",
+   "control": "9.0 / 10",
+   "weight": "87g",
+   "plies": "7",
+   "materials": "2 plies of Carbon",
+   "thickness": "6.8mm"
+  },
+  "xiom-fuga": {
+   "thickness": "5.6mm"
+  },
+  "tsp-award-offensive": {
+   "weight": "80g"
+  },
+  "andro-kinetic-supreme-off-minus": {
+   "speed": "89",
+   "control": "95",
+   "weight": "82g"
+  },
+  "sword-309": {
+   "speed": "7.0 / 10",
+   "control": "10 / 10",
+   "weight": "90g",
+   "plies": "9",
+   "materials": "Wood",
+   "thickness": "5.0mm"
+  },
+  "lkt-will-power": {
+   "weight": "87g",
+   "plies": "5",
+   "materials": "Carbon Arylate",
+   "thickness": "6.5mm"
+  },
+  "donic-persson-power-allround": {
+   "speed": "78",
+   "control": "78",
+   "weight": "85g",
+   "plies": "5",
+   "thickness": "5.8mm"
+  },
+  "butterfly-moonbeam": {
+   "plies": "7",
+   "materials": "5 plies wood, 2 layers of arylate"
+  },
+  "butterfly-oh-sang-eun": {
+   "speed": "7.9 / 12",
+   "control": "7.7 / 12",
+   "weight": "85g",
+   "plies": "5",
+   "materials": "5 plies of wood"
+  },
+  "adidas-c500-off-plus": {},
+  "tibhar-phantom-x": {
+   "speed": "87 / 100",
+   "control": "71 / 100",
+   "weight": "87g",
+   "plies": "9",
+   "materials": "carbon fibers"
+  },
+  "andro-super-core-off-minus": {
+   "speed": "86",
+   "control": "93",
+   "weight": "80g"
+  },
+  "butterfly-andrzej-grubba-classic": {
+   "speed": "5.6 / 12",
+   "control": "9.1 / 12",
+   "weight": "81g",
+   "plies": "5",
+   "materials": "5 wood plies",
+   "thickness": "5.8mm"
+  },
+  "xiom-aria": {
+   "plies": "5",
+   "thickness": "6.4mm"
+  },
+  "palio-cat": {
+   "speed": "8.0",
+   "control": "9.0",
+   "weight": "70g",
+   "plies": "5",
+   "materials": "Balsa + carbon",
+   "thickness": "6.0mm"
+  },
+  "yasaka-gatien-extra": {
+   "speed": "83 / 100",
+   "control": "82 / 100",
+   "weight": "84g"
+  },
+  "nittaku-miyabi": {
+   "weight": "85g",
+   "plies": "1",
+   "materials": "1-ply Japanese Cypress",
+   "thickness": "9.0mm"
+  },
+  "butterfly-ishlion": {
+   "speed": "9.6 / 10",
+   "control": "7.5 / 10",
+   "weight": "76g",
+   "plies": "3",
+   "materials": "Arylate-Carbon fibres"
+  },
+  "dhs-power-g-pg9": {
+   "weight": "89g",
+   "plies": "7",
+   "thickness": "6.3mm"
+  },
+  "butterfly-innerforce-t5000": {
+   "speed": "10",
+   "control": "7.0",
+   "weight": "90g",
+   "plies": "7",
+   "materials": "2 plies of Carbon",
+   "thickness": "5.7mm"
+  },
+  "donic-waldner-ultra-senso-carbon": {
+   "speed": "10 / 10",
+   "control": "7.0 / 10",
+   "weight": "80g",
+   "plies": "7",
+   "materials": "Carbon"
+  },
+  "donic-ovtcharov-original-senso-carbon": {
+   "speed": "9.0",
+   "control": "8.0",
+   "weight": "90g",
+   "plies": "8",
+   "materials": "Ayous / Ayous (inner plies), Anegre, Carbon, Limba (outer plies"
+  },
+  "tibhar-red-cypress": {
+   "speed": "7.0 / 10",
+   "control": "9.0 / 10",
+   "weight": "80g",
+   "plies": "7",
+   "materials": "Outer: cypress"
+  },
+  "sanwei-f3-pro": {
+   "speed": "99",
+   "control": "90",
+   "weight": "79g",
+   "plies": "7",
+   "materials": "Ayous - Hinoki/Cypress? - ALC - Ayous - ALC - Hinoki/Cypress? - Ayous",
+   "thickness": "6.4mm"
+  },
+  "donic-epox-topspeed": {
+   "speed": "10 / 10",
+   "control": "6.0 / 10",
+   "weight": "90g",
+   "plies": "5"
+  },
+  "butterfly-kreanga-aeros-off-plus": {
+   "speed": "9.5",
+   "control": "8.0"
+  },
+  "donic-wosik-senso-carbon": {
+   "speed": "10 / 10",
+   "control": "7.0 / 10",
+   "weight": "90g",
+   "plies": "5",
+   "materials": "Carbon"
+  },
+  "xiom-aigis": {
+   "plies": "5",
+   "thickness": "5.5mm"
+  },
+  "palio-tct": {
+   "speed": "9.0 / 10",
+   "control": "8.0 / 10",
+   "weight": "90g",
+   "plies": "7",
+   "materials": "3 wood, 2 carbon, 2 titanium",
+   "thickness": "6.2mm"
+  },
+  "sanwei-cc": {
+   "thickness": "5.8mm"
+  },
+  "butterfly-sardius": {
+   "speed": "10 / 12",
+   "control": "6.5 / 12",
+   "weight": "90g",
+   "plies": "5",
+   "materials": "3 plies of wood; 2 plies of Carbon"
+  },
+  "joola-vyzaryz-freeze": {
+   "plies": "7"
+  },
+  "galaxy-w-6": {
+   "weight": "86g",
+   "plies": "5"
+  },
+  "xiom-allround-s": {
+   "speed": "0.0",
+   "control": "0.0",
+   "plies": "0",
+   "thickness": "0.0mm"
+  },
+  "stiga-offensive-cr": {
+   "speed": "77 / 127",
+   "control": "67 / 127",
+   "weight": "92g",
+   "plies": "5",
+   "materials": "Wood"
+  },
+  "butterfly-balsa-carbo-x5": {
+   "speed": "9.0",
+   "control": "8.0",
+   "weight": "70g",
+   "plies": "5",
+   "materials": "Balsa core, 2 carbon layers",
+   "thickness": "7.0mm"
+  },
+  "galaxy-yinhe-n10-s": {
+   "speed": "80 / 100",
+   "control": "80 / 100",
+   "weight": "83g",
+   "plies": "5",
+   "thickness": "6.6mm"
+  },
+  "galaxy-yinhe-n9s": {
+   "weight": "90g",
+   "plies": "5",
+   "materials": "koto-basswood-abachi-basswood-koto",
+   "thickness": "6.7mm"
+  },
+  "butterfly-zhang-jike-t5000": {
+   "weight": "88g",
+   "plies": "7",
+   "materials": "5 plies wood, 2 plies Tamca 5000 carbon",
+   "thickness": "5.5mm"
+  },
+  "dr-neubauer-barricade-def": {
+   "speed": "68",
+   "control": "95",
+   "weight": "52g",
+   "plies": "7"
+  },
+  "donic-burn-off-minus": {
+   "speed": "90 / 100",
+   "control": "75 / 100",
+   "weight": "85g",
+   "plies": "5",
+   "materials": "Mahogany, Awan, Kiri"
+  },
+  "butterfly-maze-performance": {
+   "speed": "86 / 100",
+   "control": "80 / 100",
+   "weight": "81g",
+   "plies": "5",
+   "materials": "limba outer plies",
+   "thickness": "6.7mm"
+  },
+  "butterfly-power-7": {
+   "speed": "9.3 / 10",
+   "weight": "95g",
+   "plies": "7",
+   "materials": "wood"
+  },
+  "butterfly-timo-boll-off-minus": {
+   "weight": "85g",
+   "plies": "5",
+   "thickness": "5.9mm"
+  },
+  "joola-zelebro-pbo-c": {
+   "weight": "85g",
+   "plies": "7",
+   "materials": "Limba, Koto, Kiri and Carbon"
+  },
+  "donic-epox-control": {
+   "speed": "7.0 / 10",
+   "control": "9.0 / 10",
+   "weight": "85g",
+   "plies": "5"
+  },
+  "donic-persson-dotec-off": {
+   "speed": "9.0 / 10",
+   "control": "7.0 / 10",
+   "weight": "75g",
+   "plies": "5",
+   "materials": "Koto, Balsa",
+   "thickness": "0.0mm"
+  },
+  "nittaku-torua": {
+   "speed": "78 / 100",
+   "control": "77 / 100",
+   "weight": "82g",
+   "plies": "5",
+   "thickness": "5.9mm"
+  },
+  "donic-epox-offensiv": {
+   "speed": "9.0 / 10",
+   "control": "7.0 / 10",
+   "weight": "85g",
+   "plies": "5"
+  },
+  "yasaka-ma-lin-carbon": {
+   "speed": "93 / 100",
+   "control": "75 / 100",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "5 plies of wood (limba, soft wood, ayous); 2 plies of Carbon"
+  },
+  "yasaka-spelancer": {
+   "speed": "12",
+   "control": "7.0",
+   "weight": "90g",
+   "plies": "7",
+   "thickness": "7.0mm"
+  },
+  "galaxy-t-2": {
+   "speed": "10 / 9",
+   "control": "8.0 / 9",
+   "weight": "76g",
+   "plies": "5",
+   "materials": "3-Wood; 2-Carbon",
+   "thickness": "6.4mm"
+  },
+  "joola-chen-weixing-cwx": {
+   "speed": "75 / 100",
+   "control": "99 / 100",
+   "weight": "85g",
+   "materials": "Limba, Koto, Black-Cloth, Kiri"
+  },
+  "donic-epox-powerallround": {
+   "speed": "8.0 / 10",
+   "control": "8.0 / 10",
+   "weight": "85g",
+   "plies": "5"
+  },
+  "butterfly-maze-passion": {
+   "weight": "90g",
+   "plies": "7",
+   "materials": "Fibre Glass",
+   "thickness": "5.7mm"
+  },
+  "yasaka-sweden-classic": {
+   "speed": "65 / 100",
+   "control": "92 / 100",
+   "weight": "82g"
+  },
+  "stiga-allround-classic-carbon": {
+   "speed": "73 / 10",
+   "control": "76 / 10",
+   "weight": "85g",
+   "plies": "7"
+  },
+  "729-yellow-carbon-alc": {
+   "speed": "9.0",
+   "control": "10",
+   "weight": "90g",
+   "plies": "5",
+   "materials": "5ply Wood + 2ply Arylate-Carbon",
+   "thickness": "6.0mm"
+  },
+  "donic-appelgren-allplay": {
+   "speed": "70 / 100",
+   "control": "90 / 100",
+   "weight": "85g",
+   "plies": "5"
+  },
+  "avalox-blue-thunder-550": {},
+  "stiga-legacy-carbon-12k": {
+   "weight": "88g",
+   "plies": "7"
+  },
+  "galaxy-yinhe-yinhe-t1s": {
+   "speed": "10 / 10",
+   "control": "7.0 / 10",
+   "weight": "88g",
+   "plies": "5",
+   "materials": "3 PLYWOOD + 2 CARBON",
+   "thickness": "7.4mm"
+  },
+  "donic-burn-all-plus": {
+   "speed": "80 / 100",
+   "control": "85 / 100",
+   "weight": "80g",
+   "plies": "5",
+   "materials": "Mahogany, Awan, Kiri"
+  },
+  "butterfly-mazunov": {
+   "speed": "8.6",
+   "control": "6.9",
+   "weight": "107g",
+   "plies": "5",
+   "thickness": "7.0mm"
+  },
+  "andro-csv-off-plus": {
+   "speed": "94 / 100",
+   "control": "93 / 100",
+   "weight": "82g",
+   "plies": "5"
+  },
+  "tibhar-samsonov-alpha": {
+   "speed": "86 / 100",
+   "control": "69 / 100",
+   "weight": "80g",
+   "plies": "5",
+   "thickness": "5.9mm"
+  },
+  "adidas-fibertec-power": {
+   "speed": "99",
+   "control": "86",
+   "weight": "88g",
+   "materials": "7 (Limba, Carbon Kevlar, Ayous, Kiri - Ayous, Carbon Kevlar, Limba)"
+  },
+  "butterfly-timo-boll-all-plus": {
+   "weight": "85g",
+   "plies": "5",
+   "thickness": "5.5mm"
+  },
+  "dhs-wind-cw-c": {
+   "weight": "98g",
+   "plies": "7",
+   "materials": "Carbon and Wood",
+   "thickness": "6.2mm"
+  },
+  "butterfly-timo-boll-w7": {
+   "speed": "85 / 100",
+   "control": "85 / 100",
+   "weight": "94g",
+   "plies": "7",
+   "thickness": "6.7mm"
+  },
+  "butterfly-primorac": {
+   "speed": "7.5 / 11",
+   "control": "7.8 / 11",
+   "weight": "90g",
+   "plies": "5",
+   "materials": "4 plies of Limba, center ply is Ayous",
+   "thickness": "5.7mm"
+  },
+  "tsp-break-11": {
+   "weight": "90g",
+   "materials": "Kiso Hinoki"
+  },
+  "donic-persson-exclusive-off": {
+   "speed": "75 / 100",
+   "control": "70 / 100",
+   "weight": "85g",
+   "plies": "5"
+  },
+  "butterfly-primo-vitesse": {
+   "speed": "9.0 / 10",
+   "control": "7.0 / 10",
+   "weight": "85g",
+   "plies": "5",
+   "materials": "Carbon Fibre layers, Limba outer plies, Ayous inner plies"
+  },
+  "stiga-offensive-classic-carbon": {
+   "speed": "93 / 100",
+   "control": "62 / 100",
+   "weight": "82g",
+   "plies": "7",
+   "materials": "2 plies of Carbon",
+   "thickness": "5.5mm"
+  },
+  "729-bomb": {
+   "speed": "9.3 / 10",
+   "control": "9.3 / 10",
+   "weight": "85g",
+   "plies": "7",
+   "materials": "7 plies of wood (Cork core, Balsa secondary)",
+   "thickness": "6.4mm"
+  },
+  "dhs-hurricane-hao": {
+   "speed": "11 / 12",
+   "control": "11 / 12",
+   "weight": "80g",
+   "plies": "5",
+   "thickness": "5.7mm"
+  },
+  "joola-r1": {
+   "speed": "99 / 100",
+   "control": "88 / 100",
+   "weight": "75g"
+  },
+  "tibhar-samsonov-carbon": {
+   "speed": "98",
+   "control": "56",
+   "weight": "89g",
+   "plies": "7",
+   "materials": "Ayous",
+   "thickness": "6.8mm"
+  },
+  "butterfly-grubba-pro": {
+   "speed": "5.2 / 10",
+   "control": "9.9 / 10",
+   "weight": "85g",
+   "plies": "5",
+   "materials": "Wood"
+  },
+  "andro-blax-off": {
+   "speed": "9.5 / 10",
+   "control": "9.2 / 10",
+   "weight": "78g",
+   "plies": "5",
+   "materials": "Balsa core; outer plies are Fineline; inner plies are Koto plywood"
+  },
+  "butterfly-freitas-alc": {
+   "weight": "90g",
+   "plies": "7",
+   "materials": "Wood + Arylat Carbon",
+   "thickness": "5.9mm"
+  },
+  "galaxy-896": {
+   "speed": "8.0 / 10",
+   "control": "7.0 / 10",
+   "weight": "85g",
+   "plies": "5",
+   "materials": "Ayous outer layers",
+   "thickness": "6.7mm"
+  },
+  "donic-cayman": {
+   "speed": "8.0",
+   "control": "8.0",
+   "weight": "70g",
+   "plies": "5"
+  },
+  "butterfly-timo-boll-spark": {
+   "speed": "7.6",
+   "control": "7.8",
+   "weight": "90g",
+   "plies": "7",
+   "materials": "Arylate",
+   "thickness": "5.4mm"
+  },
+  "lkt-ayous-hinoki": {
+   "speed": "9.0 / 10",
+   "control": "9.3 / 10",
+   "weight": "74g",
+   "plies": "5",
+   "materials": "Hinoki outer plies, Ayous core",
+   "thickness": "6.3mm"
+  },
+  "729-c-3": {
+   "weight": "82g",
+   "plies": "5"
+  },
+  "butterfly-jonyer-hinoki": {
+   "speed": "7.5 / 10",
+   "control": "7.7 / 10",
+   "weight": "75g",
+   "plies": "5",
+   "materials": "5 plies of Hinoki"
+  },
+  "729-dynasty-hinoki-carbon": {
+   "weight": "85g",
+   "plies": "7",
+   "materials": "5 plies of wood (Hinoki outer plies), 2 plies of Carbon",
+   "thickness": "6.3mm"
+  },
+  "donic-wang-xi-dotec-control-plus": {
+   "speed": "70 / 100",
+   "control": "95 / 100",
+   "weight": "80g",
+   "plies": "7",
+   "materials": "Kiri, Limba, Ayous"
+  },
+  "donic-persson-powerplay-senso-v1": {
+   "weight": "85g",
+   "plies": "7"
+  },
+  "butterfly-timo-boll-forte": {
+   "weight": "85g",
+   "plies": "5",
+   "thickness": "6.9mm"
+  },
+  "stiga-energy-wrb": {
+   "speed": "78 / 100",
+   "control": "66 / 100",
+   "weight": "77g",
+   "plies": "5",
+   "thickness": "0.0mm"
+  },
+  "donic-waldner-allplay": {
+   "speed": "68",
+   "control": "80",
+   "weight": "85g",
+   "plies": "5",
+   "materials": "Wood"
+  },
+  "stiga-allround-classic-wrb": {
+   "speed": "63",
+   "control": "80",
+   "weight": "85g",
+   "plies": "5",
+   "materials": "Limba outer plies"
+  },
+  "lkt-instinct-plus": {
+   "weight": "85g",
+   "plies": "7",
+   "thickness": "6.7mm"
+  },
+  "joola-wing-passion-fast": {
+   "weight": "85g",
+   "materials": "5 Fineline, Oregon, Kiri"
+  },
+  "stiga-optimum-carbo": {
+   "speed": "8.7 / 10",
+   "control": "6.8 / 10",
+   "weight": "82g",
+   "plies": "9",
+   "materials": "5 plies of wood; 4 plies of Carbon",
+   "thickness": "0.0mm"
+  },
+  "yinhe-galaxy-n-11": {
+   "speed": "6.0",
+   "control": "8.0",
+   "weight": "85g",
+   "plies": "5",
+   "thickness": "6.0mm"
+  },
+  "stiga-offensive-classic": {
+   "speed": "5.2 / 10",
+   "control": "6.8 / 10",
+   "weight": "90g",
+   "plies": "5"
+  },
+  "butterfly-schlager-precision": {
+   "weight": "80g",
+   "plies": "5",
+   "thickness": "6.5mm"
+  },
+  "yasaka-ma-lin-soft-carbon": {
+   "speed": "92 / 100",
+   "control": "83 / 100",
+   "weight": "89g",
+   "plies": "7",
+   "materials": "anigree - limba - soft carbon - ayous"
+  },
+  "butterfly-timo-boll-caf": {
+   "weight": "82g",
+   "plies": "5"
+  },
+  "stiga-allround-classic": {
+   "speed": "4.1 / 10",
+   "control": "8.2 / 10",
+   "weight": "85g",
+   "plies": "5",
+   "materials": "Wood",
+   "thickness": "5.2mm"
+  },
+  "hallmark-aurora": {
+   "speed": "50 / 100",
+   "control": "99 / 100",
+   "weight": "68g",
+   "plies": "5",
+   "materials": "Balsa",
+   "thickness": "7.0mm"
+  },
+  "yinhe-galaxy-j-1": {
+   "speed": "7.0",
+   "control": "9.0",
+   "weight": "95g",
+   "plies": "1",
+   "materials": "Ayous",
+   "thickness": "10.0mm"
+  },
+  "gambler-arylate-carbon": {
+   "speed": "80 / 100",
+   "control": "90 / 100",
+   "weight": "78g",
+   "plies": "7",
+   "materials": "5 plies of wood; 2 plies of Arylate-carbon"
+  },
+  "yasaka-x1": {
+   "speed": "95",
+   "control": "77",
+   "weight": "90g",
+   "plies": "11"
+  },
+  "stiga-allround-evolution": {
+   "speed": "5.1 / 10",
+   "control": "7.1 / 10",
+   "weight": "89g",
+   "plies": "5"
+  },
+  "nittaku-shake-defence": {
+   "weight": "85g",
+   "plies": "5"
+  },
+  "donic-appelgren-dotec-control": {
+   "speed": "78 / 100",
+   "control": "93 / 100",
+   "weight": "70g",
+   "plies": "5",
+   "materials": "Limba (plies 1, 5), Ayous (plies 2, 4), Balsa thick core, Cork handle",
+   "thickness": "7.4mm"
+  },
+  "joola-eagle-fast": {
+   "speed": "90 / 100",
+   "control": "85 / 100",
+   "weight": "72g",
+   "plies": "5",
+   "materials": "Veneer Fineline Red, Sapele, Balsa"
+  },
+  "loki-kirin-k3": {
+   "speed": "78 / 100",
+   "weight": "86g",
+   "plies": "7",
+   "materials": "Ayous - ayous - carbon? - kiri core",
+   "thickness": "6.6mm"
+  },
+  "donic-waldner-exclusive-ar-plus": {
+   "speed": "60 / 100",
+   "control": "80 / 100",
+   "weight": "85g",
+   "plies": "5"
+  },
+  "butterfly-kong-linghui-euro": {
+   "speed": "8.1",
+   "control": "7.5",
+   "weight": "89g",
+   "plies": "7",
+   "materials": "Yellow Aningre wood outer plies, Padauk wood in centre"
+  },
+  "butterfly-vsg-twist-iv": {
+   "speed": "9.0",
+   "control": "7.0",
+   "plies": "5",
+   "materials": "Hinoki outer plies"
+  },
+  "lkt-toxic-3": {
+   "weight": "77g",
+   "plies": "3",
+   "materials": "Wood",
+   "thickness": "5.3mm"
+  },
+  "butterfly-defence-alpha": {
+   "weight": "95g",
+   "plies": "3",
+   "thickness": "6.4mm"
+  },
+  "butterfly-firehand": {
+   "speed": "9.4 / 10",
+   "control": "7.0 / 10",
+   "weight": "89g",
+   "plies": "5",
+   "materials": "limba outer, ayous inner",
+   "thickness": "7.0mm"
+  },
+  "butterfly-wakaba-an": {
+   "speed": "8.5 / 10",
+   "control": "8.4 / 10",
+   "weight": "85g",
+   "plies": "3",
+   "materials": "Wood"
+  },
+  "donic-waldner-senso-v1": {
+   "speed": "8.0 / 10",
+   "control": "7.0 / 10",
+   "weight": "85g",
+   "plies": "5"
+  },
+  "stiga-optimum-plus": {
+   "speed": "7.0 / 10",
+   "control": "7.1 / 10",
+   "plies": "5",
+   "materials": "Wood"
+  },
+  "butterfly-gionis-carbon-off": {},
+  "yasaka-balsa": {
+   "speed": "89 / 100",
+   "control": "74 / 100",
+   "weight": "69g",
+   "plies": "5",
+   "materials": "Hard outer veneer, balsa inner core"
+  },
+  "butterfly-korbel-speed": {
+   "weight": "92g",
+   "plies": "5",
+   "thickness": "5.6mm"
+  },
+  "sanwei-m-8": {
+   "speed": "8.0 / 10",
+   "control": "8.0 / 10",
+   "weight": "80g",
+   "plies": "5",
+   "thickness": "5.8mm"
+  },
+  "butterfly-effort-70th-anniversary": {
+   "plies": "7",
+   "thickness": "5.9mm"
+  },
+  "stiga-optimum-seven": {
+   "speed": "8.6 / 10",
+   "control": "6.9 / 10",
+   "plies": "7"
+  },
+  "tibhar-patrick-chila": {
+   "plies": "5"
+  },
+  "butterfly-fan-zhendong-super-alc": {
+   "weight": "89g",
+   "plies": "7",
+   "materials": "Super ALC"
+  },
+  "victas-liam-pitchford": {
+   "weight": "90g",
+   "plies": "7"
+  },
+  "lkt-instinct": {
+   "speed": "7.0 / 10",
+   "control": "10 / 10",
+   "weight": "74g",
+   "plies": "5",
+   "thickness": "6.5mm"
+  },
+  "butterfly-zhang-jike": {
+   "speed": "9.0 / 10",
+   "control": "10 / 10",
+   "weight": "90g",
+   "plies": "7",
+   "materials": "2 plies of Arylate Carbon, 5 plies of wood",
+   "thickness": "7.1mm"
+  }
+ }
+}
