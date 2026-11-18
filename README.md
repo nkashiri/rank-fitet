@@ -144,6 +144,10 @@ The user ratings of the rubbers and blades on [revspin.net](https://revspin.net)
 Only the models with at least 10 ratings are included (revspin's own threshold for its top lists):
 about 600 rubbers and 560 blades.
 
+- **IT / EN** (header) switches the page between Italian and English. The choice is remembered, and kept in the
+  address (`#l=en`) so a shared link opens in the same language; with no choice, the browser's language decides.
+- **ⓘ** next to each parameter (table headers, Parametri panel, comparison table) explains it, with revspin's
+  scales where it has one (tackiness, sponge hardness in degrees, throw angle): on hover, or tap on a phone.
 - **Gomme / Telai** switches between rubbers and blades; the search box filters by name.
 - **Filters:** Marca (brand); for rubbers Tipo (tensor, non tensor, anti); for blades Strati (plies) and
   Materiali (fibre family, from the manufacturer's materials: Carbonio, Arylate, Zylon, Kevlar, other fibres, all-wood);

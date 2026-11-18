@@ -39,6 +39,8 @@
   header.top .logo { flex: none; width: 36px; height: 36px; }
   header.top > div { flex: 1; min-width: 0; }
   header.top .back { flex: none; font-size: 13px; text-decoration: none; }
+  header.top .lang { flex: none; }
+  header.top .lang button { padding: 3px 8px; font-size: 12px; }
   .sub { color: var(--muted); font-size: 12px; }
   .controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; align-items: center; }
   select, input, button, summary { font: inherit; color: var(--text); background: var(--panel);
@@ -105,6 +107,16 @@
   #cmp-table td:not(.num) { white-space: normal; min-width: 90px; font-size: 12px; }
   .cmp-tablewrap { overflow-x: auto; }
   .count { color: var(--muted); font-size: 12px; margin-left: auto; }
+  .info { display: inline-block; margin-left: 3px; color: var(--muted); font-size: 11px; font-weight: 400; cursor: help;
+          line-height: 1; vertical-align: 1px; border-radius: 50%; }
+  .info:hover, .info:focus-visible { color: var(--accent); outline: none; }
+  .tip { position: fixed; z-index: 50; max-width: min(320px, calc(100vw - 16px)); background: var(--panel); color: var(--text);
+         border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; font-size: 12px; line-height: 1.45;
+         box-shadow: 0 6px 24px rgba(0,0,0,.18); white-space: normal; text-align: left; font-weight: 400; }
+  .tip b { display: block; margin-bottom: 3px; font-size: 13px; }
+  .tip table { margin-top: 6px; width: auto; font-size: 12px; }
+  .tip td { padding: 2px 10px 2px 0; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .tip .note { margin-top: 6px; color: var(--muted); }
   footer { margin-top: 28px; padding-top: 14px; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; }
   footer p { margin: 4px 0; }
   @media (max-width: 900px) {
@@ -113,6 +125,7 @@
   }
   @media (max-width: 600px) {
     header.top .logo { width: 30px; height: 30px; }
+    header.top { flex-wrap: wrap; }
     #list .name { max-width: 170px; }
     .radar { height: 300px; }
   }
@@ -124,23 +137,24 @@
     <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#2563eb"/>
       <polygon points="16,6 25,12 22,23 10,23 7,12" fill="none" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/>
       <circle cx="16" cy="14" r="3" fill="#fbbf24"/></svg>
-    <div><h1>Gomme e telai</h1><div class="sub" id="sub"></div></div>
-    <a class="back" href="../">← Classifica FITET</a>
+    <div><h1 data-t="title"></h1><div class="sub" id="sub"></div></div>
+    <div class="seg lang" id="lang" role="group" aria-label="Lingua / Language"><button data-l="it" lang="it">IT</button><button data-l="en" lang="en">EN</button></div>
+    <a class="back" href="../" data-t="back"></a>
   </header>
 
   <div class="controls">
-    <div class="seg" id="kind"><button data-k="rubber">Gomme</button><button data-k="blade">Telai</button></div>
-    <input type="search" id="q" placeholder="Cerca modello...">
+    <div class="seg" id="kind"><button data-k="rubber" data-t="rubbers"></button><button data-k="blade" data-t="blades"></button></div>
+    <input type="search" id="q">
   </div>
   <div class="controls" id="filters"></div>
 
   <section class="card" id="cmp">
     <div class="cmp-head">
-      <h2>Confronto</h2>
+      <h2 data-t="compare"></h2>
       <div class="chips" id="chips"></div>
-      <button id="clear" hidden>Svuota</button>
+      <button id="clear" data-t="clear" hidden></button>
     </div>
-    <p class="hint" id="cmp-hint">Seleziona fino a 6 modelli dalla tabella per confrontarli nel grafico radar e nella tabella.</p>
+    <p class="hint" id="cmp-hint" data-t="cmpHint"></p>
     <div class="cmp-body" id="cmp-body" hidden>
       <div>
         <div class="radar"><canvas id="radar"></canvas></div>
@@ -154,75 +168,202 @@
   <div class="tablewrap"><table id="list"><thead></thead><tbody></tbody></table></div>
 
   <footer>
-    <p>Dati: valutazioni degli utenti di <a href="https://revspin.net" target="_blank" rel="noopener">revspin.net</a>
-      (solo i modelli con almeno 10 valutazioni), aggiornate una volta al mese. Parametri da 0 a 10; prezzi indicativi in dollari USA.
-      Peso, strati e materiali dei telai sono i dati dichiarati dal produttore.</p>
-    <p>Strumento gratuito e senza scopo di lucro, fatto da un appassionato: niente pubblicità, niente dati personali
-      raccolti. Ogni modello rimanda alla sua scheda su revspin.net, dove si trovano recensioni e valutazioni complete.</p>
+    <p data-t="foot1"></p>
+    <p data-t="foot2"></p>
     <p id="updinfo"></p>
-    <p>Sito non ufficiale, non affiliato a revspin.net né alla Federazione Italiana Tennistavolo.</p>
+    <p data-t="foot3"></p>
   </footer>
 </main>
 
 <script>
 const DATA = /*__DATA__*/null;
 
-// Rating parameters (0-10) of each kind: key, label, short table header, description.
+// --- Texts, in Italian and English ---
+
+const REVSPIN = '<a href="https://revspin.net" target="_blank" rel="noopener">revspin.net</a>';
+const TEXT = {
+  it: {
+    title: 'Gomme e telai', back: '← Classifica FITET', rubbers: 'Gomme', blades: 'Telai',
+    compare: 'Confronto', clear: 'Svuota', remove: 'Rimuovi',
+    cmpHint: 'Seleziona fino a 6 modelli dalla tabella per confrontarli nel grafico radar e nella tabella.',
+    search: { rubber: 'Cerca gomma...', blade: 'Cerca telaio...' }, searchOpt: 'Cerca...',
+    brand: 'Marca', type: 'Tipo', plies: 'Strati', mats: 'Materiali', params: 'Parametri', active: 'attivi',
+    reset: 'Azzera', resetAll: 'Azzera filtri', model: 'Modello', revspinPage: 'Scheda su revspin.net',
+    none: 'Nessun modello con questi filtri.', whatIs: 'Cos\'è',
+    count: (n, tot, kind) => `${n} di ${tot} ${kind === 'rubber' ? 'gomme' : 'telai'}`,
+    sub: (r, b) => `${r} gomme e ${b} telai con le valutazioni di revspin.net`,
+    updated: d => `Dati aggiornati al ${d}.`,
+    foot1: `Dati: valutazioni degli utenti di ${REVSPIN} (solo i modelli con almeno 10 valutazioni), aggiornate una volta al
+      mese. Parametri da 0 a 10; prezzi indicativi in dollari USA. Peso, strati e materiali dei telai sono i dati dichiarati dal produttore.`,
+    foot2: 'Strumento gratuito e senza scopo di lucro, fatto da un appassionato: niente pubblicità, niente dati personali raccolti. Ogni modello rimanda alla sua scheda su revspin.net, dove si trovano recensioni e valutazioni complete.',
+    foot3: 'Sito non ufficiale, non affiliato a revspin.net né alla Federazione Italiana Tennistavolo.',
+    values: { tensor: 'Tensor', nontensor: 'Non tensor', anti: 'Anti', na: 'n.d.',
+      zlc: 'Zylon (ZLC)', alc: 'Arylate (ALC)', kevlar: 'Kevlar / aramide', carbon: 'Carbonio', other: 'Altre fibre', wood: 'Solo legno' },
+    labels: {
+      speed: ['Velocità', 'Vel.'], spin: ['Rotazione', 'Rot.'], control: ['Controllo', 'Contr.'], tackiness: ['Adesività', 'Ades.'],
+      weight: ['Peso', 'Peso'], sponge_hardness: ['Durezza spugna', 'Spugna'], gears: ['Modulabilità', 'Mod.'],
+      throw_angle: ['Angolo di uscita', 'Angolo'], consistency: ['Costanza', 'Cost.'], durability: ['Durata', 'Durata'],
+      overall: ['Complessivo', 'Tot.'], stiffness: ['Rigidità', 'Rigid.'], hardness: ['Durezza', 'Durez.'],
+      ratings: ['Valutazioni', 'Valut.'], price: ['Prezzo', 'Prezzo'], weight_g: ['Peso (g)', 'Peso'], plies: ['Strati', 'Strati'],
+      materials: ['Materiali', 'Materiali'], mats: ['Fibre', 'Fibre'], type: ['Tipo', 'Tipo'],
+      m_speed: ['Velocità (produttore)'], m_spin: ['Rotazione (produttore)'],
+    },
+  },
+  en: {
+    title: 'Rubbers and blades', back: '← FITET rankings', rubbers: 'Rubbers', blades: 'Blades',
+    compare: 'Comparison', clear: 'Clear', remove: 'Remove',
+    cmpHint: 'Select up to 6 models from the table to compare them in the radar chart and the table.',
+    search: { rubber: 'Search rubbers...', blade: 'Search blades...' }, searchOpt: 'Search...',
+    brand: 'Brand', type: 'Type', plies: 'Plies', mats: 'Materials', params: 'Parameters', active: 'active',
+    reset: 'Reset', resetAll: 'Reset filters', model: 'Model', revspinPage: 'Page on revspin.net',
+    none: 'No model matches these filters.', whatIs: 'What is',
+    count: (n, tot, kind) => `${n} of ${tot} ${kind === 'rubber' ? 'rubbers' : 'blades'}`,
+    sub: (r, b) => `${r} rubbers and ${b} blades with the ratings of revspin.net`,
+    updated: d => `Data updated on ${d}.`,
+    foot1: `Data: user ratings from ${REVSPIN} (only the models with at least 10 ratings), updated once a month.
+      Parameters from 0 to 10; approximate prices in US dollars. Blade weight, plies and materials are the manufacturer's figures.`,
+    foot2: 'A free, non-commercial tool made by a table tennis fan: no ads, no personal data collected. Each model links to its page on revspin.net, with the full reviews and ratings.',
+    foot3: 'Unofficial site, not affiliated with revspin.net or the Italian Table Tennis Federation.',
+    values: { tensor: 'Tensor', nontensor: 'Non-tensor', anti: 'Anti', na: 'n/a',
+      zlc: 'Zylon (ZLC)', alc: 'Arylate (ALC)', kevlar: 'Kevlar / aramid', carbon: 'Carbon', other: 'Other fibres', wood: 'All-wood' },
+    labels: {
+      speed: ['Speed', 'Speed'], spin: ['Spin', 'Spin'], control: ['Control', 'Ctrl'], tackiness: ['Tackiness', 'Tacky'],
+      weight: ['Weight', 'Weight'], sponge_hardness: ['Sponge hardness', 'Sponge'], gears: ['Gears', 'Gears'],
+      throw_angle: ['Throw angle', 'Throw'], consistency: ['Consistency', 'Cons.'], durability: ['Durability', 'Durab.'],
+      overall: ['Overall', 'Overall'], stiffness: ['Stiffness', 'Stiff.'], hardness: ['Hardness', 'Hard.'],
+      ratings: ['Ratings', 'Ratings'], price: ['Price', 'Price'], weight_g: ['Weight (g)', 'Weight'], plies: ['Plies', 'Plies'],
+      materials: ['Materials', 'Materials'], mats: ['Fibres', 'Fibres'], type: ['Type', 'Type'],
+      m_speed: ['Speed (manufacturer)'], m_spin: ['Spin (manufacturer)'],
+    },
+  },
+};
+
+// Explanations shown by the ⓘ icons (HTML): per language, per kind, then common to both kinds.
+// From revspin's own definitions and scales.
+const scale = rows => `<table>${rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</table>`;
+const TIPS = {
+  it: {
+    rubber: {
+      speed: 'Potenza generata dalla gomma. Comprende la velocità in topspin (colpo con molta rotazione) e quella sui colpi piatti (schiacciata, colpo al volo). Più velocità vuol dire colpi più veloci ma, a velocità alte, meno controllo.',
+      spin: 'Quantità di rotazione impressa alla palla. Dipende dall\'adesività della superficie, dallo spessore e dalla durezza della spugna e dalla flessibilità del telaio.',
+      tackiness: 'Quanto è appiccicosa la superficie. Le gomme cinesi tradizionali sollevano la palla dal tavolo premendola sopra; le europee e giapponesi tradizionali no.' +
+        scale([['8+', 'Molto appiccicosa'], ['6 – 8', 'Appiccicosa'], ['4 – 6', 'Mediamente appiccicosa'], ['2 – 4', 'Leggermente appiccicosa'], ['sotto 2', 'Per nulla appiccicosa']]),
+      weight: 'Peso della gomma rispetto alle altre: alto = pesante.',
+      sponge_hardness: 'Durezza (densità) della spugna, misurata in gradi:' +
+        scale([['8+', 'Dura', '45+ gradi'], ['6 – 8', 'Medio-dura', '43 – 44 gradi'], ['4 – 6', 'Media', '41 – 42 gradi'], ['2 – 4', 'Medio-morbida', '38 – 40 gradi'], ['sotto 2', 'Morbida', 'sotto 37 gradi']]),
+      gears: 'Quante "marce" ha la gomma: la capacità di dare velocità molto diverse. Con tante marce si ottengono palle lente sui colpi leggeri e veloci sui colpi forti; con poche, la palla esce sempre piuttosto lenta, o sempre piuttosto veloce.',
+      throw_angle: 'Angolo con cui la palla parte nei colpi in topspin: un angolo alto la alza di più. Le gomme appiccicose hanno spesso un angolo alto.' +
+        scale([['9+', 'Molto alto'], ['7 – 9', 'Alto'], ['5,5 – 7', 'Medio-alto'], ['3,5 – 5,5', 'Medio'], ['1,5 – 3,5', 'Medio-basso'], ['sotto 1,5', 'Basso']]) +
+        '<div class="note">Vale solo per il topspin: in un colpo tagliato (chop) la stessa gomma dà un angolo basso, cioè l\'effetto si inverte.</div>',
+      durability: 'Quanto dura il prodotto: va sostituito spesso o dura anni?',
+      type: '<b>Tensor</b>: superficie pre-tensionata, con un effetto catapulta che aumenta velocità e rotazione.<br><b>Non tensor</b>: gomma normale, senza tensione aggiunta.<br><b>Anti</b>: superficie quasi senza attrito, spesso lenta, per il gioco difensivo.<br><b>n.d.</b>: dato non disponibile.',
+      m_speed: 'Velocità dichiarata dal produttore, riportata su una scala da 0 a 10. Ogni marca usa la propria scala: è confrontabile solo tra modelli della stessa marca.',
+      m_spin: 'Rotazione dichiarata dal produttore, riportata su una scala da 0 a 10. Ogni marca usa la propria scala: è confrontabile solo tra modelli della stessa marca.',
+    },
+    blade: {
+      speed: 'Potenza generata dal telaio. Comprende la velocità in topspin e quella sui colpi piatti (schiacciata, colpo al volo). Un telaio più veloce dà colpi più veloci ma, a velocità alte, meno controllo.',
+      stiffness: 'Flessibilità del telaio. I telai flessibili (valori bassi) trattengono la palla più a lungo e generano più rotazione; vanno bene anche per il topspin a media distanza. Quelli rigidi (valori alti) sono migliori per schiacciare.',
+      hardness: 'Durezza del telaio. I telai duri (valori alti) sono spesso più veloci, quelli morbidi in genere più lenti; i morbidi trattengono la palla più a lungo e generano più rotazione.',
+      weight_g: 'Peso dichiarato dal produttore, in grammi. Il peso reale può variare di qualche grammo da un esemplare all\'altro.',
+      plies: 'Numero di strati di legno e di materiale composito del telaio, dichiarato dal produttore.',
+      materials: 'Tipi di legno e di materiale composito del telaio, dichiarati dal produttore (spesso mancanti).',
+      mats: 'Famiglie di fibre ricavate dai materiali e dal nome del modello: Carbonio, Arylate (ALC), Zylon (ZLC), Kevlar, altre fibre (vetro, titanio, ...). "Solo legno": materiali indicati, senza fibre. "n.d.": materiali non indicati.',
+    },
+    common: {
+      control: 'Facilità nel controllare la palla. Un materiale troppo veloce o troppo rotante riduce il controllo, ma anche uno troppo lento o poco rotante può ridurlo.',
+      consistency: 'Quanto il prodotto è costante: due esemplari comprati in anni diversi si comportano allo stesso modo? Un controllo qualità scarso la abbassa.',
+      overall: 'Giudizio complessivo degli utenti di revspin sul prodotto.',
+      ratings: 'Numero di utenti di revspin che hanno valutato il modello: più valutazioni, dati più affidabili. Qui ci sono solo i modelli con almeno 10.',
+      price: 'Prezzo indicativo in dollari USA, segnalato dagli utenti di revspin.',
+    },
+  },
+  en: {
+    rubber: {
+      speed: 'The power generated by the rubber. It covers loop speed (heavy topspin stroke) and volley speed (flat contact, like a smash or volley). Faster equipment produces faster shots which, at high speeds, reduces control.',
+      spin: 'The amount of ball rotation generated by the rubber. It depends on the rubber\'s tackiness, sponge thickness and sponge hardness, and on the blade\'s flexibility.',
+      tackiness: 'How sticky the rubber surface is. Traditional Chinese rubbers are usually tacky enough to lift a ball off the table by pressing the rubber on top of it; traditional European and Japanese rubbers are not.' +
+        scale([['8+', 'Very tacky'], ['6 – 8', 'Tacky'], ['4 – 6', 'Medium tacky'], ['2 – 4', 'Slightly tacky'], ['under 2', 'Completely non-tacky']]),
+      weight: 'The weight of the rubber compared with the others: high = heavy.',
+      sponge_hardness: 'The hardness (density) of the sponge, measured in degrees:' +
+        scale([['8+', 'Hard', '45+ degrees'], ['6 – 8', 'Medium hard', '43 – 44 degrees'], ['4 – 6', 'Medium', '41 – 42 degrees'], ['2 – 4', 'Medium soft', '38 – 40 degrees'], ['under 2', 'Soft', 'under 37 degrees']]),
+      gears: 'The rubber\'s ability to produce a wide range of speeds. With many gears it gives slow balls on gentle strokes and fast balls on hard strokes; with few gears, the ball is always fairly slow, or always fairly fast.',
+      throw_angle: 'The angle at which the ball leaves the racket on topspin strokes like the loop: a high throw angle lifts the ball higher. Tacky rubbers often have a higher throw angle.' +
+        scale([['9+', 'Very high'], ['7 – 9', 'High'], ['5.5 – 7', 'Medium-high'], ['3.5 – 5.5', 'Medium'], ['1.5 – 3.5', 'Medium-low'], ['under 1.5', 'Low']]) +
+        '<div class="note">Topspin strokes only: on an underspin chop, the same high-throw rubber produces a very low angle (it is reversed).</div>',
+      durability: 'How long the product lasts: do you have to replace it often, or does it last for years?',
+      type: '<b>Tensor</b>: pre-tensioned topsheet, with a built-in catapult effect that increases speed and spin.<br><b>Non-tensor</b>: normal rubber, with no extra tension.<br><b>Anti</b>: nearly frictionless surface, often slow, for a defensive style of play.<br><b>n/a</b>: not available.',
+      m_speed: 'Speed stated by the manufacturer, rescaled to 0–10. Each brand uses its own scale, so it is only comparable between models of the same brand.',
+      m_spin: 'Spin stated by the manufacturer, rescaled to 0–10. Each brand uses its own scale, so it is only comparable between models of the same brand.',
+    },
+    blade: {
+      speed: 'The power generated by the blade. It covers loop speed and volley speed (flat contact, like a smash or volley). A faster blade produces faster shots which, at high speeds, reduces control.',
+      stiffness: 'The blade\'s flexibility. Flexible blades (low values) have a longer dwell time, generating more spin, and also perform well for mid-distance looping. Stiff blades (high values) are better for smashing.',
+      hardness: 'The blade\'s hardness. Hard blades (high values) are often faster, soft ones generally slower; soft blades have a longer dwell time, generating more spin.',
+      weight_g: 'Weight stated by the manufacturer, in grams. The actual weight can vary by a few grams from one blade to another.',
+      plies: 'The number of layers of wood and composite material in the blade, as stated by the manufacturer.',
+      materials: 'The types of wood and composite material in the blade, as stated by the manufacturer (often missing).',
+      mats: 'Fibre families, from the materials and the model name: Carbon, Arylate (ALC), Zylon (ZLC), Kevlar, other fibres (glass, titanium, ...). "All-wood": materials given, with no fibre. "n/a": no materials given.',
+    },
+    common: {
+      control: 'How easy it is to control the ball with this equipment. Equipment that is too fast or too spinny reduces control, but equipment that is too slow or not spinny may also decrease it.',
+      consistency: 'How consistent the product is: if you buy the same product in two different years, do they perform the same? Lower quality control lowers it.',
+      overall: 'The overall rating revspin users give the product.',
+      ratings: 'The number of revspin users who rated the model: more ratings, more reliable data. Only models with at least 10 are listed here.',
+      price: 'Approximate price in US dollars, reported by revspin users.',
+    },
+  },
+};
+
+// --- Language: saved choice, else the address ("#l=en"), else the browser's language ---
+
+const store = { get: k => { try { return localStorage.getItem(k); } catch { return null; } },
+                set: (k, v) => { try { localStorage.setItem(k, v); } catch {} } };
+const hash = new URLSearchParams(location.hash.slice(1));
+let lang = ['it', 'en'].find(l => l === hash.get('l')) || ['it', 'en'].find(l => l === store.get('lang')) ||
+  (/^it\b/i.test(navigator.language || 'it') ? 'it' : 'en');
+const t = k => TEXT[lang][k];
+const label = k => TEXT[lang].labels[k][0];
+const short = k => TEXT[lang].labels[k][1] || TEXT[lang].labels[k][0];
+const val = v => TEXT[lang].values[v] ?? v;
+
+// --- Data ---
+
+// Rating parameters (0-10) of each kind, in table order.
 const PARAMS = {
-  rubber: [
-    ['speed', 'Velocità', 'Vel.', 'Potenza generata dalla gomma.'],
-    ['spin', 'Rotazione', 'Rot.', 'Quantità di rotazione impressa alla palla.'],
-    ['control', 'Controllo', 'Contr.', 'Facilità nel controllare la palla.'],
-    ['tackiness', 'Adesività', 'Ades.', 'Quanto è appiccicosa la superficie: alta per le gomme cinesi tradizionali.'],
-    ['weight', 'Peso', 'Peso', 'Peso della gomma (alto = pesante).'],
-    ['sponge_hardness', 'Durezza spugna', 'Spugna', 'Durezza della spugna (alto = dura).'],
-    ['gears', 'Modulabilità', 'Mod.', 'Quanto si possono variare velocità e rotazione con la forza del colpo.'],
-    ['throw_angle', 'Angolo di uscita', 'Angolo', 'Traiettoria della palla in uscita (alto = più arcuata).'],
-    ['consistency', 'Costanza', 'Cost.', 'Quanto due esemplari dello stesso modello sono identici.'],
-    ['durability', 'Durata', 'Durata', 'Quanto a lungo mantiene le prestazioni.'],
-    ['overall', 'Complessivo', 'Tot.', 'Valutazione complessiva.'],
-  ],
-  blade: [
-    ['speed', 'Velocità', 'Vel.', 'Potenza generata dal telaio.'],
-    ['control', 'Controllo', 'Contr.', 'Facilità nel controllare la palla.'],
-    ['stiffness', 'Rigidità', 'Rigid.', 'Flessibilità del telaio (alto = rigido, basso = flessibile).'],
-    ['hardness', 'Durezza', 'Durez.', 'Durezza del legno (alto = duro).'],
-    ['consistency', 'Costanza', 'Cost.', 'Quanto due esemplari dello stesso modello sono identici.'],
-    ['overall', 'Complessivo', 'Tot.', 'Valutazione complessiva.'],
-  ],
+  rubber: ['speed', 'spin', 'control', 'tackiness', 'weight', 'sponge_hardness', 'gears', 'throw_angle', 'consistency', 'durability', 'overall'],
+  blade: ['speed', 'control', 'stiffness', 'hardness', 'consistency', 'overall'],
 };
 // Parameters where more is better (highlighted in the comparison); the others are a matter of style.
 const BETTER = new Set(['speed', 'spin', 'control', 'gears', 'consistency', 'durability', 'overall']);
-const KIND_LABEL = { rubber: ['gomma', 'gomme'], blade: ['telaio', 'telai'] };
 const COLORS = ['#2563eb', '#dc2626', '#16a34a', '#d97706', '#9333ea', '#0891b2'];
 const MAX_SEL = 6;
 
 // Blade materials (free text from the manufacturer, often missing), grouped into fibre families for the filter.
-// The model name is checked too ("... ALC", "... ZLC", "... Carbon"). "Solo legno": materials given, no fibre.
+// The model name is checked too ("... ALC", "... ZLC", "... Carbon"). "wood": materials given, no fibre.
 const MATS = [
-  ['Zylon (ZLC)', /zylon|zlc|zlf|\bzl\b/i],
-  ['Arylate (ALC)', /aryl|\balc\b|vectran/i],
-  ['Kevlar / aramide', /kevlar|aramid|carbokev|aratox/i],
-  ['Carbonio', /carbon|karbon|\bcarbo|tamca|texalium|textreme|dyneema|\bcf\b/i],
-  ['Altre fibre', /glass|basalt|titan|ceramic|synthetic|cellulose|nature powered/i],
+  ['zlc', /zylon|zlc|zlf|\bzl\b/i],
+  ['alc', /aryl|\balc\b|vectran/i],
+  ['kevlar', /kevlar|aramid|carbokev|aratox/i],
+  ['carbon', /carbon|karbon|\bcarbo|tamca|texalium|textreme|dyneema|\bcf\b/i],
+  ['other', /glass|basalt|titan|ceramic|synthetic|cellulose|nature powered/i],
 ];
 const FIBRE = new RegExp([...MATS.map(([, re]) => re.source), 'fib(er|re)'].join('|'), 'i');
 for (const b of DATA.blade) {
   const text = `${b.materials} ${b.model}`;
-  b.mats = MATS.filter(([, re]) => re.test(text)).map(([l]) => l);
-  if (!b.mats.length) b.mats.push(!b.materials ? 'n.d.' : FIBRE.test(b.materials) ? 'Altre fibre' : 'Solo legno');
+  b.mats = MATS.filter(([, re]) => re.test(text)).map(([c]) => c);
+  if (!b.mats.length) b.mats.push(!b.materials ? 'na' : FIBRE.test(b.materials) ? 'other' : 'wood');
 }
-for (const r of DATA.rubber) r.type = r.anti ? 'Anti' : r.tensor ? 'Tensor' : r.tensor === false ? 'Non tensor' : 'n.d.';
+for (const r of DATA.rubber) r.type = r.anti ? 'anti' : r.tensor ? 'tensor' : r.tensor === false ? 'nontensor' : 'na';
 
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
-const fmt = (v, d = 1) => v == null ? '–' : v.toFixed(d).replace('.', ',');
+const fmt = (v, d = 1) => v == null ? '–' : lang === 'it' ? v.toFixed(d).replace('.', ',') : v.toFixed(d);
 const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 
-// Filter and selection state, per kind. The kind and the compared models are kept in the address, to share them.
+// Filter and selection state, per kind. The kind, the compared models and the language are kept in the address.
 const blankFilters = () => ({ brand: new Set(), type: new Set(), plies: new Set(), mats: new Set(), min: {}, max: {} });
 const st = {
-  kind: 'rubber', q: '',
+  kind: hash.get('k') === 'blade' ? 'blade' : 'rubber', q: '',
   f: { rubber: blankFilters(), blade: blankFilters() },
   sort: { rubber: ['overall', -1], blade: ['overall', -1] },
   sel: { rubber: [], blade: [] },
@@ -231,48 +372,46 @@ const st = {
 const items = () => DATA[st.kind];
 const bySlug = {};
 for (const k of ['rubber', 'blade']) { bySlug[k] = {}; for (const r of DATA[k]) bySlug[k][r.slug] = r; }
-
-(function readHash() {
-  const h = new URLSearchParams(location.hash.slice(1));
-  if (h.get('k') === 'blade') st.kind = 'blade';
-  for (const k of ['rubber', 'blade']) {
-    const s = h.get(k === 'rubber' ? 'gomme' : 'telai');
-    if (s) st.sel[k] = s.split(',').filter(x => bySlug[k][x]).slice(0, MAX_SEL);
-  }
-})();
+for (const k of ['rubber', 'blade']) {
+  const s = hash.get(k === 'rubber' ? 'gomme' : 'telai');
+  if (s) st.sel[k] = s.split(',').filter(x => bySlug[k][x]).slice(0, MAX_SEL);
+}
 function writeHash() {
   const h = new URLSearchParams();
   if (st.kind === 'blade') h.set('k', 'blade');
   if (st.sel.rubber.length) h.set('gomme', st.sel.rubber.join(','));
   if (st.sel.blade.length) h.set('telai', st.sel.blade.join(','));
+  if (lang === 'en') h.set('l', 'en');
   history.replaceState(null, '', h.toString() ? '#' + h.toString().replace(/%2C/g, ',') : location.pathname);
 }
 
-// Numeric range filters: the 0-10 parameters plus ratings, price and (blades) weight.
-function rangeDefs() {
-  const extra = [['ratings', 'Valutazioni', 0], ['price', 'Prezzo $', 0]];
-  if (st.kind === 'blade') extra.push(['weight_g', 'Peso (g)', 0]);
-  return [...PARAMS[st.kind].map(([k, l]) => [k, l, 1]), ...extra];
-}
+const tipOf = k => TIPS[lang][st.kind][k] || TIPS[lang].common[k] || '';
+// The ⓘ icon after a label: hover (or tap) shows the explanation of `k`.
+const info = k => tipOf(k) ? `<span class="info" data-tip="${k}" tabindex="0" role="button" aria-label="${esc(`${t('whatIs')}: ${label(k)}`)}">ⓘ</span>` : '';
 
-// Multi-select dropdown: options [{v, n}], the chosen values in `set`.
-function multi(title, opts, set, searchable) {
+// --- Filters ---
+
+// Numeric range filters: the 0-10 parameters plus ratings, price and (blades) weight. [key, decimals]
+const rangeDefs = () => [...PARAMS[st.kind].map(k => [k, 1]), ['ratings', 0], ['price', 0], ...(st.kind === 'blade' ? [['weight_g', 0]] : [])];
+
+// Multi-select dropdown: options [{v: code, n}], the chosen codes in `set`; `show` gives the visible name.
+function multi(title, opts, set, { searchable, show = v => v } = {}) {
   const d = document.createElement('details');
   d.className = 'ms';
-  const label = () => {
+  const summary = () => {
     d.classList.toggle('active', set.size > 0);
-    d.querySelector('summary').textContent = set.size ? `${title}: ${[...set].join(', ')}` : title;
+    d.querySelector('summary').textContent = set.size ? `${title}: ${[...set].map(show).join(', ')}` : title;
   };
-  d.innerHTML = `<summary></summary><div class="panel">${searchable ? '<input type="search" placeholder="Cerca...">' : ''}<div class="opts"></div><button class="reset">Azzera</button></div>`;
+  d.innerHTML = `<summary></summary><div class="panel">${searchable ? `<input type="search" placeholder="${t('searchOpt')}">` : ''}<div class="opts"></div><button class="reset">${t('reset')}</button></div>`;
   const box = d.querySelector('.opts');
   const draw = (q = '') => {
-    box.innerHTML = opts.filter(o => o.v.toLowerCase().includes(q.toLowerCase())).map(o =>
-      `<label><input type="checkbox" value="${esc(o.v)}"${set.has(o.v) ? ' checked' : ''}><span>${esc(o.v)}</span><small>${o.n}</small></label>`).join('');
+    box.innerHTML = opts.filter(o => show(o.v).toLowerCase().includes(q.toLowerCase())).map(o =>
+      `<label><input type="checkbox" value="${esc(o.v)}"${set.has(o.v) ? ' checked' : ''}><span>${esc(show(o.v))}</span><small>${o.n}</small></label>`).join('');
   };
-  box.addEventListener('change', e => { e.target.checked ? set.add(e.target.value) : set.delete(e.target.value); label(); render(); });
-  d.querySelector('.reset').onclick = () => { set.clear(); draw(); label(); render(); };
+  box.addEventListener('change', e => { e.target.checked ? set.add(e.target.value) : set.delete(e.target.value); summary(); render(); });
+  d.querySelector('.reset').onclick = () => { set.clear(); draw(); summary(); render(); };
   if (searchable) d.querySelector('input[type=search]').oninput = e => draw(e.target.value);
-  draw(); label();
+  draw(); summary();
   return d;
 }
 
@@ -285,13 +424,13 @@ const counts = vals => {
 function buildFilters() {
   const f = st.f[st.kind], list = items(), box = $('#filters');
   box.innerHTML = '';
-  box.append(multi('Marca', counts(list.map(r => r.brand)).sort((a, b) => b.n - a.n || a.v.localeCompare(b.v)), f.brand, true));
+  box.append(multi(t('brand'), counts(list.map(r => r.brand)).sort((a, b) => b.n - a.n || a.v.localeCompare(b.v)), f.brand, { searchable: true }));
   if (st.kind === 'rubber') {
-    box.append(multi('Tipo', counts(list.map(r => r.type)).sort((a, b) => b.n - a.n), f.type));
+    box.append(multi(t('type'), counts(list.map(r => r.type)).sort((a, b) => b.n - a.n), f.type, { show: val }));
   } else {
-    const plies = counts(list.map(r => r.plies ?? 'n.d.')).sort((a, b) => (+a.v || 99) - (+b.v || 99));
-    box.append(multi('Strati', plies, f.plies));
-    box.append(multi('Materiali', counts(list.flatMap(r => r.mats)).sort((a, b) => b.n - a.n), f.mats));
+    const plies = counts(list.map(r => r.plies ?? 'na')).sort((a, b) => (+a.v || 99) - (+b.v || 99));
+    box.append(multi(t('plies'), plies, f.plies, { show: val }));
+    box.append(multi(t('mats'), counts(list.flatMap(r => r.mats)).sort((a, b) => b.n - a.n), f.mats, { show: val }));
   }
 
   // Min/max panel for the numeric parameters.
@@ -299,28 +438,28 @@ function buildFilters() {
   d.className = 'ms';
   const defs = rangeDefs();
   const active = () => defs.some(([k]) => f.min[k] != null || f.max[k] != null);
-  const label = () => { d.classList.toggle('active', active()); d.querySelector('summary').textContent = 'Parametri' + (active() ? ' (attivi)' : ''); };
+  const summary = () => { d.classList.toggle('active', active()); d.querySelector('summary').textContent = t('params') + (active() ? ` (${t('active')})` : ''); };
   d.innerHTML = `<summary></summary><div class="panel" style="width:330px"><div class="ranges"><span></span><span class="h">min</span><span class="h">max</span>${
-    defs.map(([k, l, dec]) => {
+    defs.map(([k, dec]) => {
       const vals = list.map(r => r[k]).filter(v => v != null);
       const lo = Math.min(...vals), hi = Math.max(...vals);
       const step = dec ? '0.1' : '1';
-      return `<span>${l}</span><input type="number" step="${step}" data-k="${k}" data-b="min" placeholder="${fmt(lo, dec).replace(',', '.')}" value="${f.min[k] ?? ''}">` +
-        `<input type="number" step="${step}" data-k="${k}" data-b="max" placeholder="${fmt(hi, dec).replace(',', '.')}" value="${f.max[k] ?? ''}">`;
-    }).join('')}</div><button class="reset">Azzera</button></div>`;
+      return `<span>${label(k)}${k === 'price' ? ' $' : ''}${info(k)}</span><input type="number" step="${step}" data-k="${k}" data-b="min" placeholder="${lo.toFixed(dec)}" value="${f.min[k] ?? ''}">` +
+        `<input type="number" step="${step}" data-k="${k}" data-b="max" placeholder="${hi.toFixed(dec)}" value="${f.max[k] ?? ''}">`;
+    }).join('')}</div><button class="reset">${t('reset')}</button></div>`;
   d.querySelector('.ranges').addEventListener('input', e => {
     const { k, b } = e.target.dataset, v = e.target.value === '' ? null : +e.target.value;
     if (v == null) delete f[b][k]; else f[b][k] = v;
     e.target.classList.toggle('on', v != null);
-    label(); render();
+    summary(); render();
   });
   d.querySelectorAll('.ranges input').forEach(i => i.classList.toggle('on', i.value !== ''));
-  d.querySelector('.reset').onclick = () => { f.min = {}; f.max = {}; d.querySelectorAll('.ranges input').forEach(i => { i.value = ''; i.classList.remove('on'); }); label(); render(); };
-  label();
+  d.querySelector('.reset').onclick = () => { f.min = {}; f.max = {}; d.querySelectorAll('.ranges input').forEach(i => { i.value = ''; i.classList.remove('on'); }); summary(); render(); };
+  summary();
   box.append(d);
 
   const reset = document.createElement('button');
-  reset.textContent = 'Azzera filtri';
+  reset.textContent = t('resetAll');
   reset.onclick = () => { st.f[st.kind] = blankFilters(); st.q = ''; $('#q').value = ''; buildFilters(); render(); };
   box.append(reset);
 }
@@ -345,29 +484,28 @@ function filtered() {
     (!q || r.name.toLowerCase().includes(q)) &&
     (!f.brand.size || f.brand.has(r.brand)) &&
     (!f.type.size || f.type.has(r.type)) &&
-    (!f.plies.size || f.plies.has(String(r.plies ?? 'n.d.'))) &&
+    (!f.plies.size || f.plies.has(String(r.plies ?? 'na'))) &&
     (!f.mats.size || r.mats.some(m => f.mats.has(m))) &&
     Object.entries(f.min).every(([k, v]) => r[k] != null && r[k] >= v) &&
     Object.entries(f.max).every(([k, v]) => r[k] != null && r[k] <= v));
 }
 
-// Table columns: name, the 0-10 parameters, then ratings, price and the manufacturer details.
+// --- Table ---
+
+// Columns: name, the 0-10 parameters, then ratings, price and the manufacturer details.
 function columns() {
-  const cols = PARAMS[st.kind].map(([k, l, s, desc]) => ({ k, h: s, title: `${l}: ${desc}`, num: 1, dec: 1, heat: 1 }));
-  cols.push({ k: 'ratings', h: 'Valut.', title: 'Numero di valutazioni', num: 1, dec: 0 },
-            { k: 'price', h: 'Prezzo', title: 'Prezzo indicativo in dollari USA', num: 1, dec: 0, pre: '$' });
-  if (st.kind === 'blade') cols.push(
-    { k: 'weight_g', h: 'Peso', title: 'Peso dichiarato (grammi)', num: 1, dec: 0, post: ' g' },
-    { k: 'plies', h: 'Strati', title: 'Numero di strati', num: 1, dec: 0 },
-    { k: 'materials', h: 'Materiali', title: 'Materiali dichiarati', mat: 1 });
-  else cols.push({ k: 'type', h: 'Tipo', title: 'Tensor, non tensor o anti' });
+  const cols = PARAMS[st.kind].map(k => ({ k, num: 1, dec: 1, heat: 1 }));
+  cols.push({ k: 'ratings', num: 1, dec: 0 }, { k: 'price', num: 1, dec: 0, pre: '$' });
+  if (st.kind === 'blade') cols.push({ k: 'weight_g', num: 1, dec: 0, post: ' g' }, { k: 'plies', num: 1, dec: 0 }, { k: 'materials', mat: 1 });
+  else cols.push({ k: 'type', code: 1 });
   return cols;
 }
 
 function renderTable(rows) {
   const cols = columns(), [sk, sd] = st.sort[st.kind], sel = st.sel[st.kind];
-  $('#list thead').innerHTML = `<tr><th class="name${sk === 'name' ? ' sorted' : ''}" data-k="name">Modello${sk === 'name' ? (sd > 0 ? ' ↑' : ' ↓') : ''}</th>${
-    cols.map(c => `<th class="${c.num ? 'num' : ''}${sk === c.k ? ' sorted' : ''}" data-k="${c.k}" title="${esc(c.title)}">${c.h}${sk === c.k ? (sd > 0 ? ' ↑' : ' ↓') : ''}</th>`).join('')}</tr>`;
+  const arrow = k => sk === k ? (sd > 0 ? ' ↑' : ' ↓') : '';
+  $('#list thead').innerHTML = `<tr><th class="name${sk === 'name' ? ' sorted' : ''}" data-k="name">${t('model')}${arrow('name')}</th>${
+    cols.map(c => `<th class="${c.num ? 'num' : ''}${sk === c.k ? ' sorted' : ''}" data-k="${c.k}">${short(c.k)}${arrow(c.k)}${info(c.k)}</th>`).join('')}</tr>`;
   // Shading of the 0-10 columns, relative to each column's range among all the models of this kind.
   const accent = css('--accent'), range = {};
   for (const c of cols.filter(c => c.heat)) {
@@ -380,12 +518,12 @@ function renderTable(rows) {
     const cells = cols.map(c => {
       const v = r[c.k];
       if (c.mat) return `<td class="mat" title="${esc(v)}">${esc(v) || '<span class="muted">–</span>'}</td>`;
-      if (!c.num) return `<td class="${v === 'n.d.' ? 'muted' : ''}">${esc(v)}</td>`;
+      if (c.code) return `<td class="${v === 'na' ? 'muted' : ''}">${esc(val(v))}</td>`;
       const bg = c.heat && v != null ? ` style="background:color-mix(in srgb, ${accent} ${shade(c.k, v)}%, transparent)"` : '';
       return `<td class="num"${bg}>${v == null ? '<span class="muted">–</span>' : (c.pre || '') + fmt(v, c.dec) + (c.post || '')}</td>`;
     }).join('');
-    return `<tr data-s="${r.slug}"${i >= 0 ? ` class="sel" style="--c:${COLORS[i]}"` : ''}><td class="name" title="${esc(r.name)}"><input type="checkbox"${i >= 0 ? ' checked' : ''}${i < 0 && sel.length >= MAX_SEL ? ' disabled' : ''}><span class="brand">${esc(r.brand)}</span> ${esc(r.model)}<a class="ext" href="https://revspin.net/${st.kind}/${r.slug}.html" target="_blank" rel="noopener" title="Scheda su revspin.net">↗</a></td>${cells}</tr>`;
-  }).join('') || `<tr><td colspan="${cols.length + 1}" class="muted">Nessun modello con questi filtri.</td></tr>`;
+    return `<tr data-s="${r.slug}"${i >= 0 ? ` class="sel" style="--c:${COLORS[i]}"` : ''}><td class="name" title="${esc(r.name)}"><input type="checkbox"${i >= 0 ? ' checked' : ''}${i < 0 && sel.length >= MAX_SEL ? ' disabled' : ''}><span class="brand">${esc(r.brand)}</span> ${esc(r.model)}<a class="ext" href="https://revspin.net/${st.kind}/${r.slug}.html" target="_blank" rel="noopener" title="${t('revspinPage')}">↗</a></td>${cells}</tr>`;
+  }).join('') || `<tr><td colspan="${cols.length + 1}" class="muted">${t('none')}</td></tr>`;
 }
 
 $('#list thead').addEventListener('click', e => {
@@ -408,31 +546,32 @@ function toggle(slug) {
   writeHash(); render();
 }
 
-// Comparison: chips, radar chart and a side-by-side table of the selected models.
+// --- Comparison: chips, radar chart and a side-by-side table of the selected models ---
+
 let chart;
 function renderCompare() {
   const sel = st.sel[st.kind].map(s => bySlug[st.kind][s]);
   $('#chips').innerHTML = sel.map((r, i) =>
-    `<span class="chip"><span class="swatch" style="background:${COLORS[i]}"></span><span class="nm">${esc(r.name)}</span><button data-s="${r.slug}" title="Rimuovi">×</button></span>`).join('');
+    `<span class="chip"><span class="swatch" style="background:${COLORS[i]}"></span><span class="nm">${esc(r.name)}</span><button data-s="${r.slug}" title="${t('remove')}">×</button></span>`).join('');
   $('#clear').hidden = !sel.length;
   $('#cmp-hint').hidden = sel.length > 0;
   $('#cmp-body').hidden = !sel.length;
   if (!sel.length) { if (chart) { chart.destroy(); chart = null; } return; }
 
   const params = PARAMS[st.kind];
-  if (!st.axes[st.kind]) st.axes[st.kind] = new Set(params.map(p => p[0]).filter(k => k !== 'overall'));
+  if (!st.axes[st.kind]) st.axes[st.kind] = new Set(params.filter(k => k !== 'overall'));
   const axes = st.axes[st.kind];
-  $('#axes').innerHTML = params.map(([k, l]) => `<button data-k="${k}" class="${axes.has(k) ? 'on' : ''}">${l}</button>`).join('');
-  const shown = params.filter(p => axes.has(p[0]));
+  $('#axes').innerHTML = params.map(k => `<button data-k="${k}" class="${axes.has(k) ? 'on' : ''}">${label(k)}</button>`).join('');
+  const shown = params.filter(k => axes.has(k));
 
   const text = css('--text'), muted = css('--muted'), grid = css('--grid');
   const datasets = sel.map((r, i) => ({
-    label: r.name, data: shown.map(([k]) => r[k]),
+    label: r.name, data: shown.map(k => r[k]),
     borderColor: COLORS[i], backgroundColor: COLORS[i] + '22', pointBackgroundColor: COLORS[i], borderWidth: 2, pointRadius: 3,
   }));
   const cfg = {
     type: 'radar',
-    data: { labels: shown.map(p => p[1]), datasets },
+    data: { labels: shown.map(label), datasets },
     options: {
       maintainAspectRatio: false, animation: { duration: 250 },
       scales: { r: { min: 0, max: 10, ticks: { stepSize: 2, color: muted, backdropColor: 'transparent', font: { size: 10 } },
@@ -447,9 +586,8 @@ function renderCompare() {
   chart = new Chart($('#radar'), cfg);
 
   // Comparison table: one column per model, the best value of each "more is better" row highlighted.
-  const rows = [...params.map(([k, l]) => [k, l, 1]), ['ratings', 'Valutazioni', 0], ['price', 'Prezzo', 0]];
-  if (st.kind === 'blade') rows.push(['weight_g', 'Peso (g)', 0], ['plies', 'Strati', 0], ['materials', 'Materiali'], ['mats', 'Fibre']);
-  else rows.push(['type', 'Tipo'], ['m_speed', 'Velocità (produttore)', 1], ['m_spin', 'Rotazione (produttore)', 1]);
+  const rows = [...params.map(k => [k, 1]), ['ratings', 0], ['price', 0],
+    ...(st.kind === 'blade' ? [['weight_g', 0], ['plies', 0], ['materials'], ['mats']] : [['type'], ['m_speed', 1], ['m_spin', 1]])];
   const best = (k, vals) => {
     const nums = vals.filter(v => typeof v === 'number');
     if (nums.length < 2) return null;
@@ -459,11 +597,11 @@ function renderCompare() {
   };
   $('#cmp-table').innerHTML = `<thead><tr><th></th>${sel.map((r, i) =>
     `<th><span class="swatch" style="background:${COLORS[i]}"></span> ${esc(r.name)}</th>`).join('')}</tr></thead><tbody>${
-    rows.map(([k, l, dec]) => {
+    rows.map(([k, dec]) => {
       const vals = sel.map(r => r[k]), b = best(k, vals);
-      return `<tr><th>${l}</th>${vals.map(v => {
-        if (Array.isArray(v)) v = v.join(', ');
-        const shown = typeof v === 'number' ? (k === 'price' ? '$' : '') + fmt(v, dec) : (v || '–');
+      return `<tr><th>${label(k)}${info(k)}</th>${vals.map(v => {
+        const shown = typeof v === 'number' ? (k === 'price' ? '$' : '') + fmt(v, dec)
+          : Array.isArray(v) ? v.map(val).join(', ') : k === 'type' ? val(v) : (v || '–');
         return `<td class="${typeof v === 'number' ? 'num' : ''}${b != null && v === b ? ' best' : ''}">${esc(shown)}</td>`;
       }).join('')}</tr>`;
     }).join('')}</tbody>`;
@@ -479,16 +617,53 @@ $('#axes').addEventListener('click', e => {
   renderCompare();
 });
 
+// --- Explanation tooltip of the ⓘ icons: on hover with a mouse, on tap on a touch screen ---
+
+const tip = document.createElement('div');
+tip.className = 'tip';
+tip.hidden = true;
+tip.setAttribute('role', 'tooltip');
+document.body.append(tip);
+let tipEl = null;
+function showTip(el) {
+  tipEl = el;
+  tip.innerHTML = `<b>${esc(label(el.dataset.tip))}</b><div>${tipOf(el.dataset.tip)}</div>`;
+  tip.hidden = false;
+  const r = el.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
+  tip.style.left = `${Math.max(8, Math.min(r.left + r.width / 2 - w / 2, innerWidth - w - 8))}px`;
+  tip.style.top = `${r.bottom + 6 + h > innerHeight && r.top - 6 - h > 0 ? r.top - 6 - h : r.bottom + 6}px`;
+}
+const hideTip = () => { tip.hidden = true; tipEl = null; };
+const hover = () => matchMedia('(hover: hover)').matches;
+document.addEventListener('mouseover', e => {
+  const el = e.target.closest?.('.info');
+  if (el && hover()) showTip(el);
+  else if (tipEl && hover() && !e.target.closest?.('.tip')) hideTip();
+});
+// Clicking an icon toggles its explanation, without sorting the column or selecting the row.
+document.addEventListener('click', e => {
+  const el = e.target.closest('.info');
+  if (el) { e.stopPropagation(); e.preventDefault(); tipEl === el && !tip.hidden && !hover() ? hideTip() : showTip(el); }
+  else if (!e.target.closest('.tip')) hideTip();
+}, true);
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') hideTip();
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.classList?.contains('info')) { e.preventDefault(); showTip(e.target); }
+});
+addEventListener('scroll', hideTip, true);
+addEventListener('resize', hideTip);
+
+// --- Page ---
+
 function render() {
   const [k, d] = st.sort[st.kind];
   const rows = filtered().sort((a, b) => {
-    const x = k === 'name' ? a.name : a[k], y = k === 'name' ? b.name : b[k];
+    const x = k === 'name' ? a.name : k === 'type' ? val(a.type) : a[k], y = k === 'name' ? b.name : k === 'type' ? val(b.type) : b[k];
     if (x == null || x === '') return 1;
     if (y == null || y === '') return -1;
     return (typeof x === 'string' ? x.localeCompare(y) : x - y) * d || b.ratings - a.ratings;
   });
-  const [one, many] = KIND_LABEL[st.kind];
-  $('#count').textContent = `${rows.length} di ${items().length} ${many}`;
+  $('#count').textContent = t('count')(rows.length, items().length, st.kind);
   renderTable(rows);
   renderCompare();
 }
@@ -496,17 +671,28 @@ function render() {
 function setKind(k) {
   st.kind = k;
   document.querySelectorAll('#kind button').forEach(b => b.classList.toggle('on', b.dataset.k === k));
-  $('#q').placeholder = k === 'rubber' ? 'Cerca gomma...' : 'Cerca telaio...';
-  writeHash(); buildFilters(); render();
+  $('#q').placeholder = t('search')[k];
+  hideTip(); writeHash(); buildFilters(); render();
 }
+
+// Writes every text of the page in the current language.
+function setLang(l) {
+  lang = l;
+  document.documentElement.lang = l;
+  document.title = t('title');
+  document.querySelectorAll('[data-t]').forEach(el => { el.innerHTML = t(el.dataset.t); });
+  document.querySelectorAll('#lang button').forEach(b => b.classList.toggle('on', b.dataset.l === l));
+  $('#sub').textContent = t('sub')(DATA.rubber.length, DATA.blade.length);
+  $('#updinfo').textContent = t('updated')(new Date(DATA.generated).toLocaleDateString(l === 'it' ? 'it-IT' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' }));
+  setKind(st.kind);
+}
+
 $('#kind').addEventListener('click', e => { const b = e.target.closest('button[data-k]'); if (b && b.dataset.k !== st.kind) setKind(b.dataset.k); });
+$('#lang').addEventListener('click', e => { const b = e.target.closest('button[data-l]'); if (b && b.dataset.l !== lang) { store.set('lang', b.dataset.l); setLang(b.dataset.l); } });
 $('#q').addEventListener('input', e => { st.q = e.target.value; render(); });
 matchMedia('(prefers-color-scheme: dark)').addEventListener('change', render);
 
-const upd = new Date(DATA.generated);
-$('#sub').textContent = `${DATA.rubber.length} gomme e ${DATA.blade.length} telai con le valutazioni di revspin.net`;
-$('#updinfo').textContent = `Dati aggiornati al ${upd.toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}.`;
-setKind(st.kind);
+setLang(lang);
 </script>
 </body>
 </html>

@@ -149,6 +149,11 @@ Le valutazioni degli utenti di [revspin.net](https://revspin.net) per gomme e te
 Sono inclusi solo i modelli con almeno 10 valutazioni (la soglia delle classifiche di revspin):
 circa 600 gomme e 560 telai.
 
+- **IT / EN** (intestazione) passa la pagina dall'italiano all'inglese. La scelta viene ricordata e resta
+  nell'indirizzo (`#l=en`), così un link condiviso si apre nella stessa lingua; senza scelta decide la lingua del browser.
+- **ⓘ** accanto a ogni parametro (intestazioni della tabella, pannello Parametri, tabella di confronto) lo spiega, con
+  le scale di revspin dove ci sono (adesività, durezza della spugna in gradi, angolo di uscita): al passaggio del
+  mouse, o con un tocco sul telefono.
 - **Gomme / Telai** passa da gomme a telai; la casella di ricerca filtra per nome.
 - **Filtri:** Marca; per le gomme Tipo (tensor, non tensor, anti); per i telai Strati e Materiali (famiglia di fibre,
   dai materiali dichiarati: Carbonio, Arylate, Zylon, Kevlar, altre fibre, solo legno);
