@@ -1,11 +1,19 @@
 #!/usr/bin/env node
-// Scrapes the FITET national rankings, men's and women's (all Italian athletes), plus the extra athletes
-// listed in atleti_extra.txt (e.g. foreign players, who have no national position), and writes a page
-// charting their ranking history: the page embeds the athlete list, and each athlete's history goes in
-// its own file (storico/<id>.json next to the page), loaded only when the athlete is selected.
+// Scrapes the FITET national rankings, men's and women's (all Italian athletes), the foreign players ("Stranieri"
+// lists) and the extra athletes listed in atleti_extra.txt, and writes a page charting their ranking history:
+// the page embeds the athlete list, and each athlete's history goes in its own file (storico/<id>.json next to
+// the page), loaded only when the athlete is selected.
 //
-// Usage: node fitet.js [output.html] [--limit N]
-//        output defaults to site/index.html; --limit N only takes the top N athletes of each ranking (for testing).
+// Two steps, so a change to the page doesn't download everything again:
+//  --fetch  downloads from the portal into the data folder: fitet.json (athlete list and statistics),
+//           storico/<id>.json and partite/<id>.json. In the workflow the data folder is the "data" branch.
+//  --build  writes the page from the data folder and template.html: output.html, plus storico/, partite/ and og.png
+//           next to it. No request to the portal.
+// Without either flag, both.
+//
+// Usage: node fitet.js [--fetch|--build] [output.html] [--data DIR] [--limit N]
+//        output defaults to site/index.html, the data folder to data/; --limit N only takes the top N athletes of
+//        each list (for testing).
 //        node fitet.js --add "COGNOME NOME [gg/mm/aaaa]"   add a player to atleti_extra.txt
 //        node fitet.js --remove "COGNOME NOME"             remove a player from it
 // Requires Node 18+ (built-in fetch). No dependencies.
@@ -20,7 +28,12 @@ const EXTRA_FILE = path.join(__dirname, 'atleti_extra.txt');
 const args = process.argv.slice(2);
 const limitAt = args.indexOf('--limit');
 const LIMIT = limitAt >= 0 ? +args.splice(limitAt, 2)[1] : Infinity;
-const OUT = args[0] || path.join(__dirname, 'site', 'index.html');
+const dataAt = args.indexOf('--data');
+const DATA_DIR = path.resolve(dataAt >= 0 ? args.splice(dataAt, 2)[1] : path.join(__dirname, 'data'));
+const flag = f => { const i = args.indexOf(f); return i >= 0 && !!args.splice(i, 1); };
+const [FETCH, BUILD] = (([f, b]) => f || b ? [f, b] : [true, true])([flag('--fetch'), flag('--build')]);
+const OUT = args[0] && !args[0].startsWith('--') ? args[0] : path.join(__dirname, 'site', 'index.html');
+const DATA_FILE = path.join(DATA_DIR, 'fitet.json');
 
 const HEADERS = {
   'X-Requested-With': 'XMLHttpRequest',
@@ -67,23 +80,28 @@ async function latestRankingId() {
 
 // One page (100 athletes) of the general men's (M) or women's (F) ranking, as shown on the portal's ranking page.
 // Same list as fpdf2/excel_classifica.php, plus the athlete ID, sector and region.
-async function rankingPage(rankId, sex, page) {
-  const html = await get(`${RANK}/ranking_unica.php?SESSO=${sex}&ID_CLASS=${rankId}&ZU=1&TIPO=1&SETT=0&page=${page}&S=0&FQ=0&G=0&V=0`);
+// foreign: the "Stranieri" list instead (foreign players, who have no national position; pos is then the
+// position in that list, kept as fpos).
+async function rankingPage(rankId, sex, page, foreign) {
+  const list = foreign ? 'TIPO=0&S=1' : 'TIPO=1&S=0';
+  const html = await get(`${RANK}/ranking_unica.php?SESSO=${sex}&ID_CLASS=${rankId}&ZU=1&${list}&SETT=0&page=${page}&FQ=0&G=0&V=0`);
   const athletes = [];
   for (const row of html.split(/<tr/i).slice(1)) {
     const id = (row.match(/getScheda\((\d+)/) || [])[1];
     const c = cells(row);
     if (!id || c.length < 8) continue;
     const [pos, name, birth, sett, pts, diff, reg, cat] = c;
-    athletes.push({ id, name, sex, birth, sett, reg, cat, pos: +pos, pts: parseFloat(pts) || 0, diff: +diff || 0 });
+    const a = { id, name, sex, birth, sett, reg, cat, pos: +pos, pts: parseFloat(pts) || 0, diff: +diff || 0 };
+    if (foreign) Object.assign(a, { pos: null, fpos: +pos, str: true });
+    athletes.push(a);
   }
   return { athletes, pages: +(html.match(/totalPages:\s*(\d+)/) || [])[1] || 1 };
 }
 
-async function ranking(rankId, sex) {
-  const first = await rankingPage(rankId, sex, 1);
+async function ranking(rankId, sex, foreign = false) {
+  const first = await rankingPage(rankId, sex, 1, foreign);
   const pages = Math.min(first.pages, Math.ceil(LIMIT / 100));
-  const rest = await pool(Array.from({ length: pages - 1 }, (_, i) => i + 2), p => rankingPage(rankId, sex, p));
+  const rest = await pool(Array.from({ length: pages - 1 }, (_, i) => i + 2), p => rankingPage(rankId, sex, p, foreign));
   return [first, ...rest].flatMap(p => p.athletes).slice(0, LIMIT);
 }
 
@@ -326,7 +344,7 @@ function estimatePositions(list, histories) {
   for (const s of scale.values()) s.sort((a, b) => b[0] - a[0] || a[1] - b[1]);
   for (const p of list) {
     const h = histories.get(p.id);
-    if (!p.extra || p.pos != null || !h || !h.length) continue;
+    if (p.pos != null || !h || !h.length) continue;
     for (const x of h) {
       const s = scale.get(`${p.sex} ${x[0]}`);
       if (x[1] != null || x[2] == null || !s) continue;
@@ -358,8 +376,7 @@ function sinceLast(list, histories, rankDate) {
 // emails the owner, and the previous page stays online. FORCE=1 skips the check.
 function checkScrape(list, failed) {
   if (process.env.FORCE === '1' || LIMIT !== Infinity) return;
-  const prevFile = path.join(__dirname, 'index.html');
-  const prev = fs.existsSync(prevFile) ? (fs.readFileSync(prevFile, 'utf8').match(/"id":"\d+"/g) || []).length : 0;
+  const prev = fs.existsSync(DATA_FILE) ? JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')).players.length : 0;
   const problems = [];
   if (prev && list.length < prev * 0.9) problems.push(`${list.length} athletes, previous page had ${prev}`);
   if (failed.length > Math.max(50, list.length * 0.02)) problems.push(`${failed.length} detail pages failed`);
@@ -381,15 +398,21 @@ async function templateDate(repo) {
 
 // --- main ---
 
-(async () => {
-  if (args[0] === '--add' || args[0] === '--remove') return editExtras(args[0], args[1]);
-
+// Downloads everything into the data folder.
+async function fetchData() {
   const rankId = await latestRankingId();
   console.log(`Fetching national rankings ${rankId}...`);
   const list = [];
   for (const sex of ['M', 'F']) {
     const l = await ranking(rankId, sex);
     console.log(`  ${sex}: ${l.length} athletes`);
+    list.push(...l);
+  }
+  // Foreign players ("Stranieri" lists): not in the national rankings, so their position is estimated (estPos).
+  const ids = new Set(list.map(p => p.id));
+  for (const sex of ['M', 'F']) {
+    const l = (await ranking(rankId, sex, true)).filter(p => !ids.has(p.id));
+    console.log(`  ${sex} stranieri: ${l.length} athletes`);
     list.push(...l);
   }
 
@@ -401,6 +424,7 @@ async function templateDate(repo) {
     try {
       const hit = (await findAthletes(e.name, e.birth))[0];
       if (!hit) { console.log(`  Extra not found: ${e.name} ${e.birth}`); return; }
+      if (byId.get(hit.id)?.str) { console.log(`  Extra already in the Stranieri list: ${e.name}`); return; }
       if (!byId.has(hit.id)) {
         byId.set(hit.id, { id: hit.id, name: hit.name, sex: '', birth: hit.birth, sett: '', reg: '', cat: '', pos: null, pts: null, diff: 0 });
         list.push(byId.get(hit.id));
@@ -410,10 +434,6 @@ async function templateDate(repo) {
       console.log(`  Extra failed: ${e.name} (${err.message})`);
     }
   });
-
-  const dir = path.join(path.dirname(path.resolve(OUT)), 'storico');
-  const matchDir = path.join(path.dirname(path.resolve(OUT)), 'partite');
-  for (const d of [dir, matchDir]) { fs.rmSync(d, { recursive: true, force: true }); fs.mkdirSync(d, { recursive: true }); }
 
   const ranges = periods();
   const histories = new Map(), allMatches = new Map();
@@ -425,7 +445,7 @@ async function templateDate(repo) {
       if (d.sett) p.sett = d.sett;
       p.delta = d.history.length ? deltas(d.history, ranges) : null;
       p.won = d.won; p.lost = d.lost; p.best = d.best;
-      if (p.pos == null) {  // extra athlete, not in the ranking list
+      if (!p.sex) {  // extra athlete, not in the ranking lists
         const last = d.history[d.history.length - 1] || [];
         Object.assign(p, { sex: d.sex, reg: d.reg, pts: last[2] ?? null, cat: last[3] || '' });
       }
@@ -444,6 +464,9 @@ async function templateDate(repo) {
   console.log(`Matches: ${allMatches.size} athletes${matchFailed ? `, ${matchFailed} match pages failed` : ''}`);
   checkScrape(list, failed);
 
+  // The old data is replaced only now that the scrape passed the checks.
+  const dir = path.join(DATA_DIR, 'storico'), matchDir = path.join(DATA_DIR, 'partite');
+  for (const d of [dir, matchDir]) { fs.rmSync(d, { recursive: true, force: true }); fs.mkdirSync(d, { recursive: true }); }
   estimatePositions(list, histories);
   const prevDate = sinceLast(list, histories, rankDate);
   for (const p of list) {
@@ -454,23 +477,38 @@ async function templateDate(repo) {
   }
   writeMatches(list, histories, allMatches, matchDir);
 
+  const data = { generated: new Date().toISOString(), rankId, rankDate, prevDate, ranges,
+    cats: { M: catLimits(list, 'M'), F: catLimits(list, 'F') }, sim: similarRanges(list, histories), players: list };
+  fs.writeFileSync(DATA_FILE, JSON.stringify(data));
+  console.log(`Wrote ${DATA_FILE} and ${list.length - failed.length} histories in ${dir}`);
+}
+
+// Writes the page from the data folder: no request to the portal.
+async function build() {
+  if (!fs.existsSync(DATA_FILE)) throw new Error(`${DATA_FILE} not found: run node fitet.js --fetch first`);
   const repo = process.env.GITHUB_REPOSITORY || '';
-  const data = {
-    generated: new Date().toISOString(),
-    repo, rankId, rankDate, prevDate, ranges, templateDate: await templateDate(repo),
-    cats: { M: catLimits(list, 'M'), F: catLimits(list, 'F') },
-    sim: similarRanges(list, histories),
-    players: list,
-  };
+  const data = { ...JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')), repo, templateDate: await templateDate(repo) };
   const json = JSON.stringify(data).replace(/</g, '\\u003c');
   // Absolute page address for the link previews (WhatsApp, Facebook, ...), which need a full URL for the image:
   // the custom domain when the repository has a CNAME file (e.g. "fitet.eu.org"), otherwise the github.io address.
   const [owner, name] = repo.split('/');
   const cname = fs.existsSync(path.join(__dirname, 'CNAME')) ? fs.readFileSync(path.join(__dirname, 'CNAME'), 'utf8').trim() : '';
   const site = cname ? `https://${cname}/` : repo ? `https://${owner.toLowerCase()}.github.io/${name}/` : '';
+  const outDir = path.dirname(path.resolve(OUT));
+  fs.mkdirSync(outDir, { recursive: true });
   const template = fs.readFileSync(path.join(__dirname, 'template.html'), 'utf8');
   fs.writeFileSync(OUT, template.replace('/*__DATA__*/null', json).replaceAll('__SITE__', site));
-  const outDir = path.dirname(path.resolve(OUT));
+  for (const d of ['storico', 'partite']) {
+    fs.rmSync(path.join(outDir, d), { recursive: true, force: true });
+    if (fs.existsSync(path.join(DATA_DIR, d))) fs.cpSync(path.join(DATA_DIR, d), path.join(outDir, d), { recursive: true });
+  }
   if (outDir !== __dirname && fs.existsSync(path.join(__dirname, 'og.png'))) fs.copyFileSync(path.join(__dirname, 'og.png'), path.join(outDir, 'og.png'));
-  console.log(`Wrote ${OUT} and ${list.length - failed.length} histories in ${dir}`);
+  console.log(`Wrote ${OUT} (${data.players.length} athletes, data of ${data.generated.slice(0, 10)})`);
+}
+
+(async () => {
+  if (args[0] === '--add' || args[0] === '--remove') return editExtras(args[0], args[1]);
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+  if (FETCH) await fetchData();
+  if (BUILD) await build();
 })().catch(err => { console.error(err); process.exit(1); });

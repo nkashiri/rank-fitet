@@ -83,16 +83,22 @@ and women's table tennis rankings (about 8,900 men and 900 women), with data fro
 
 ## Data updates
 
-- **Automatic:** every Monday at 06:00 UTC (07:00 or 08:00 in Italy).
-- **Manual:** [Actions](https://github.com/nkashiri/rank-fitet/actions) tab →
-  **Aggiorna classifica** → **Run workflow**. The page is updated in about 3 minutes.
-- **On code changes:** pushing a change to `fitet.js`, `template.html`, `atleti_extra.txt` or `og.png` also updates the page.
-- Each update also saves `index.html` (the athlete list, without the histories) in the repository:
-  the "Aggiorna dati ..." commit history keeps the previous versions.
-- **Safety check:** the update refuses to publish if the scrape has fewer than 90% of the athletes of the
-  previous `index.html`, or if more than 2% (at least 50) of the detail pages failed. The workflow then fails,
-  GitHub emails the repository owner, and the previous page stays online. To publish anyway, run the script with
-  `FORCE=1` (in the workflow: add `FORCE: 1` to the `env` of the "Scarica i dati" step, run, then remove it).
+Downloading the data and building the pages are separate steps: the data is saved in the **`data` branch**, and the
+pages are built from it. A change to the pages or the scripts doesn't download anything again.
+
+- **Rankings ("Aggiorna classifica"):** automatically on the 1st of every month at 06:00 UTC (07:00 or 08:00 in Italy);
+  FITET publishes a new ranking about once a month. Saves the new data in the `data` branch, then publishes the site.
+- **Rubbers and blades ("Aggiorna materiali"):** on the 1st of every month at 07:00 UTC, independently: if one
+  source fails, the other is still updated.
+- **Manual:** [Actions](https://github.com/nkashiri/rank-fitet/actions) tab → the workflow → **Run workflow**.
+- **Pages and scripts ("Pubblica sito"):** pushing a change to `template.html`, `materiali.html`, `fitet.js`,
+  `revspin.js`, `og.png` or `CNAME` rebuilds and publishes the site from the saved data in about a minute.
+- **History:** each update is a commit in the `data` branch ("Classifica ...", "Materiali ..."), so the previous
+  data is kept.
+- **Safety check:** an update refuses to save if the scrape has fewer than 90% of the athletes (or products) of the
+  saved data, or if more than 2% (at least 50) of the athlete pages failed. The workflow then fails, GitHub emails
+  the repository owner, and the site stays as it was. To save anyway, run the script with `FORCE=1` (in the workflow:
+  add `FORCE: 1` to the `env` of the download step, run, then remove it).
 
 ## Footer: updates and visits
 
@@ -110,13 +116,15 @@ and women's table tennis rankings (about 8,900 men and 900 women), with data fro
 - Links shared on WhatsApp, Facebook, Telegram etc. show a preview card with `og.png` (1200×630). To change the
   image, replace `og.png` in the repository: the next update publishes it.
 
-## Extra athletes (not in the national rankings)
+## Foreign players and extra athletes (not in the national rankings)
 
-Foreign players ("Atleta Straniero") have points and a ranking history but no national position, so they
-are not in the rankings the page is built from. Such athletes are listed in `atleti_extra.txt`, one per
-line: `SURNAME NAME (dd/mm/yyyy)`. In the table they have the "extra" label and, in italics, a fictitious
-position (≈): the one an Italian with the same points would have had, at each ranking date. The chart and the
-analysis use it too, marked as estimated.
+Foreign players have points and a ranking history but no national position. The page includes all of them by
+default, from the portal's "Stranieri" lists (men's and women's); the "Elenco" filter can show only them. They have,
+in italics, a fictitious position (≈): the one an Italian with the same points would have had, at each ranking
+date. The chart and the analysis use it too, marked as estimated.
+
+Other athletes in neither list (e.g. a foreign player no longer in the Stranieri list) can be listed in
+`atleti_extra.txt`, one per line: `SURNAME NAME (dd/mm/yyyy)`. In the table they have the "extra" label.
 
 - **Add:** on the page, type the name in "Aggiungi un atleta" and click **Aggiungi atleta**;
   GitHub opens with the request already filled in: click **Create**.
@@ -124,28 +132,72 @@ analysis use it too, marked as estimated.
 - **Remove:** click the red **×** next to "extra" in the athlete's row, then **Create**.
 - The reply in the issue says whether it worked. If several athletes share the name, it
   lists their birth dates: try again with `SURNAME NAME dd/mm/yyyy`.
-- You can also edit `atleti_extra.txt` directly on GitHub (pencil icon → Commit): the page is updated.
+- You can also edit `atleti_extra.txt` directly on GitHub (pencil icon → Commit), then run "Aggiorna classifica" to update the page.
 - Only the repository owner and collaborators can add or remove athletes;
   requests from other users are ignored.
 
+## Rubbers and blades subpage
+
+**Page:** https://nkashiri.github.io/rank-fitet/materiali/ (linked from the main page header, "Gomme e telai")
+
+The user ratings of the rubbers and blades on [revspin.net](https://revspin.net), to filter and compare.
+Only the models with at least 10 ratings are included (revspin's own threshold for its top lists):
+about 600 rubbers and 560 blades.
+
+- **Gomme / Telai** switches between rubbers and blades; the search box filters by name.
+- **Filters:** Marca (brand); for rubbers Tipo (tensor, non tensor, anti); for blades Strati (plies) and
+  Materiali (fibre family, from the manufacturer's materials: Carbonio, Arylate, Zylon, Kevlar, other fibres, all-wood);
+  **Parametri** sets a min and/or max for every rating, the number of ratings, the price and the blade weight.
+- **Table:** click a header to sort; the shading of each rating column is relative to its range. The ↗ link opens
+  the model on revspin.net.
+- **Comparison:** click up to 6 rows to compare them in a radar chart and a side-by-side table (best value of the
+  "more is better" ratings highlighted). The chips under the radar choose its axes. The compared models are kept
+  in the address (e.g. `materiali/#gomme=...`), so a comparison can be shared.
+
+Data: `revspin.js` reads revspin's full lists (brands), its top lists (all the ratings, 100 per page) and, once per
+model, the product page for the manufacturer's details (blade weight, plies, materials; rubber tensor/anti), cached in
+`dettagli.json` (`data` branch) so a monthly run only fetches new models. The ratings are saved in `materiali.json`
+(`data` branch) by their own workflow, "Aggiorna materiali".
+
+```
+node revspin.js --fetch              # downloads into data/materiali.json (and data/dettagli.json)
+node revspin.js --build              # writes site/materiali/index.html from data/, no download
+node revspin.js --fetch --limit 20   # fetch at most 20 new product pages (quick test)
+```
+
 ## Files
 
-- `fitet.js`: downloads the data and generates the page.
+Branch `main` (code and pages):
+
+- `fitet.js`: downloads the rankings (`--fetch`) and builds the page (`--build`).
 - `template.html`: the page (chart and table) the data is inserted into.
+- `revspin.js`, `materiali.html`: the same for the rubbers and blades subpage.
 - `atleti_extra.txt`: extra athletes.
 - `og.png`: the image of the link previews.
-- On the published site, besides `index.html`: `storico/<id>.json` (ranking history) and `partite/<id>.json` (season
-  matches) for each athlete.
-- `.github/workflows/update.yml`: weekly update (and on code changes) and publishing to GitHub Pages.
+- `.github/workflows/update.yml`: monthly (or manual) rankings update.
+- `.github/workflows/materiali.yml`: monthly (or manual) rubbers and blades update.
+- `.github/workflows/build.yml`: builds the pages from the saved data and publishes them on GitHub Pages.
 - `.github/workflows/extra.yml`: handles the "Aggiungi:" / "Rimuovi:" requests opened from the page.
-- `index.html`: the latest generated page (written by the workflow, don't edit it by hand).
+
+Branch `data` (written by the workflows, don't edit it by hand):
+
+- `fitet.json`: the athlete list and the statistics of the page.
+- `storico/<id>.json` (ranking history) and `partite/<id>.json` (season matches) for each athlete, copied next
+  to the published page.
+- `materiali.json`, `dettagli.json`: the rubber and blade ratings, and the cache of the manufacturer's details.
 
 ## Running locally (Node 18+, no dependencies)
 
+The scripts read and write the data in `data/`. To work on the pages with the published data, check out the
+`data` branch there first:
+
 ```
-node fitet.js                        # writes site/index.html and site/storico/
-node fitet.js out/index.html         # or another folder
-node fitet.js --limit 200            # only the top 200 men and 200 women (quick test)
+git fetch origin data && git worktree add data data   # the published data in data/
+node fitet.js --build                # writes site/index.html (+ storico/, partite/) from data/, no download
+node revspin.js --build              # writes site/materiali/index.html
+node fitet.js --fetch                # downloads the rankings into data/ (about 10 minutes)
+node fitet.js                        # both
+node fitet.js --fetch --limit 200    # only the top 200 of each list (quick test)
 node fitet.js --add "ROSSI MARIO"    # adds an athlete to atleti_extra.txt
 node fitet.js --remove "ROSSI MARIO" # removes them
 ```
@@ -160,7 +212,8 @@ directly: serve the folder, e.g. `cd site && python3 -m http.server`, then open 
 1. `menu.php`: the latest ranking ID (`ID_CLASS`, the highest in the "Classifiche" links).
 2. `risultati/new_rank/ranking_unica.php?SESSO=<M|F>&ID_CLASS=<id>&TIPO=1&page=<n>`: the general men's
    and women's rankings, 100 athletes per page (the same list as `fpdf2/excel_classifica.php`, plus the athlete ID).
-   It needs the `X-Requested-With: XMLHttpRequest` and `Referer` headers.
+   It needs the `X-Requested-With: XMLHttpRequest` and `Referer` headers. With `TIPO=0&S=1` instead of `TIPO=1`:
+   the "Stranieri" lists (foreign players), whose position is within that list.
 3. `risultati/new_rank/dettaglioatleta_unica.php?ATLETA=<id>&ID_CLASS=<id>&ZU=1&AVVERSARIO=0`, one
    per athlete: "Riepilogo Dati" (Settore Agonistico, Societa' appartenenza, Record classifica, the season's
    matches played/won/lost) and the "Storico
@@ -169,7 +222,7 @@ directly: serve the folder, e.g. `cd site && python3 -m http.server`, then open 
    (`risultati/new_rank/html/<ranking>/<Maschile|Femminile>/.../details_page_<n>.html`), with the tables
    "Incontri in campionato" and "Incontri in gare di torneo" (date, competition, opponent, round, result; matches
    not counted for the ranking are marked). Opponents are named, not numbered: a name is linked to an athlete of the
-   page when exactly one has it. This roughly doubles the time of the weekly scrape.
+   page when exactly one has it. This roughly doubles the time of the scrape.
 
 The page embeds the athlete list with the Δ of each period already computed; each athlete's history
 is a separate file, `storico/<id>.json`, loaded only when the athlete is shown in the chart, so the
@@ -186,5 +239,5 @@ the data is collected by the script and published with the page.
 - **An athlete has no club or history:** the script lists the athletes whose detail page failed
   in the log of the "Scarica i dati" step (`Failed`).
 - **Weekly updates stop:** GitHub pauses scheduled workflows after 60 days without activity
-  in the repository. The weekly commits prevent this, but if it happens you can re-enable
+  in the repository. The monthly commits prevent this, but if it happens you can re-enable
   it from the Actions tab.

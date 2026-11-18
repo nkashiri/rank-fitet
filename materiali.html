@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gomme e telai</title>
+<meta name="description" content="Confronto delle gomme e dei telai da tennistavolo con le valutazioni degli utenti di revspin.net: filtri per parametro, tabella e grafico radar.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Gomme e telai: confronto materiali tennistavolo">
+<meta property="og:description" content="Filtra e confronta gomme e telai per velocità, rotazione, controllo e gli altri parametri delle valutazioni di revspin.net.">
+<meta property="og:url" content="__SITE__materiali/">
+<meta property="og:locale" content="it_IT">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232563eb'/%3E%3Cpolygon points='16,6 25,12 22,23 10,23 7,12' fill='none' stroke='white' stroke-width='2.5' stroke-linejoin='round'/%3E%3Ccircle cx='16' cy='14' r='3' fill='%23fbbf24'/%3E%3C/svg%3E">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #f7f7f5; --panel: #ffffff; --text: #1d1d1b; --muted: #6b6b66;
+    --border: #e2e1dc; --accent: #2563eb; --hover: #f0efe9; --grid: rgba(0,0,0,.1);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #161614; --panel: #1f1f1d; --text: #ecebe6; --muted: #9a9993;
+      --border: #34332f; --accent: #60a5fa; --hover: #2a2926; --grid: rgba(255,255,255,.12);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #161614; --panel: #1f1f1d; --text: #ecebe6; --muted: #9a9993;
+    --border: #34332f; --accent: #60a5fa; --hover: #2a2926; --grid: rgba(255,255,255,.12);
+  }
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 1280px; margin: 0 auto; padding: 20px 16px 40px; }
+  a { color: var(--accent); }
+  h1 { font-size: 20px; margin: 0 0 2px; }
+  h2 { font-size: 14px; margin: 0; }
+  header.top { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  header.top .logo { flex: none; width: 36px; height: 36px; }
+  header.top > div { flex: 1; min-width: 0; }
+  header.top .back { flex: none; font-size: 13px; text-decoration: none; }
+  .sub { color: var(--muted); font-size: 12px; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; align-items: center; }
+  select, input, button, summary { font: inherit; color: var(--text); background: var(--panel);
+    border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px; }
+  input[type=search] { flex: 1 1 180px; min-width: 0; }
+  button { cursor: pointer; }
+  .seg { display: inline-flex; border: 1px solid var(--border); border-radius: 6px; overflow: hidden; }
+  .seg button { border: 0; border-radius: 0; }
+  .seg button.on { background: var(--accent); color: #fff; }
+  .ms { position: relative; }
+  .ms summary { list-style: none; cursor: pointer; white-space: nowrap; max-width: 260px;
+                overflow: hidden; text-overflow: ellipsis; }
+  .ms summary::-webkit-details-marker { display: none; }
+  .ms summary::after { content: " ▾"; color: var(--muted); }
+  .ms.active summary { border-color: var(--accent); color: var(--accent); }
+  .ms .panel { position: absolute; z-index: 10; top: calc(100% + 4px); left: 0; width: 300px; max-width: calc(100vw - 32px);
+               background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 8px;
+               box-shadow: 0 6px 24px rgba(0,0,0,.15); }
+  .ms .panel input[type=search] { width: 100%; margin-bottom: 6px; }
+  .ms .opts { max-height: 300px; overflow-y: auto; }
+  .ms label { display: flex; gap: 6px; align-items: baseline; padding: 3px 4px; border-radius: 4px; cursor: pointer; }
+  .ms label:hover { background: var(--hover); }
+  .ms label input { flex: none; margin: 0; }
+  .ms label span { flex: 1; }
+  .ms label small { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .ms .reset { margin-top: 6px; font-size: 12px; padding: 3px 8px; }
+  .ranges { display: grid; grid-template-columns: 1fr 72px 72px; gap: 4px 6px; align-items: center; font-size: 13px; }
+  .ranges .h { color: var(--muted); font-size: 11px; text-align: center; }
+  .ranges input { width: 100%; padding: 4px 6px; font-variant-numeric: tabular-nums; }
+  .ranges input.on { border-color: var(--accent); }
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 16px; }
+  .cmp-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin-bottom: 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
+  .chip { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); border-radius: 999px;
+          padding: 2px 4px 2px 10px; font-size: 13px; max-width: 100%; }
+  .chip .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .chip button { border: 0; padding: 0 6px; background: none; color: var(--muted); font-size: 15px; line-height: 1; }
+  .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; flex: none; }
+  .cmp-body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+  .radar { position: relative; height: 420px; }
+  .axes { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+  .axes button { font-size: 12px; padding: 2px 8px; border-radius: 999px; color: var(--muted); }
+  .axes button.on { border-color: var(--accent); color: var(--accent); }
+  .hint { color: var(--muted); font-size: 13px; margin: 4px 0; }
+  .tablewrap { overflow: auto; max-height: 75vh; border: 1px solid var(--border); border-radius: 8px; background: var(--panel); }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 6px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  #list th { color: var(--muted); font-weight: 600; cursor: pointer; user-select: none; position: sticky; top: 0; z-index: 2; background: var(--panel); }
+  #list th.sorted { color: var(--accent); }
+  #list .name { position: sticky; left: 0; background: var(--panel); z-index: 1; max-width: 260px; overflow: hidden; text-overflow: ellipsis; }
+  #list th.name { z-index: 3; }
+  #list tbody tr { cursor: pointer; }
+  #list tbody tr:hover td, #list tbody tr:hover .name { background: var(--hover); }
+  #list tbody tr.sel .name { box-shadow: inset 3px 0 0 var(--c); }
+  .name input { margin: 0 6px 0 0; vertical-align: -2px; }
+  .brand { color: var(--muted); }
+  .ext { text-decoration: none; margin-left: 4px; font-size: 12px; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.mat { max-width: 220px; overflow: hidden; text-overflow: ellipsis; color: var(--muted); }
+  .muted { color: var(--muted); }
+  #cmp-table th { font-weight: 600; color: var(--muted); }
+  #cmp-table thead th { color: var(--text); vertical-align: bottom; white-space: normal; min-width: 90px; }
+  #cmp-table td.best { font-weight: 700; color: var(--accent); }
+  #cmp-table td:not(.num) { white-space: normal; min-width: 90px; font-size: 12px; }
+  .cmp-tablewrap { overflow-x: auto; }
+  .count { color: var(--muted); font-size: 12px; margin-left: auto; }
+  footer { margin-top: 28px; padding-top: 14px; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; }
+  footer p { margin: 4px 0; }
+  @media (max-width: 900px) {
+    .cmp-body { grid-template-columns: 1fr; }
+    .radar { height: 340px; }
+  }
+  @media (max-width: 600px) {
+    header.top .logo { width: 30px; height: 30px; }
+    #list .name { max-width: 170px; }
+    .radar { height: 300px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header class="top">
+    <svg class="logo" viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#2563eb"/>
+      <polygon points="16,6 25,12 22,23 10,23 7,12" fill="none" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/>
+      <circle cx="16" cy="14" r="3" fill="#fbbf24"/></svg>
+    <div><h1>Gomme e telai</h1><div class="sub" id="sub"></div></div>
+    <a class="back" href="../">← Classifica FITET</a>
+  </header>
+
+  <div class="controls">
+    <div class="seg" id="kind"><button data-k="rubber">Gomme</button><button data-k="blade">Telai</button></div>
+    <input type="search" id="q" placeholder="Cerca modello...">
+  </div>
+  <div class="controls" id="filters"></div>
+
+  <section class="card" id="cmp">
+    <div class="cmp-head">
+      <h2>Confronto</h2>
+      <div class="chips" id="chips"></div>
+      <button id="clear" hidden>Svuota</button>
+    </div>
+    <p class="hint" id="cmp-hint">Seleziona fino a 6 modelli dalla tabella per confrontarli nel grafico radar e nella tabella.</p>
+    <div class="cmp-body" id="cmp-body" hidden>
+      <div>
+        <div class="radar"><canvas id="radar"></canvas></div>
+        <div class="axes" id="axes"></div>
+      </div>
+      <div class="cmp-tablewrap"><table id="cmp-table"></table></div>
+    </div>
+  </section>
+
+  <div class="controls"><span class="count" id="count"></span></div>
+  <div class="tablewrap"><table id="list"><thead></thead><tbody></tbody></table></div>
+
+  <footer>
+    <p>Dati: valutazioni degli utenti di <a href="https://revspin.net" target="_blank" rel="noopener">revspin.net</a>
+      (solo i modelli con almeno 10 valutazioni), aggiornate una volta al mese. Parametri da 0 a 10; prezzi indicativi in dollari USA.
+      Peso, strati e materiali dei telai sono i dati dichiarati dal produttore.</p>
+    <p>Strumento gratuito e senza scopo di lucro, fatto da un appassionato: niente pubblicità, niente dati personali
+      raccolti. Ogni modello rimanda alla sua scheda su revspin.net, dove si trovano recensioni e valutazioni complete.</p>
+    <p id="updinfo"></p>
+    <p>Sito non ufficiale, non affiliato a revspin.net né alla Federazione Italiana Tennistavolo.</p>
+  </footer>
+</main>
+
+<script>
+const DATA = /*__DATA__*/null;
+
+// Rating parameters (0-10) of each kind: key, label, short table header, description.
+const PARAMS = {
+  rubber: [
+    ['speed', 'Velocità', 'Vel.', 'Potenza generata dalla gomma.'],
+    ['spin', 'Rotazione', 'Rot.', 'Quantità di rotazione impressa alla palla.'],
+    ['control', 'Controllo', 'Contr.', 'Facilità nel controllare la palla.'],
+    ['tackiness', 'Adesività', 'Ades.', 'Quanto è appiccicosa la superficie: alta per le gomme cinesi tradizionali.'],
+    ['weight', 'Peso', 'Peso', 'Peso della gomma (alto = pesante).'],
+    ['sponge_hardness', 'Durezza spugna', 'Spugna', 'Durezza della spugna (alto = dura).'],
+    ['gears', 'Modulabilità', 'Mod.', 'Quanto si possono variare velocità e rotazione con la forza del colpo.'],
+    ['throw_angle', 'Angolo di uscita', 'Angolo', 'Traiettoria della palla in uscita (alto = più arcuata).'],
+    ['consistency', 'Costanza', 'Cost.', 'Quanto due esemplari dello stesso modello sono identici.'],
+    ['durability', 'Durata', 'Durata', 'Quanto a lungo mantiene le prestazioni.'],
+    ['overall', 'Complessivo', 'Tot.', 'Valutazione complessiva.'],
+  ],
+  blade: [
+    ['speed', 'Velocità', 'Vel.', 'Potenza generata dal telaio.'],
+    ['control', 'Controllo', 'Contr.', 'Facilità nel controllare la palla.'],
+    ['stiffness', 'Rigidità', 'Rigid.', 'Flessibilità del telaio (alto = rigido, basso = flessibile).'],
+    ['hardness', 'Durezza', 'Durez.', 'Durezza del legno (alto = duro).'],
+    ['consistency', 'Costanza', 'Cost.', 'Quanto due esemplari dello stesso modello sono identici.'],
+    ['overall', 'Complessivo', 'Tot.', 'Valutazione complessiva.'],
+  ],
+};
+// Parameters where more is better (highlighted in the comparison); the others are a matter of style.
+const BETTER = new Set(['speed', 'spin', 'control', 'gears', 'consistency', 'durability', 'overall']);
+const KIND_LABEL = { rubber: ['gomma', 'gomme'], blade: ['telaio', 'telai'] };
+const COLORS = ['#2563eb', '#dc2626', '#16a34a', '#d97706', '#9333ea', '#0891b2'];
+const MAX_SEL = 6;
+
+// Blade materials (free text from the manufacturer, often missing), grouped into fibre families for the filter.
+// The model name is checked too ("... ALC", "... ZLC", "... Carbon"). "Solo legno": materials given, no fibre.
+const MATS = [
+  ['Zylon (ZLC)', /zylon|zlc|zlf|\bzl\b/i],
+  ['Arylate (ALC)', /aryl|\balc\b|vectran/i],
+  ['Kevlar / aramide', /kevlar|aramid|carbokev|aratox/i],
+  ['Carbonio', /carbon|karbon|\bcarbo|tamca|texalium|textreme|dyneema|\bcf\b/i],
+  ['Altre fibre', /glass|basalt|titan|ceramic|synthetic|cellulose|nature powered/i],
+];
+const FIBRE = new RegExp([...MATS.map(([, re]) => re.source), 'fib(er|re)'].join('|'), 'i');
+for (const b of DATA.blade) {
+  const text = `${b.materials} ${b.model}`;
+  b.mats = MATS.filter(([, re]) => re.test(text)).map(([l]) => l);
+  if (!b.mats.length) b.mats.push(!b.materials ? 'n.d.' : FIBRE.test(b.materials) ? 'Altre fibre' : 'Solo legno');
+}
+for (const r of DATA.rubber) r.type = r.anti ? 'Anti' : r.tensor ? 'Tensor' : r.tensor === false ? 'Non tensor' : 'n.d.';
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+const fmt = (v, d = 1) => v == null ? '–' : v.toFixed(d).replace('.', ',');
+const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+
+// Filter and selection state, per kind. The kind and the compared models are kept in the address, to share them.
+const blankFilters = () => ({ brand: new Set(), type: new Set(), plies: new Set(), mats: new Set(), min: {}, max: {} });
+const st = {
+  kind: 'rubber', q: '',
+  f: { rubber: blankFilters(), blade: blankFilters() },
+  sort: { rubber: ['overall', -1], blade: ['overall', -1] },
+  sel: { rubber: [], blade: [] },
+  axes: { rubber: null, blade: null },
+};
+const items = () => DATA[st.kind];
+const bySlug = {};
+for (const k of ['rubber', 'blade']) { bySlug[k] = {}; for (const r of DATA[k]) bySlug[k][r.slug] = r; }
+
+(function readHash() {
+  const h = new URLSearchParams(location.hash.slice(1));
+  if (h.get('k') === 'blade') st.kind = 'blade';
+  for (const k of ['rubber', 'blade']) {
+    const s = h.get(k === 'rubber' ? 'gomme' : 'telai');
+    if (s) st.sel[k] = s.split(',').filter(x => bySlug[k][x]).slice(0, MAX_SEL);
+  }
+})();
+function writeHash() {
+  const h = new URLSearchParams();
+  if (st.kind === 'blade') h.set('k', 'blade');
+  if (st.sel.rubber.length) h.set('gomme', st.sel.rubber.join(','));
+  if (st.sel.blade.length) h.set('telai', st.sel.blade.join(','));
+  history.replaceState(null, '', h.toString() ? '#' + h.toString().replace(/%2C/g, ',') : location.pathname);
+}
+
+// Numeric range filters: the 0-10 parameters plus ratings, price and (blades) weight.
+function rangeDefs() {
+  const extra = [['ratings', 'Valutazioni', 0], ['price', 'Prezzo $', 0]];
+  if (st.kind === 'blade') extra.push(['weight_g', 'Peso (g)', 0]);
+  return [...PARAMS[st.kind].map(([k, l]) => [k, l, 1]), ...extra];
+}
+
+// Multi-select dropdown: options [{v, n}], the chosen values in `set`.
+function multi(title, opts, set, searchable) {
+  const d = document.createElement('details');
+  d.className = 'ms';
+  const label = () => {
+    d.classList.toggle('active', set.size > 0);
+    d.querySelector('summary').textContent = set.size ? `${title}: ${[...set].join(', ')}` : title;
+  };
+  d.innerHTML = `<summary></summary><div class="panel">${searchable ? '<input type="search" placeholder="Cerca...">' : ''}<div class="opts"></div><button class="reset">Azzera</button></div>`;
+  const box = d.querySelector('.opts');
+  const draw = (q = '') => {
+    box.innerHTML = opts.filter(o => o.v.toLowerCase().includes(q.toLowerCase())).map(o =>
+      `<label><input type="checkbox" value="${esc(o.v)}"${set.has(o.v) ? ' checked' : ''}><span>${esc(o.v)}</span><small>${o.n}</small></label>`).join('');
+  };
+  box.addEventListener('change', e => { e.target.checked ? set.add(e.target.value) : set.delete(e.target.value); label(); render(); });
+  d.querySelector('.reset').onclick = () => { set.clear(); draw(); label(); render(); };
+  if (searchable) d.querySelector('input[type=search]').oninput = e => draw(e.target.value);
+  draw(); label();
+  return d;
+}
+
+const counts = vals => {
+  const m = new Map();
+  for (const v of vals) m.set(v, (m.get(v) || 0) + 1);
+  return [...m].map(([v, n]) => ({ v: String(v), n }));
+};
+
+function buildFilters() {
+  const f = st.f[st.kind], list = items(), box = $('#filters');
+  box.innerHTML = '';
+  box.append(multi('Marca', counts(list.map(r => r.brand)).sort((a, b) => b.n - a.n || a.v.localeCompare(b.v)), f.brand, true));
+  if (st.kind === 'rubber') {
+    box.append(multi('Tipo', counts(list.map(r => r.type)).sort((a, b) => b.n - a.n), f.type));
+  } else {
+    const plies = counts(list.map(r => r.plies ?? 'n.d.')).sort((a, b) => (+a.v || 99) - (+b.v || 99));
+    box.append(multi('Strati', plies, f.plies));
+    box.append(multi('Materiali', counts(list.flatMap(r => r.mats)).sort((a, b) => b.n - a.n), f.mats));
+  }
+
+  // Min/max panel for the numeric parameters.
+  const d = document.createElement('details');
+  d.className = 'ms';
+  const defs = rangeDefs();
+  const active = () => defs.some(([k]) => f.min[k] != null || f.max[k] != null);
+  const label = () => { d.classList.toggle('active', active()); d.querySelector('summary').textContent = 'Parametri' + (active() ? ' (attivi)' : ''); };
+  d.innerHTML = `<summary></summary><div class="panel" style="width:330px"><div class="ranges"><span></span><span class="h">min</span><span class="h">max</span>${
+    defs.map(([k, l, dec]) => {
+      const vals = list.map(r => r[k]).filter(v => v != null);
+      const lo = Math.min(...vals), hi = Math.max(...vals);
+      const step = dec ? '0.1' : '1';
+      return `<span>${l}</span><input type="number" step="${step}" data-k="${k}" data-b="min" placeholder="${fmt(lo, dec).replace(',', '.')}" value="${f.min[k] ?? ''}">` +
+        `<input type="number" step="${step}" data-k="${k}" data-b="max" placeholder="${fmt(hi, dec).replace(',', '.')}" value="${f.max[k] ?? ''}">`;
+    }).join('')}</div><button class="reset">Azzera</button></div>`;
+  d.querySelector('.ranges').addEventListener('input', e => {
+    const { k, b } = e.target.dataset, v = e.target.value === '' ? null : +e.target.value;
+    if (v == null) delete f[b][k]; else f[b][k] = v;
+    e.target.classList.toggle('on', v != null);
+    label(); render();
+  });
+  d.querySelectorAll('.ranges input').forEach(i => i.classList.toggle('on', i.value !== ''));
+  d.querySelector('.reset').onclick = () => { f.min = {}; f.max = {}; d.querySelectorAll('.ranges input').forEach(i => { i.value = ''; i.classList.remove('on'); }); label(); render(); };
+  label();
+  box.append(d);
+
+  const reset = document.createElement('button');
+  reset.textContent = 'Azzera filtri';
+  reset.onclick = () => { st.f[st.kind] = blankFilters(); st.q = ''; $('#q').value = ''; buildFilters(); render(); };
+  box.append(reset);
+}
+
+// Keep an open dropdown panel inside the window (on phones the right-hand ones would overflow).
+document.addEventListener('toggle', e => {
+  const panel = e.target.open && e.target.querySelector?.('.ms > .panel');
+  if (!panel) return;
+  panel.style.left = '0px';
+  const over = panel.getBoundingClientRect().right - (innerWidth - 16);
+  if (over > 0) panel.style.left = `${-over}px`;
+}, true);
+
+// Close a dropdown when clicking elsewhere.
+document.addEventListener('click', e => {
+  document.querySelectorAll('.ms[open]').forEach(d => { if (!d.contains(e.target)) d.open = false; });
+});
+
+function filtered() {
+  const f = st.f[st.kind], q = st.q.toLowerCase().trim();
+  return items().filter(r =>
+    (!q || r.name.toLowerCase().includes(q)) &&
+    (!f.brand.size || f.brand.has(r.brand)) &&
+    (!f.type.size || f.type.has(r.type)) &&
+    (!f.plies.size || f.plies.has(String(r.plies ?? 'n.d.'))) &&
+    (!f.mats.size || r.mats.some(m => f.mats.has(m))) &&
+    Object.entries(f.min).every(([k, v]) => r[k] != null && r[k] >= v) &&
+    Object.entries(f.max).every(([k, v]) => r[k] != null && r[k] <= v));
+}
+
+// Table columns: name, the 0-10 parameters, then ratings, price and the manufacturer details.
+function columns() {
+  const cols = PARAMS[st.kind].map(([k, l, s, desc]) => ({ k, h: s, title: `${l}: ${desc}`, num: 1, dec: 1, heat: 1 }));
+  cols.push({ k: 'ratings', h: 'Valut.', title: 'Numero di valutazioni', num: 1, dec: 0 },
+            { k: 'price', h: 'Prezzo', title: 'Prezzo indicativo in dollari USA', num: 1, dec: 0, pre: '$' });
+  if (st.kind === 'blade') cols.push(
+    { k: 'weight_g', h: 'Peso', title: 'Peso dichiarato (grammi)', num: 1, dec: 0, post: ' g' },
+    { k: 'plies', h: 'Strati', title: 'Numero di strati', num: 1, dec: 0 },
+    { k: 'materials', h: 'Materiali', title: 'Materiali dichiarati', mat: 1 });
+  else cols.push({ k: 'type', h: 'Tipo', title: 'Tensor, non tensor o anti' });
+  return cols;
+}
+
+function renderTable(rows) {
+  const cols = columns(), [sk, sd] = st.sort[st.kind], sel = st.sel[st.kind];
+  $('#list thead').innerHTML = `<tr><th class="name${sk === 'name' ? ' sorted' : ''}" data-k="name">Modello${sk === 'name' ? (sd > 0 ? ' ↑' : ' ↓') : ''}</th>${
+    cols.map(c => `<th class="${c.num ? 'num' : ''}${sk === c.k ? ' sorted' : ''}" data-k="${c.k}" title="${esc(c.title)}">${c.h}${sk === c.k ? (sd > 0 ? ' ↑' : ' ↓') : ''}</th>`).join('')}</tr>`;
+  // Shading of the 0-10 columns, relative to each column's range among all the models of this kind.
+  const accent = css('--accent'), range = {};
+  for (const c of cols.filter(c => c.heat)) {
+    const vals = items().map(r => r[c.k]).filter(v => v != null);
+    range[c.k] = [Math.min(...vals), Math.max(...vals)];
+  }
+  const shade = (k, v) => { const [lo, hi] = range[k]; return Math.round(32 * (v - lo) / ((hi - lo) || 1)); };
+  $('#list tbody').innerHTML = rows.map(r => {
+    const i = sel.indexOf(r.slug);
+    const cells = cols.map(c => {
+      const v = r[c.k];
+      if (c.mat) return `<td class="mat" title="${esc(v)}">${esc(v) || '<span class="muted">–</span>'}</td>`;
+      if (!c.num) return `<td class="${v === 'n.d.' ? 'muted' : ''}">${esc(v)}</td>`;
+      const bg = c.heat && v != null ? ` style="background:color-mix(in srgb, ${accent} ${shade(c.k, v)}%, transparent)"` : '';
+      return `<td class="num"${bg}>${v == null ? '<span class="muted">–</span>' : (c.pre || '') + fmt(v, c.dec) + (c.post || '')}</td>`;
+    }).join('');
+    return `<tr data-s="${r.slug}"${i >= 0 ? ` class="sel" style="--c:${COLORS[i]}"` : ''}><td class="name" title="${esc(r.name)}"><input type="checkbox"${i >= 0 ? ' checked' : ''}${i < 0 && sel.length >= MAX_SEL ? ' disabled' : ''}><span class="brand">${esc(r.brand)}</span> ${esc(r.model)}<a class="ext" href="https://revspin.net/${st.kind}/${r.slug}.html" target="_blank" rel="noopener" title="Scheda su revspin.net">↗</a></td>${cells}</tr>`;
+  }).join('') || `<tr><td colspan="${cols.length + 1}" class="muted">Nessun modello con questi filtri.</td></tr>`;
+}
+
+$('#list thead').addEventListener('click', e => {
+  const th = e.target.closest('th[data-k]');
+  if (!th) return;
+  const s = st.sort[st.kind], k = th.dataset.k;
+  st.sort[st.kind] = s[0] === k ? [k, -s[1]] : [k, k === 'name' || k === 'materials' || k === 'type' ? 1 : -1];
+  render();
+});
+$('#list tbody').addEventListener('click', e => {
+  if (e.target.closest('a')) return;
+  const tr = e.target.closest('tr[data-s]');
+  if (tr) toggle(tr.dataset.s);
+});
+
+function toggle(slug) {
+  const sel = st.sel[st.kind], i = sel.indexOf(slug);
+  if (i >= 0) sel.splice(i, 1);
+  else if (sel.length < MAX_SEL) sel.push(slug);
+  writeHash(); render();
+}
+
+// Comparison: chips, radar chart and a side-by-side table of the selected models.
+let chart;
+function renderCompare() {
+  const sel = st.sel[st.kind].map(s => bySlug[st.kind][s]);
+  $('#chips').innerHTML = sel.map((r, i) =>
+    `<span class="chip"><span class="swatch" style="background:${COLORS[i]}"></span><span class="nm">${esc(r.name)}</span><button data-s="${r.slug}" title="Rimuovi">×</button></span>`).join('');
+  $('#clear').hidden = !sel.length;
+  $('#cmp-hint').hidden = sel.length > 0;
+  $('#cmp-body').hidden = !sel.length;
+  if (!sel.length) { if (chart) { chart.destroy(); chart = null; } return; }
+
+  const params = PARAMS[st.kind];
+  if (!st.axes[st.kind]) st.axes[st.kind] = new Set(params.map(p => p[0]).filter(k => k !== 'overall'));
+  const axes = st.axes[st.kind];
+  $('#axes').innerHTML = params.map(([k, l]) => `<button data-k="${k}" class="${axes.has(k) ? 'on' : ''}">${l}</button>`).join('');
+  const shown = params.filter(p => axes.has(p[0]));
+
+  const text = css('--text'), muted = css('--muted'), grid = css('--grid');
+  const datasets = sel.map((r, i) => ({
+    label: r.name, data: shown.map(([k]) => r[k]),
+    borderColor: COLORS[i], backgroundColor: COLORS[i] + '22', pointBackgroundColor: COLORS[i], borderWidth: 2, pointRadius: 3,
+  }));
+  const cfg = {
+    type: 'radar',
+    data: { labels: shown.map(p => p[1]), datasets },
+    options: {
+      maintainAspectRatio: false, animation: { duration: 250 },
+      scales: { r: { min: 0, max: 10, ticks: { stepSize: 2, color: muted, backdropColor: 'transparent', font: { size: 10 } },
+        grid: { color: grid }, angleLines: { color: grid }, pointLabels: { color: text, font: { size: 12 } } } },
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: c => `${c.dataset.label}: ${fmt(c.raw)}` } },
+      },
+    },
+  };
+  if (chart) chart.destroy();
+  chart = new Chart($('#radar'), cfg);
+
+  // Comparison table: one column per model, the best value of each "more is better" row highlighted.
+  const rows = [...params.map(([k, l]) => [k, l, 1]), ['ratings', 'Valutazioni', 0], ['price', 'Prezzo', 0]];
+  if (st.kind === 'blade') rows.push(['weight_g', 'Peso (g)', 0], ['plies', 'Strati', 0], ['materials', 'Materiali'], ['mats', 'Fibre']);
+  else rows.push(['type', 'Tipo'], ['m_speed', 'Velocità (produttore)', 1], ['m_spin', 'Rotazione (produttore)', 1]);
+  const best = (k, vals) => {
+    const nums = vals.filter(v => typeof v === 'number');
+    if (nums.length < 2) return null;
+    if (BETTER.has(k) || k === 'ratings') return Math.max(...nums);
+    if (k === 'price') return Math.min(...nums);
+    return null;
+  };
+  $('#cmp-table').innerHTML = `<thead><tr><th></th>${sel.map((r, i) =>
+    `<th><span class="swatch" style="background:${COLORS[i]}"></span> ${esc(r.name)}</th>`).join('')}</tr></thead><tbody>${
+    rows.map(([k, l, dec]) => {
+      const vals = sel.map(r => r[k]), b = best(k, vals);
+      return `<tr><th>${l}</th>${vals.map(v => {
+        if (Array.isArray(v)) v = v.join(', ');
+        const shown = typeof v === 'number' ? (k === 'price' ? '$' : '') + fmt(v, dec) : (v || '–');
+        return `<td class="${typeof v === 'number' ? 'num' : ''}${b != null && v === b ? ' best' : ''}">${esc(shown)}</td>`;
+      }).join('')}</tr>`;
+    }).join('')}</tbody>`;
+}
+
+$('#chips').addEventListener('click', e => { const b = e.target.closest('button[data-s]'); if (b) toggle(b.dataset.s); });
+$('#clear').onclick = () => { st.sel[st.kind] = []; writeHash(); render(); };
+$('#axes').addEventListener('click', e => {
+  const b = e.target.closest('button[data-k]');
+  if (!b) return;
+  const axes = st.axes[st.kind];
+  if (axes.has(b.dataset.k)) { if (axes.size > 3) axes.delete(b.dataset.k); } else axes.add(b.dataset.k);
+  renderCompare();
+});
+
+function render() {
+  const [k, d] = st.sort[st.kind];
+  const rows = filtered().sort((a, b) => {
+    const x = k === 'name' ? a.name : a[k], y = k === 'name' ? b.name : b[k];
+    if (x == null || x === '') return 1;
+    if (y == null || y === '') return -1;
+    return (typeof x === 'string' ? x.localeCompare(y) : x - y) * d || b.ratings - a.ratings;
+  });
+  const [one, many] = KIND_LABEL[st.kind];
+  $('#count').textContent = `${rows.length} di ${items().length} ${many}`;
+  renderTable(rows);
+  renderCompare();
+}
+
+function setKind(k) {
+  st.kind = k;
+  document.querySelectorAll('#kind button').forEach(b => b.classList.toggle('on', b.dataset.k === k));
+  $('#q').placeholder = k === 'rubber' ? 'Cerca gomma...' : 'Cerca telaio...';
+  writeHash(); buildFilters(); render();
+}
+$('#kind').addEventListener('click', e => { const b = e.target.closest('button[data-k]'); if (b && b.dataset.k !== st.kind) setKind(b.dataset.k); });
+$('#q').addEventListener('input', e => { st.q = e.target.value; render(); });
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change', render);
+
+const upd = new Date(DATA.generated);
+$('#sub').textContent = `${DATA.rubber.length} gomme e ${DATA.blade.length} telai con le valutazioni di revspin.net`;
+$('#updinfo').textContent = `Dati aggiornati al ${upd.toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}.`;
+setKind(st.kind);
+</script>
+</body>
+</html>

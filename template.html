@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FITET Ranking Progress</title>
-<meta name="description" content="Andamento in classifica di tutti gli atleti FITET di tennistavolo: punti, posizione, confronti per età e previsioni. Aggiornato ogni settimana.">
+<meta name="description" content="Andamento in classifica di tutti gli atleti FITET di tennistavolo: punti, posizione, confronti per età e previsioni. Aggiornato ogni mese.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="FITET: andamento classifica atleti">
-<meta property="og:description" content="Punti, posizione e progressi di tutti gli atleti delle classifiche nazionali FITET di tennistavolo, aggiornati ogni settimana.">
+<meta property="og:description" content="Punti, posizione e progressi di tutti gli atleti delle classifiche nazionali FITET di tennistavolo, aggiornati ogni mese.">
 <meta property="og:url" content="__SITE__">
 <meta property="og:image" content="__SITE__og.png">
 <meta property="og:image:width" content="1200">
@@ -127,6 +127,8 @@
   header.top { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
   header.top .logo { flex: none; width: 36px; height: 36px; }
   header.top .sub { margin: 0; }
+  header.top > div { flex: 1; min-width: 0; }
+  header.top .side { flex: none; font-size: 13px; color: var(--accent); text-decoration: none; }
   footer { margin-top: 28px; padding-top: 14px; border-top: 1px solid var(--border); color: var(--muted); font-size: 12px; }
   footer p { margin: 4px 0; }
   footer a { color: var(--accent); }
@@ -220,6 +222,7 @@
       <polyline points="6,23 12,17 17,20 26,9" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
       <circle cx="26" cy="9" r="3" fill="#fbbf24"/></svg>
     <div><h1>FITET: andamento classifica atleti</h1><div class="sub" id="sub"></div></div>
+    <a class="side" href="materiali/">Gomme e telai →</a>
   </header>
 
   <div class="controls" id="filters">
@@ -296,7 +299,7 @@
   </div>
 
   <form class="card addform" id="add" hidden>
-    <label for="newname">Aggiungi un atleta che non è nelle classifiche nazionali (es. uno straniero):</label>
+    <label for="newname">Aggiungi un atleta che non è nelle classifiche nazionali né negli elenchi stranieri:</label>
     <div id="addform-row">
       <input id="newname" placeholder="COGNOME NOME (es. ROSSI MARIO)" autocomplete="off">
       <button type="submit">Aggiungi atleta</button>
@@ -351,8 +354,11 @@
     Per aggiornare i dati: estrai lo zip ed esegui <code>node fitet.js</code> (Node 18+).
   </div>
   <footer>
-    <p>Dati dal <a href="https://portale.fitet.org" target="_blank" rel="noopener">portale FITET</a>, aggiornati ogni lunedì.
+    <p>Dati dal <a href="https://portale.fitet.org" target="_blank" rel="noopener">portale FITET</a>, aggiornati una volta al mese.
       Le soglie di categoria e le previsioni sono stime calcolate da questa pagina, non dati ufficiali.</p>
+    <p>Strumento gratuito e senza scopo di lucro, fatto da un appassionato per seguire la propria classifica e quella dei
+      compagni di club. Niente pubblicità, niente dati personali raccolti: rielabora solo le classifiche pubbliche,
+      lette dal portale una volta al mese (con poche richieste, per non pesare sul sito della Federazione).</p>
     <p id="updinfo"></p>
     <p>Sito non ufficiale, non affiliato alla Federazione Italiana Tennistavolo.
       <span id="repolinks"></span></p>
@@ -374,8 +380,8 @@ const FILTERS = {
   club: { label: 'Società', all: 'tutte', get: p => p.clubs },
   reg:  { label: 'Regione', all: 'tutte', get: p => [p.reg] },
   cat:  { label: 'Categoria', all: 'tutte', get: p => [p.cat], show: v => `${v}ª`, num: true },
-  list: { label: 'Elenco', all: 'tutti', get: p => [p.extra ? 'Extra' : 'Classifica'],
-          show: v => v === 'Extra' ? 'Atleti extra' : 'Classifiche nazionali' },
+  list: { label: 'Elenco', all: 'tutti', get: p => [p.extra ? 'Extra' : p.str ? 'Stranieri' : 'Classifica'],
+          show: v => ({ Extra: 'Atleti extra', Stranieri: 'Stranieri', Classifica: 'Classifiche nazionali' })[v] },
 };
 const state = { metric: 'pts', range: 0, x: 'date', proj: true, ana: null, profile: null, mv: 'last', mvSort: 'abs', h2h: null, zoomMode: null,
   sort: 'pts', dir: -1, shown: PAGE, selected: new Set(),

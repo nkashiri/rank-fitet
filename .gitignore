@@ -1,3 +1,5 @@
 site/
 storico/
 node_modules/
+# The data branch, checked out here (git worktree add data data)
+data/

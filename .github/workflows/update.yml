@@ -1,54 +1,47 @@
 name: Aggiorna classifica
 
+# Downloads the rankings from portale.fitet.org into the "data" branch, then publishes the site (build.yml).
 on:
   schedule:
-    - cron: '0 6 * * 1'   # every Monday 06:00 UTC
+    - cron: '0 6 1 * *'   # the 1st of every month, 06:00 UTC (FITET publishes a new ranking about once a month)
   workflow_dispatch:       # "Run workflow" button for manual updates
-  push:                    # and when the script or the page change
-    branches: [main]
-    paths: [fitet.js, template.html, atleti_extra.txt, og.png, CNAME, .github/workflows/update.yml]
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
+  actions: write           # to start build.yml
 
 concurrency:
-  group: pages
+  group: data
   cancel-in-progress: false
 
 jobs:
   update:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: data
+          path: data
       - uses: actions/setup-node@v4
         with:
           node-version: 22
 
       - name: Scarica i dati da portale.fitet.org
-        run: node fitet.js site/index.html
-        env:
-          GITHUB_TOKEN: ${{ github.token }}   # for the date of the last template change (GitHub API)
+        run: node fitet.js --fetch
 
-      # Keep a copy in the repo too: a history of the data, and the commits keep the schedule active.
-      - name: Salva la pagina nel repository
+      # The data branch keeps the history of the data: each update is a commit.
+      - name: Salva i dati
+        working-directory: data
         run: |
-          cp site/index.html index.html
           git config user.name "github-actions[bot]"
           git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
-          git add index.html
-          git diff --cached --quiet || git commit -m "Aggiorna dati $(date -u +%F)"
-          # If another run saved index.html meanwhile, keep this run's copy (just generated, so the newest).
-          git pull --rebase -q -X theirs
+          git add -A
+          git diff --cached --quiet || git commit -q -m "Classifica $(date -u +%F)"
+          git pull --rebase -q
           git push
 
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-      - id: deploy
-        uses: actions/deploy-pages@v4
+      - name: Pubblica il sito
+        run: gh workflow run build.yml --ref main
+        env:
+          GH_TOKEN: ${{ github.token }}

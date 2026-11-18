@@ -88,17 +88,22 @@ nazionali maschile e femminile di tennistavolo (circa 8.900 uomini e 900 donne),
 
 ## Aggiornamento dei dati
 
-- **Automatico:** ogni lunedì alle 06:00 UTC (07:00 o 08:00 in Italia).
-- **Manuale:** scheda [Actions](https://github.com/nkashiri/rank-fitet/actions) →
-  **Aggiorna classifica** → **Run workflow**. La pagina è aggiornata in circa 3 minuti.
-- **Modifiche al codice:** anche un push che modifica `fitet.js`, `template.html`, `atleti_extra.txt` o `og.png` aggiorna la pagina.
-- Ogni aggiornamento salva anche `index.html` (l'elenco degli atleti, senza gli storici) nel
-  repository: la cronologia dei commit "Aggiorna dati ..." conserva le versioni precedenti.
-- **Controllo di sicurezza:** l'aggiornamento non pubblica se il nuovo scaricamento ha meno del 90% degli atleti
-  del precedente `index.html`, o se è fallito più del 2% (almeno 50) delle pagine di dettaglio. Il workflow
-  allora fallisce, GitHub manda un'email al proprietario del repository e resta online la pagina precedente. Per
-  pubblicare comunque, esegui lo script con `FORCE=1` (nel workflow: aggiungi `FORCE: 1` all'`env` del passo
-  "Scarica i dati", avvia, poi toglilo).
+Scaricare i dati e generare le pagine sono passi separati: i dati sono salvati nel **branch `data`** e le pagine
+vengono generate da lì. Una modifica alle pagine o agli script non riscarica niente.
+
+- **Classifiche ("Aggiorna classifica"):** in automatico il 1° di ogni mese alle 06:00 UTC (07:00 o 08:00 in Italia);
+  la FITET pubblica una nuova classifica circa una volta al mese. Salva i nuovi dati nel branch `data`, poi pubblica il sito.
+- **Gomme e telai ("Aggiorna materiali"):** il 1° di ogni mese alle 07:00 UTC, in modo indipendente: se una fonte
+  non risponde, l'altra viene aggiornata lo stesso.
+- **A mano:** scheda [Actions](https://github.com/nkashiri/rank-fitet/actions) → il workflow → **Run workflow**.
+- **Pagine e script ("Pubblica sito"):** un push che modifica `template.html`, `materiali.html`, `fitet.js`,
+  `revspin.js`, `og.png` o `CNAME` rigenera e pubblica il sito dai dati salvati in circa un minuto.
+- **Storico:** ogni aggiornamento è un commit nel branch `data` ("Classifica ...", "Materiali ..."), quindi i dati
+  precedenti restano.
+- **Controllo di sicurezza:** un aggiornamento non salva se lo scraping ha meno del 90% degli atleti (o prodotti) dei
+  dati salvati, o se è fallito più del 2% (almeno 50) delle pagine degli atleti. Il workflow fallisce, GitHub manda
+  un'email al proprietario del repository e il sito resta com'era. Per salvare comunque, eseguire lo script con
+  `FORCE=1` (nel workflow: aggiungere `FORCE: 1` all'`env` del passo di download, eseguire, poi toglierlo).
 
 ## Piè di pagina: aggiornamenti e visite
 
@@ -116,13 +121,15 @@ nazionali maschile e femminile di tennistavolo (circa 8.900 uomini e 900 donne),
 - I link condivisi su WhatsApp, Facebook, Telegram ecc. mostrano un'anteprima con `og.png` (1200×630). Per
   cambiare l'immagine, sostituisci `og.png` nel repository: il prossimo aggiornamento la pubblica.
 
-## Atleti extra (non presenti nelle classifiche nazionali)
+## Stranieri e atleti extra (non presenti nelle classifiche nazionali)
 
-Gli stranieri ("Atleta Straniero") hanno punti e storico ma nessuna posizione nazionale, quindi non sono
-nelle classifiche da cui è costruita la pagina. Questi atleti sono elencati in `atleti_extra.txt`, uno per
-riga: `COGNOME NOME (gg/mm/aaaa)`. In tabella hanno l'etichetta "extra" e, in corsivo, una posizione
-fittizia (≈): quella che avrebbe avuto un italiano con gli stessi punti, a ogni data di classifica. Anche il grafico
-e l'analisi la usano, segnalata come stimata.
+Gli stranieri hanno punti e storico ma nessuna posizione nazionale. La pagina li include tutti in automatico,
+dagli elenchi "Stranieri" del portale (maschile e femminile); il filtro "Elenco" può mostrare solo loro. Hanno, in
+corsivo, una posizione fittizia (≈): quella che avrebbe avuto un italiano con gli stessi punti, a ogni data di
+classifica. Anche il grafico e l'analisi la usano, segnalata come stimata.
+
+Altri atleti che non sono in nessuno dei due elenchi (es. uno straniero non più negli elenchi Stranieri) si possono
+elencare in `atleti_extra.txt`, uno per riga: `COGNOME NOME (gg/mm/aaaa)`. In tabella hanno l'etichetta "extra".
 
 - **Aggiungere:** nella pagina, scrivi il nome in "Aggiungi un atleta" e clicca
   **Aggiungi atleta**; si apre GitHub con la richiesta già compilata: clicca **Create**.
@@ -130,28 +137,72 @@ e l'analisi la usano, segnalata come stimata.
 - **Rimuovere:** clicca la **×** rossa accanto a "extra" nella riga dell'atleta, poi **Create**.
 - La risposta nella issue dice se l'operazione è riuscita. In caso di omonimi elenca le date
   di nascita: riprova con `COGNOME NOME gg/mm/aaaa`.
-- Si può anche modificare `atleti_extra.txt` direttamente su GitHub (matita → Commit): la pagina si aggiorna.
+- Si può anche modificare `atleti_extra.txt` direttamente su GitHub (matita → Commit), poi avviare "Aggiorna classifica" per aggiornare la pagina.
 - Solo il proprietario e i collaboratori del repository possono aggiungere o rimuovere
   atleti; le richieste di altri utenti vengono ignorate.
 
+## Sottopagina gomme e telai
+
+**Pagina:** https://nkashiri.github.io/rank-fitet/materiali/ (link "Gomme e telai" nell'intestazione della pagina principale)
+
+Le valutazioni degli utenti di [revspin.net](https://revspin.net) per gomme e telai, da filtrare e confrontare.
+Sono inclusi solo i modelli con almeno 10 valutazioni (la soglia delle classifiche di revspin):
+circa 600 gomme e 560 telai.
+
+- **Gomme / Telai** passa da gomme a telai; la casella di ricerca filtra per nome.
+- **Filtri:** Marca; per le gomme Tipo (tensor, non tensor, anti); per i telai Strati e Materiali (famiglia di fibre,
+  dai materiali dichiarati: Carbonio, Arylate, Zylon, Kevlar, altre fibre, solo legno);
+  **Parametri** imposta minimo e/o massimo di ogni valutazione, del numero di valutazioni, del prezzo e del peso del telaio.
+- **Tabella:** clic su un'intestazione per ordinare; il colore di ogni colonna è relativo al suo intervallo.
+  Il link ↗ apre il modello su revspin.net.
+- **Confronto:** clic su fino a 6 righe per confrontarle in un grafico radar e in una tabella affiancata (evidenziato
+  il valore migliore dove "più è meglio"). I pulsanti sotto il radar scelgono gli assi. I modelli confrontati
+  restano nell'indirizzo (es. `materiali/#gomme=...`), così un confronto si può condividere.
+
+Dati: `revspin.js` legge gli elenchi completi di revspin (marche), le classifiche (tutte le valutazioni, 100 per
+pagina) e, una volta per modello, la scheda prodotto per i dati del produttore (peso, strati e materiali dei telai;
+tensor/anti delle gomme), salvati in `dettagli.json` (branch `data`): ogni mese scarica solo i modelli nuovi.
+Le valutazioni sono salvate in `materiali.json` (branch `data`) dal loro workflow, "Aggiorna materiali".
+
+```
+node revspin.js --fetch              # scarica in data/materiali.json (e data/dettagli.json)
+node revspin.js --build              # scrive site/materiali/index.html da data/, senza scaricare
+node revspin.js --fetch --limit 20   # scarica al massimo 20 schede nuove (prova veloce)
+```
+
 ## File
 
-- `fitet.js`: scarica i dati e genera la pagina.
+Branch `main` (codice e pagine):
+
+- `fitet.js`: scarica le classifiche (`--fetch`) e genera la pagina (`--build`).
 - `template.html`: la pagina (grafico e tabella) in cui vengono inseriti i dati.
+- `revspin.js`, `materiali.html`: lo stesso per la sottopagina gomme e telai.
 - `atleti_extra.txt`: atleti aggiuntivi.
 - `og.png`: l'immagine delle anteprime dei link.
-- Nel sito pubblicato, oltre a `index.html`: `storico/<id>.json` (storico della classifica) e `partite/<id>.json`
-  (partite della stagione) per ogni atleta.
+- `.github/workflows/update.yml`: aggiornamento mensile (o manuale) delle classifiche.
+- `.github/workflows/materiali.yml`: aggiornamento mensile (o manuale) di gomme e telai.
+- `.github/workflows/build.yml`: genera le pagine dai dati salvati e le pubblica su GitHub Pages.
 - `.github/workflows/extra.yml`: gestisce le richieste "Aggiungi:" / "Rimuovi:" aperte dalla pagina.
-- `.github/workflows/update.yml`: aggiornamento settimanale e pubblicazione su GitHub Pages.
-- `index.html`: l'ultima pagina generata (scritta dal workflow, non modificarla a mano).
+
+Branch `data` (scritto dai workflow, non modificarlo a mano):
+
+- `fitet.json`: l'elenco degli atleti e le statistiche della pagina.
+- `storico/<id>.json` (storico della classifica) e `partite/<id>.json` (partite della stagione) per ogni atleta,
+  copiati accanto alla pagina pubblicata.
+- `materiali.json`, `dettagli.json`: le valutazioni di gomme e telai e la cache dei dati dei produttori.
 
 ## Uso locale (Node 18+, nessuna dipendenza)
 
+Gli script leggono e scrivono i dati in `data/`. Per lavorare sulle pagine con i dati pubblicati, prima
+estrarre lì il branch `data`:
+
 ```
-node fitet.js                        # scrive site/index.html e site/storico/
-node fitet.js out/index.html         # oppure un'altra cartella
-node fitet.js --limit 200            # solo i primi 200 uomini e 200 donne (prova veloce)
+git fetch origin data && git worktree add data data   # i dati pubblicati in data/
+node fitet.js --build                # scrive site/index.html (+ storico/, partite/) da data/, senza scaricare
+node revspin.js --build              # scrive site/materiali/index.html
+node fitet.js --fetch                # scarica le classifiche in data/ (circa 10 minuti)
+node fitet.js                        # entrambi
+node fitet.js --fetch --limit 200    # solo i primi 200 di ogni elenco (prova veloce)
 node fitet.js --add "ROSSI MARIO"    # aggiunge un atleta ad atleti_extra.txt
 node fitet.js --remove "ROSSI MARIO" # lo rimuove
 ```
@@ -166,7 +217,8 @@ direttamente: servi la cartella, es. `cd site && python3 -m http.server`, poi ap
 1. `menu.php`: l'ID dell'ultima classifica (`ID_CLASS`, il più alto nei link "Classifiche").
 2. `risultati/new_rank/ranking_unica.php?SESSO=<M|F>&ID_CLASS=<id>&TIPO=1&page=<n>`: le classifiche
    generali maschile e femminile, 100 atleti per pagina (lo stesso elenco di `fpdf2/excel_classifica.php`, più
-   l'ID dell'atleta). Servono le intestazioni `X-Requested-With: XMLHttpRequest` e `Referer`.
+   l'ID dell'atleta). Servono le intestazioni `X-Requested-With: XMLHttpRequest` e `Referer`. Con `TIPO=0&S=1`
+   al posto di `TIPO=1`: gli elenchi "Stranieri", con la posizione all'interno di quell'elenco.
 3. `risultati/new_rank/dettaglioatleta_unica.php?ATLETA=<id>&ID_CLASS=<id>&ZU=1&AVVERSARIO=0`, uno
    per atleta: "Riepilogo Dati" (Settore Agonistico, Societa' appartenenza, Record classifica, partite
    giocate/vinte/perse nella stagione) e la scheda "Storico
@@ -175,7 +227,7 @@ direttamente: servi la cartella, es. `cd site && python3 -m http.server`, poi ap
    (`risultati/new_rank/html/<classifica>/<Maschile|Femminile>/.../details_page_<n>.html`), con le tabelle
    "Incontri in campionato" e "Incontri in gare di torneo" (data, gara, avversario, fase, esito; le partite non
    conteggiate per la classifica sono segnate). Gli avversari hanno solo il nome: un nome è collegato a un atleta della
-   pagina quando uno solo lo ha. Questo raddoppia circa il tempo dell'aggiornamento settimanale.
+   pagina quando uno solo lo ha. Questo raddoppia circa il tempo dell'aggiornamento.
 
 La pagina contiene l'elenco degli atleti con i Δ di ogni periodo già calcolati; lo storico di ogni
 atleta è un file a parte, `storico/<id>.json`, caricato solo quando l'atleta compare nel grafico,
@@ -191,6 +243,6 @@ questo i dati vengono raccolti dallo script e pubblicati con la pagina.
   cambiato struttura (vedi "Come vengono raccolti i dati"); riprova più tardi con Run workflow.
 - **Un atleta non ha società o storico:** lo script elenca gli atleti la cui scheda non è stata
   scaricata nel log del passo "Scarica i dati" (`Failed`).
-- **Gli aggiornamenti settimanali si fermano:** GitHub sospende i workflow programmati dopo
-  60 giorni senza attività nel repository. I commit settimanali lo evitano, ma se succede
+- **Gli aggiornamenti mensili si fermano:** GitHub sospende i workflow programmati dopo
+  60 giorni senza attività nel repository. I commit mensili lo evitano, ma se succede
   basta riattivarlo dalla scheda Actions.
