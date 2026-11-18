@@ -34,11 +34,12 @@ const flag = f => { const i = args.indexOf(f); return i >= 0 && !!args.splice(i,
 const [FETCH, BUILD] = (([f, b]) => f || b ? [f, b] : [true, true])([flag('--fetch'), flag('--build')]);
 const OUT = args[0] && !args[0].startsWith('--') ? args[0] : path.join(__dirname, 'site', 'index.html');
 const DATA_FILE = path.join(DATA_DIR, 'fitet.json');
+const scrapeDate = new Date().toISOString().slice(0, 10);
 
 const HEADERS = {
   'X-Requested-With': 'XMLHttpRequest',
   'Referer': `${RANK}/testaclassifica_auto.php`,
-  'User-Agent': 'Mozilla/5.0 (fitet-chart)',
+  'User-Agent': `chart scrape-${scrapeDate} (contact: nav.kashiri@gmail.com)`,
 };
 
 async function get(url, tries = 3) {
